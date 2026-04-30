@@ -1,0 +1,510 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>TrackIQ MCP — Pricing</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@300;400;500;600;700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="trackiq.css">
+
+<style>
+.page-hero {
+  padding: 72px 0 32px;
+  text-align: center;
+}
+.page-hero h1 {
+  font-size: clamp(46px, 5.6vw, 76px);
+  margin-bottom: 22px;
+  max-width: 18ch;
+  margin-left: auto; margin-right: auto;
+}
+.page-hero h1 em { color: var(--teal-ink); font-style: italic; }
+.page-hero .lede { margin: 0 auto 24px; }
+
+/* Pricing cards */
+.pricing-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  margin-top: 60px;
+}
+.price-card {
+  background: var(--surface);
+  border: 1px solid var(--hair);
+  border-radius: var(--radius-lg);
+  padding: 36px 32px;
+  display: flex; flex-direction: column;
+  position: relative;
+}
+.price-card.recommended {
+  border: 1.5px solid var(--teal);
+  background: linear-gradient(180deg, var(--teal-pale) 0%, var(--surface) 50%);
+  transform: translateY(-12px);
+  box-shadow: var(--shadow-md);
+}
+.price-card.recommended::before {
+  content: "Recommended";
+  position: absolute;
+  top: -14px; left: 50%; transform: translateX(-50%);
+  font-family: var(--font-mono);
+  font-size: 11px; letter-spacing: .14em;
+  background: var(--teal); color: #fff;
+  padding: 5px 14px; border-radius: 999px;
+  text-transform: uppercase;
+}
+.price-tier {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 12px;
+}
+.price-card.recommended .price-tier { color: var(--teal-ink); }
+.price-amount {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-size: 56px;
+  letter-spacing: -0.02em;
+  line-height: 1;
+  margin-bottom: 6px;
+}
+.price-amount small { font-size: 16px; color: var(--muted); font-family: var(--font-sans); margin-left: 6px; font-weight: 400; }
+.price-card .price-tagline {
+  color: var(--ink-2); font-size: 15px; margin: 0 0 28px; max-width: 28ch;
+}
+.price-features { list-style: none; padding: 0; margin: 0 0 32px; display: flex; flex-direction: column; gap: 12px; }
+.price-features li {
+  font-size: 14.5px; color: var(--ink-2);
+  display: grid; grid-template-columns: 18px 1fr; gap: 12px; align-items: start;
+  line-height: 1.45;
+}
+.price-features li::before {
+  content: "✓"; color: var(--teal); font-weight: 600; margin-top: 1px;
+}
+.price-features li.muted { color: var(--muted); }
+.price-features li.muted::before { content: "—"; color: var(--hair-strong); }
+.price-card .btn { margin-top: auto; justify-content: center; padding: 14px 22px; }
+
+@media (max-width: 1024px) {
+  .pricing-cards { grid-template-columns: 1fr; gap: 16px; }
+  .price-card.recommended { transform: none; }
+}
+
+/* Comparison table */
+.compare {
+  margin-top: 80px;
+  background: var(--surface);
+  border: 1px solid var(--hair);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+.compare table { width: 100%; border-collapse: collapse; }
+.compare thead {
+  background: var(--bg-alt);
+  border-bottom: 1px solid var(--hair);
+}
+.compare th {
+  padding: 18px 24px;
+  text-align: left;
+  font-family: var(--font-mono);
+  font-size: 11px; letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-weight: 500;
+  width: 18%;
+}
+.compare th:first-child { width: 28%; }
+.compare th.tier {
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-size: 16px;
+  letter-spacing: -0.01em;
+  text-transform: none;
+  font-weight: 500;
+}
+.compare th.tier .price {
+  font-family: var(--font-mono);
+  font-size: 11px; letter-spacing: .04em;
+  color: var(--muted);
+  font-weight: 400;
+  display: block;
+  margin-top: 2px;
+  text-transform: none;
+}
+.compare th.tier.plus { color: var(--teal-ink); }
+.compare td {
+  padding: 16px 24px;
+  border-bottom: 1px solid var(--hair);
+  font-size: 14.5px;
+  color: var(--ink-2);
+}
+.compare tbody tr:last-child td { border-bottom: none; }
+.compare td.label {
+  color: var(--ink); font-weight: 500;
+}
+.compare td.label .desc {
+  display: block;
+  font-weight: 400;
+  font-size: 12.5px;
+  color: var(--muted);
+  margin-top: 2px;
+}
+.compare td.row-group {
+  background: var(--bg);
+  font-family: var(--font-mono);
+  font-size: 11px; letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  padding: 12px 24px;
+  font-weight: 500;
+}
+.compare td.check { color: var(--teal); font-size: 18px; }
+.compare td.dash { color: var(--hair-strong); font-size: 18px; }
+.compare td.value-strong { color: var(--ink); font-weight: 500; }
+
+@media (max-width: 1024px) {
+  .compare { overflow-x: auto; }
+  .compare table { min-width: 720px; }
+}
+
+/* FAQ */
+.faq-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0 60px;
+}
+.faq-item {
+  border-top: 1px solid var(--hair);
+  padding: 24px 0;
+}
+.faq-item summary {
+  list-style: none;
+  cursor: pointer;
+  font-family: var(--font-serif);
+  font-size: 22px;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  display: flex; justify-content: space-between; gap: 24px;
+  align-items: start;
+}
+.faq-item summary::-webkit-details-marker { display: none; }
+.faq-item summary::after {
+  content: "+";
+  font-family: var(--font-mono);
+  font-size: 22px;
+  color: var(--muted);
+  transition: transform .2s;
+  flex: 0 0 auto;
+}
+.faq-item[open] summary::after { content: "−"; }
+.faq-item p {
+  color: var(--ink-2); font-size: 15.5px;
+  margin: 14px 0 0; line-height: 1.55;
+  max-width: 56ch;
+}
+@media (max-width: 1024px) { .faq-grid { grid-template-columns: 1fr; gap: 0; } }
+
+/* Final CTA */
+.final-cta {
+  text-align: center;
+  padding: 100px 0 40px;
+  border-top: 1px solid var(--hair);
+  margin-top: 80px;
+}
+.final-cta h2 {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-size: clamp(32px, 4vw, 52px);
+  letter-spacing: -0.02em;
+  margin-bottom: 24px;
+}
+.final-cta h2 em { color: var(--teal-ink); font-style: italic; }
+.final-cta .btn { padding: 14px 24px; font-size: 16px; }
+</style>
+</head>
+<body>
+
+<div class="grain"></div>
+
+<!-- NAV -->
+<nav class="nav" id="nav">
+  <div class="container nav-inner">
+    <a href="index.html" class="logo">{ <b>TRACKIQ</b> }</a>
+    <div class="nav-links">
+      <a href="meet-your-ai-agent.html">Platform</a>
+      <a href="mcp.html" class="active">MCP <span class="nav-new-pill">New</span></a>
+      <a href="plans-and-pricing.html">Pricing</a>
+      <a href="how-it-works.html">Resources</a>
+    </div>
+    <div class="nav-cta">
+      <a href="#" class="btn btn-ghost">Sign in</a>
+      <a href="mcp-pricing.html" class="btn btn-primary">Get started</a>
+    </div>
+  </div>
+</nav>
+
+<div class="subnav">
+  <div class="container subnav-inner">
+    <span class="subnav-mcp-label">TrackIQ MCP</span>
+    <a href="mcp.html">Overview</a>
+    <a href="mcp-pricing.html" class="active">Pricing</a>
+    <a href="mcp-tools.html">Tools</a>
+    <a href="mcp-install.html">Install</a>
+    <a href="#">Docs</a>
+    <a href="#">Security</a>
+  </div>
+</div>
+
+<header class="page-hero" data-screen-label="MCP Pricing / Hero">
+  <div class="container">
+    <div class="eyebrow no-rule" style="justify-content:center; color:var(--teal-ink); margin-bottom: 22px;">
+      <span style="font-family:var(--font-mono); font-size:9px; letter-spacing:.12em; background:var(--teal); color:#fff; padding:2px 6px; border-radius:3px;">MCP</span>
+      Pricing
+    </div>
+    <h1>Free to start. <em>Fair</em> when you grow.</h1>
+    <p class="lede">Three tiers. All require your own Amazon credentials and your own AI assistant subscription. We charge for data access — not AI usage.</p>
+  </div>
+</header>
+
+<section style="padding-top: 0;" data-screen-label="MCP Pricing / Cards">
+  <div class="container">
+    <div class="pricing-cards">
+      <div class="price-card">
+        <div class="price-tier">Free</div>
+        <div class="price-amount">$0<small>/forever</small></div>
+        <p class="price-tagline">For solo sellers exploring how their AI assistant can read Amazon data.</p>
+        <ul class="price-features">
+          <li>4 read-only tools</li>
+          <li>50 tool calls per day</li>
+          <li>10 conversations per day</li>
+          <li>30-day data lookback</li>
+          <li>1 marketplace</li>
+          <li class="muted">No write actions</li>
+          <li class="muted">Community support</li>
+        </ul>
+        <a href="mcp-install.html" class="btn btn-ghost btn-arrow">Install free</a>
+      </div>
+
+      <div class="price-card recommended">
+        <div class="price-tier">Plus</div>
+        <div class="price-amount">$49<small>/month</small></div>
+        <p class="price-tagline">For sellers who run their business through their AI assistant.</p>
+        <ul class="price-features">
+          <li>All 16 tools, including write actions</li>
+          <li>Unlimited tool calls</li>
+          <li>Unlimited conversations</li>
+          <li>24-month data lookback</li>
+          <li>All marketplaces</li>
+          <li>Premium data: AMC, Brand Analytics</li>
+          <li>Priority email + Slack support</li>
+        </ul>
+        <a href="#" class="btn btn-teal btn-arrow">Start Plus</a>
+      </div>
+
+      <div class="price-card">
+        <div class="price-tier">Lite</div>
+        <div class="price-amount">$19<small>/month</small></div>
+        <p class="price-tagline">For active sellers and agencies onboarding their first brands.</p>
+        <ul class="price-features">
+          <li>12 read-only tools</li>
+          <li>500 tool calls per day</li>
+          <li>100 conversations per day</li>
+          <li>12-month data lookback</li>
+          <li>Up to 3 marketplaces</li>
+          <li class="muted">No write actions</li>
+          <li>Email support</li>
+        </ul>
+        <a href="#" class="btn btn-ghost btn-arrow">Start Lite</a>
+      </div>
+    </div>
+
+    <p style="text-align:center; color: var(--muted); font-size: 13px; margin-top: 36px; font-family: var(--font-mono); letter-spacing: .04em;">
+      ALL TIERS · BRING YOUR OWN AI ASSISTANT · BRING YOUR OWN AMAZON CREDENTIALS · CANCEL ANYTIME
+    </p>
+  </div>
+</section>
+
+<!-- COMPARISON TABLE -->
+<section style="padding-top: 60px;" data-screen-label="MCP Pricing / Comparison">
+  <div class="container">
+    <div class="section-head-single" style="margin-bottom: 32px;">
+      <div class="eyebrow no-rule" style="justify-content:center; color:var(--teal-ink)">Full comparison</div>
+      <h2 class="display" style="margin-top:14px">Every limit, side by side.</h2>
+    </div>
+
+    <div class="compare">
+      <table>
+        <thead>
+          <tr>
+            <th>&nbsp;</th>
+            <th class="tier">Free<span class="price">$0/forever</span></th>
+            <th class="tier">Lite<span class="price">$19/month</span></th>
+            <th class="tier plus">Plus<span class="price">$49/month</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td colspan="4" class="row-group">Limits</td></tr>
+          <tr>
+            <td class="label">Tool calls per day<span class="desc">Read or write call against your data</span></td>
+            <td>50</td><td>500</td><td class="value-strong">Unlimited</td>
+          </tr>
+          <tr>
+            <td class="label">Conversations per day<span class="desc">Multi-turn sessions with the MCP</span></td>
+            <td>10</td><td>100</td><td class="value-strong">Unlimited</td>
+          </tr>
+          <tr>
+            <td class="label">Data lookback</td>
+            <td>30 days</td><td>12 months</td><td class="value-strong">24 months</td>
+          </tr>
+          <tr>
+            <td class="label">Marketplaces</td>
+            <td>1</td><td>Up to 3</td><td class="value-strong">All marketplaces</td>
+          </tr>
+
+          <tr><td colspan="4" class="row-group">Tools</td></tr>
+          <tr>
+            <td class="label">Sales &amp; Inventory <span class="desc">4 read tools</span></td>
+            <td class="check">✓</td><td class="check">✓</td><td class="check">✓</td>
+          </tr>
+          <tr>
+            <td class="label">Advertising — Read<span class="desc">8 read tools across SP/SB/SD/DSP</span></td>
+            <td>2 of 8</td><td class="check">✓</td><td class="check">✓</td>
+          </tr>
+          <tr>
+            <td class="label">Premium Data<span class="desc">AMC, Brand Analytics, Buy Box history</span></td>
+            <td class="dash">—</td><td class="dash">—</td><td class="check">✓</td>
+          </tr>
+          <tr>
+            <td class="label">Write Actions<span class="desc">Bid changes, negative keywords, budget moves</span></td>
+            <td class="dash">—</td><td class="dash">—</td><td class="check">✓</td>
+          </tr>
+
+          <tr><td colspan="4" class="row-group">Support</td></tr>
+          <tr>
+            <td class="label">Channel</td>
+            <td>Community Slack</td><td>Email</td><td class="value-strong">Priority email + Slack</td>
+          </tr>
+          <tr>
+            <td class="label">Response time</td>
+            <td>Best effort</td><td>2 business days</td><td class="value-strong">4 business hours</td>
+          </tr>
+          <tr>
+            <td class="label">&nbsp;</td>
+            <td><a href="mcp-install.html" class="btn btn-ghost" style="padding: 8px 14px; font-size: 13px;">Install free</a></td>
+            <td><a href="#" class="btn btn-ghost" style="padding: 8px 14px; font-size: 13px;">Start Lite</a></td>
+            <td><a href="#" class="btn btn-teal" style="padding: 8px 14px; font-size: 13px;">Start Plus</a></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section data-screen-label="MCP Pricing / FAQ">
+  <div class="container">
+    <div class="section-head-single" style="margin-bottom: 40px;">
+      <div class="eyebrow no-rule" style="justify-content:center; color:var(--teal-ink)">FAQ</div>
+      <h2 class="display" style="margin-top:14px">Common questions.</h2>
+    </div>
+
+    <div class="faq-grid">
+      <div>
+        <details class="faq-item" open>
+          <summary>Do I need a credit card for Free?</summary>
+          <p>No. The Free tier requires only an Amazon Seller Central account. You'll never see a payment screen unless you choose to upgrade.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Can I use my own Claude or ChatGPT subscription?</summary>
+          <p>Yes — that's the whole point. TrackIQ MCP is an MCP server. You connect it to whichever AI assistant you already pay for. We don't charge for AI tokens; we charge for data access.</p>
+        </details>
+        <details class="faq-item">
+          <summary>What's the difference between MCP and the platform?</summary>
+          <p>The TrackIQ Platform is a full web app with dashboards, automated reports, and Aria, our AI agent. The MCP is lighter — it gives your AI assistant read (and optionally write) access to your Amazon data through standardized tools. Different surfaces, different price points.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Can I cancel anytime?</summary>
+          <p>Yes. Paid tiers are month-to-month. Cancel from account settings; access continues through the end of the billing period.</p>
+        </details>
+        <details class="faq-item">
+          <summary>What counts as a "tool call"?</summary>
+          <p>A single invocation by your AI assistant — for example, asking "how were my sales yesterday?" might use one or two tool calls. A typical conversation runs 3–8 calls. Free's 50/day cap covers most casual exploration.</p>
+        </details>
+      </div>
+      <div>
+        <details class="faq-item">
+          <summary>What data does TrackIQ access?</summary>
+          <p>Only what you authorize via Amazon's official OAuth flow. Read tools cover sales, ads, and inventory. Write tools (Plus only) require explicit confirmation in your AI assistant before each action. Full details on the Security page.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Does TrackIQ store my Amazon data?</summary>
+          <p>We cache responses for performance and rate-limiting. Caches expire within 24 hours. We don't train models on your data. You can revoke access and trigger deletion at any time.</p>
+        </details>
+        <details class="faq-item">
+          <summary>How many AI assistants can I connect?</summary>
+          <p>One TrackIQ account, any number of MCP-compatible clients. Use Claude Desktop on your laptop, Claude.ai in the browser, and Cursor for coding — same data, same limits.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Can agencies manage multiple seller accounts?</summary>
+          <p>Today, each TrackIQ account maps to one Amazon profile. For multi-brand agency setups, the TrackIQ Platform is the right product — agency white-label MCP is on the v2 roadmap.</p>
+        </details>
+        <details class="faq-item">
+          <summary>What happens if I hit my daily limit?</summary>
+          <p>Tools return a clear "limit reached" message; your AI assistant tells you so you can upgrade or wait until the daily reset. No surprise charges, no overage billing.</p>
+        </details>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="final-cta" data-screen-label="MCP Pricing / Final CTA">
+  <div class="container">
+    <h2>Start free. <em>Upgrade only when you need to.</em></h2>
+    <a href="mcp-install.html" class="btn btn-teal btn-arrow">Install free</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="logo">{ <b>TRACKIQ</b> }</div>
+        <p>The AI Business Analyst for Amazon sellers &amp; agencies. Built in California, powered by your data.</p>
+        <div class="footer-badges"><span>AMAZON ADS</span><span>AMZ VERIFIED</span><span>SOC 2</span></div>
+      </div>
+      <div class="footer-col"><h5>Platform</h5><ul>
+        <li><a href="meet-your-ai-agent.html">Meet Your AI Agent</a></li>
+        <li><a href="how-it-works.html">How it Works</a></li>
+        <li><a href="plans-and-pricing.html">Plans &amp; Pricing</a></li>
+        <li><a href="contact.html">Contact Us</a></li>
+      </ul></div>
+      <div class="footer-col"><h5>MCP <span style="font-family:var(--font-mono); font-size:9px; letter-spacing:.1em; background:var(--teal); color:#fff; padding:1px 5px; border-radius:3px; margin-left:6px; vertical-align:1px;">NEW</span></h5><ul>
+        <li><a href="mcp.html">MCP Overview</a></li>
+        <li><a href="mcp-pricing.html">MCP Pricing</a></li>
+        <li><a href="mcp-tools.html">MCP Tools</a></li>
+        <li><a href="mcp-install.html">Install Guide</a></li>
+        <li><a href="#">Documentation</a></li>
+      </ul></div>
+      <div class="footer-col"><h5>Resources</h5><ul>
+        <li><a href="#">Roadmap</a></li><li><a href="#">Help Desk</a></li><li><a href="#">Changelog</a></li><li><a href="#">Status</a></li>
+      </ul></div>
+      <div class="footer-col"><h5>Social</h5><ul>
+        <li><a href="#">LinkedIn</a></li><li><a href="#">Twitter (X)</a></li><li><a href="#">YouTube</a></li><li><a href="#">Substack</a></li>
+      </ul></div>
+      <div class="footer-col"><h5>Legal</h5><ul>
+        <li><a href="#">Privacy</a></li><li><a href="#">Terms</a></li><li><a href="#">Security</a></li>
+      </ul></div>
+    </div>
+    <div class="footer-bottom">
+      <div>© 2026 TrackIQ. All rights reserved.</div>
+      <div>Made for Amazon sellers &amp; agencies.</div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

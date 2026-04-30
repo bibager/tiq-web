@@ -1,0 +1,727 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>TrackIQ MCP — Install</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@300;400;500;600;700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="trackiq.css">
+
+<style>
+.page-hero { padding: 72px 0 32px; text-align: center; }
+.page-hero h1 {
+  font-size: clamp(46px, 5.6vw, 76px);
+  margin-bottom: 22px;
+  max-width: 18ch;
+  margin-left: auto; margin-right: auto;
+}
+.page-hero h1 em { color: var(--teal-ink); font-style: italic; }
+.page-hero .lede { margin: 0 auto 18px; }
+.page-hero .meta {
+  font-family: var(--font-mono);
+  font-size: 12px; letter-spacing: .08em;
+  color: var(--muted);
+  text-transform: uppercase;
+}
+
+/* Tabs */
+.client-tabs {
+  display: flex;
+  gap: 4px;
+  background: var(--surface);
+  border: 1px solid var(--hair);
+  padding: 6px;
+  border-radius: 999px;
+  width: fit-content;
+  margin: 32px auto 48px;
+  box-shadow: var(--shadow-sm);
+}
+.client-tab {
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  padding: 10px 20px;
+  border-radius: 999px;
+  cursor: pointer;
+  color: var(--muted);
+  border: none;
+  background: transparent;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: all .15s;
+}
+.client-tab:hover { color: var(--ink); }
+.client-tab.active {
+  background: var(--ink);
+  color: #fff;
+  box-shadow: var(--shadow-sm);
+}
+.client-tab .glyph {
+  width: 18px; height: 18px;
+  border-radius: 4px;
+  display: inline-flex; align-items: center; justify-content: center;
+  font-family: var(--font-serif); font-style: italic;
+  font-size: 12px;
+}
+.client-tab .glyph.claude { background: #FCEDE2; color: #B8542A; }
+.client-tab .glyph.gpt { background: #E5F2EE; color: #157F60; }
+.client-tab .glyph.cursor { background: #1A1E27; color: #fff; }
+.client-tab.active .glyph { opacity: 1; }
+.client-tab .glyph.desktop { background: #EAE6FF; color: #5C49B8; }
+
+@media (max-width: 700px) {
+  .client-tabs { flex-wrap: wrap; border-radius: 16px; }
+}
+
+/* Steps layout: vertical with rail */
+.steps {
+  position: relative;
+  padding-left: 80px;
+  max-width: 920px;
+  margin: 0 auto;
+}
+.steps::before {
+  content: "";
+  position: absolute;
+  left: 27px; top: 28px; bottom: 28px;
+  width: 1px;
+  background: var(--hair);
+}
+.step {
+  position: relative;
+  margin-bottom: 56px;
+  scroll-margin-top: 100px;
+}
+.step:last-child { margin-bottom: 0; }
+.step-num {
+  position: absolute;
+  left: -80px; top: 0;
+  width: 56px; height: 56px;
+  border-radius: 50%;
+  background: var(--surface);
+  border: 1px solid var(--hair);
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 26px;
+  color: var(--ink);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 1;
+  transition: all .25s;
+}
+.step.complete .step-num {
+  background: var(--teal);
+  border-color: var(--teal);
+  color: #fff;
+  font-style: normal;
+  font-family: var(--font-sans);
+  font-size: 22px;
+}
+.step.active .step-num {
+  border-color: var(--teal);
+  color: var(--teal-ink);
+  box-shadow: 0 0 0 6px var(--teal-pale);
+}
+.step h3 {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-size: 30px;
+  letter-spacing: -0.02em;
+  margin-bottom: 8px;
+}
+.step .desc {
+  color: var(--ink-2);
+  font-size: 16px;
+  margin-bottom: 18px;
+  max-width: 56ch;
+}
+.step .panel {
+  background: var(--surface);
+  border: 1px solid var(--hair);
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+
+/* Code block */
+.code-block {
+  position: relative;
+  background: #0E1116;
+  color: #E8E3D6;
+  font-family: var(--font-mono);
+  font-size: 13.5px;
+  line-height: 1.65;
+  padding: 18px 22px;
+  border-radius: 10px;
+  overflow-x: auto;
+}
+.code-block .prompt { color: #5DD4C0; user-select: none; }
+.code-block .comment { color: #6B7280; }
+.code-block .string { color: #F9C77E; }
+.code-block .key { color: #93C5FD; }
+.code-block .copy-btn {
+  position: absolute; top: 12px; right: 12px;
+  font-family: var(--font-mono);
+  font-size: 11px; letter-spacing: .08em;
+  padding: 5px 10px;
+  border-radius: 4px;
+  background: rgba(255,255,255,.08);
+  color: #E8E3D6;
+  border: 1px solid rgba(255,255,255,.12);
+  cursor: pointer;
+  text-transform: uppercase;
+}
+.code-block .copy-btn:hover { background: rgba(255,255,255,.15); }
+.code-block .copy-btn.copied { background: var(--teal); border-color: var(--teal); color: #fff; }
+
+/* OAuth mock */
+.oauth-mock {
+  background: #fff;
+  border: 1px solid var(--hair);
+  border-radius: 12px;
+  overflow: hidden;
+  max-width: 480px;
+}
+.oauth-head {
+  background: linear-gradient(180deg, #232F3E 0%, #131921 100%);
+  color: #fff;
+  padding: 18px 24px;
+  display: flex; align-items: center; gap: 12px;
+}
+.oauth-head .amzlogo {
+  font-family: var(--font-sans);
+  font-weight: 700;
+  font-size: 18px;
+  font-style: italic;
+  letter-spacing: -0.02em;
+}
+.oauth-head .amzlogo::after {
+  content: "";
+  display: inline-block;
+  width: 36px; height: 6px;
+  background: #FF9900;
+  border-radius: 3px;
+  margin-left: 4px;
+  vertical-align: 4px;
+}
+.oauth-head .url-bar {
+  margin-left: auto;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: rgba(255,255,255,.6);
+  background: rgba(255,255,255,.08);
+  padding: 4px 10px;
+  border-radius: 4px;
+}
+.oauth-body { padding: 28px 32px; }
+.oauth-body h4 {
+  font-family: var(--font-sans);
+  font-size: 17px;
+  font-weight: 600;
+  color: #131921;
+  margin: 0 0 12px;
+  letter-spacing: -0.01em;
+}
+.oauth-body p {
+  font-size: 13.5px;
+  color: #5C6975;
+  margin: 0 0 16px;
+  line-height: 1.55;
+}
+.oauth-body .scope-list {
+  background: #FAFAF8;
+  border: 1px solid var(--hair);
+  border-radius: 8px;
+  padding: 14px 16px;
+  margin: 16px 0;
+  list-style: none;
+}
+.oauth-body .scope-list li {
+  font-size: 13px;
+  color: #131921;
+  padding: 4px 0;
+  display: flex; align-items: center; gap: 10px;
+}
+.oauth-body .scope-list li::before {
+  content: "✓"; color: var(--teal);
+  font-weight: 600;
+}
+.oauth-actions {
+  display: flex; gap: 10px;
+  margin-top: 18px;
+}
+.oauth-btn {
+  flex: 1;
+  padding: 11px 16px;
+  border-radius: 8px;
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 500;
+  border: 1px solid var(--hair);
+  background: #fff;
+  color: #131921;
+  cursor: pointer;
+}
+.oauth-btn.primary {
+  background: linear-gradient(180deg, #FFD580 0%, #FF9900 100%);
+  border-color: #E08600;
+  font-weight: 600;
+  color: #131921;
+}
+.oauth-btn:hover { background: #FAFAF8; }
+.oauth-btn.primary:hover { filter: brightness(1.05); }
+.oauth-result {
+  display: none;
+  margin-top: 18px;
+  padding: 14px 16px;
+  background: var(--teal-pale);
+  border: 1px solid var(--teal-soft);
+  border-radius: 8px;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--teal-ink);
+  align-items: center; gap: 10px;
+}
+.oauth-result.show { display: flex; }
+.oauth-result::before {
+  content: "✓"; font-size: 18px; color: var(--teal);
+}
+
+/* Test query */
+.test-conv {
+  background: var(--bg);
+  padding: 22px 24px;
+}
+.test-conv .you {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 18px;
+  color: var(--ink);
+  padding: 14px 18px;
+  background: var(--surface);
+  border: 1px solid var(--hair);
+  border-radius: 12px 12px 12px 4px;
+  max-width: 80%;
+  margin-bottom: 14px;
+}
+.test-conv .answer {
+  background: var(--surface);
+  border: 1px solid var(--hair);
+  border-radius: 12px;
+  padding: 16px 18px;
+  font-size: 14.5px;
+  color: var(--ink-2);
+  line-height: 1.55;
+}
+.test-conv .tool-call {
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  color: var(--teal-ink);
+  background: var(--teal-pale);
+  border: 1px solid var(--teal-soft);
+  padding: 6px 10px;
+  border-radius: 6px;
+  margin-bottom: 10px;
+  display: inline-block;
+}
+.test-conv .stat-row {
+  display: flex; gap: 24px;
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid var(--hair);
+}
+.test-conv .stat-row .stat {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 28px;
+  letter-spacing: -0.02em;
+}
+.test-conv .stat-row .stat-lbl {
+  font-family: var(--font-mono);
+  font-size: 10px; letter-spacing: .12em;
+  color: var(--muted);
+  text-transform: uppercase;
+  display: block;
+}
+
+.config-snippet {
+  background: var(--bg-alt);
+  border: 1px dashed var(--hair-strong);
+  border-radius: 8px;
+  padding: 12px 14px;
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  color: var(--ink-2);
+  margin-top: 14px;
+  line-height: 1.5;
+}
+.config-snippet .path { color: var(--teal-ink); }
+
+/* Side-by-side */
+.troubleshoot-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-top: 24px;
+}
+.ts-card {
+  background: var(--surface);
+  border: 1px solid var(--hair);
+  border-radius: var(--radius);
+  padding: 22px 24px;
+}
+.ts-card h4 {
+  font-family: var(--font-mono);
+  font-size: 11px; letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin: 0 0 8px;
+}
+.ts-card p {
+  font-size: 14px; color: var(--ink-2);
+  line-height: 1.5; margin: 0;
+}
+@media (max-width: 1024px) { .troubleshoot-grid { grid-template-columns: 1fr; } }
+
+@media (max-width: 800px) {
+  .steps { padding-left: 0; }
+  .steps::before { display: none; }
+  .step-num { position: static; margin-bottom: 14px; }
+}
+</style>
+</head>
+<body>
+
+<div class="grain"></div>
+
+<nav class="nav" id="nav">
+  <div class="container nav-inner">
+    <a href="index.html" class="logo">{ <b>TRACKIQ</b> }</a>
+    <div class="nav-links">
+      <a href="meet-your-ai-agent.html">Platform</a>
+      <a href="mcp.html" class="active">MCP <span class="nav-new-pill">New</span></a>
+      <a href="plans-and-pricing.html">Pricing</a>
+      <a href="how-it-works.html">Resources</a>
+    </div>
+    <div class="nav-cta">
+      <a href="#" class="btn btn-ghost">Sign in</a>
+      <a href="mcp-pricing.html" class="btn btn-primary">Get started</a>
+    </div>
+  </div>
+</nav>
+
+<div class="subnav">
+  <div class="container subnav-inner">
+    <span class="subnav-mcp-label">TrackIQ MCP</span>
+    <a href="mcp.html">Overview</a>
+    <a href="mcp-pricing.html">Pricing</a>
+    <a href="mcp-tools.html">Tools</a>
+    <a href="mcp-install.html" class="active">Install</a>
+    <a href="#">Docs</a>
+    <a href="#">Security</a>
+  </div>
+</div>
+
+<header class="page-hero" data-screen-label="MCP Install / Hero">
+  <div class="container">
+    <div class="eyebrow no-rule" style="justify-content:center; color:var(--teal-ink); margin-bottom: 22px;">
+      <span style="font-family:var(--font-mono); font-size:9px; letter-spacing:.12em; background:var(--teal); color:#fff; padding:2px 6px; border-radius:3px;">SETUP</span>
+      Install in 5 minutes
+    </div>
+    <h1>Pick your AI. <em>We'll handle the rest.</em></h1>
+    <p class="lede">Choose your AI assistant below. We'll show you the exact steps for that client — from install to first query.</p>
+    <p class="meta">FREE TIER · NO CREDIT CARD · WORKS ON MAC, WINDOWS, LINUX</p>
+  </div>
+</header>
+
+<!-- Client tabs -->
+<div class="client-tabs" role="tablist">
+  <button class="client-tab active" data-client="claude-desktop"><span class="glyph desktop">◫</span>Claude Desktop</button>
+  <button class="client-tab" data-client="claude-ai"><span class="glyph claude">C</span>Claude.ai</button>
+  <button class="client-tab" data-client="chatgpt"><span class="glyph gpt">G</span>ChatGPT</button>
+  <button class="client-tab" data-client="cursor"><span class="glyph cursor">▸</span>Cursor</button>
+</div>
+
+<!-- STEPS -->
+<section style="padding-top: 0; padding-bottom: 80px;" data-screen-label="MCP Install / Steps">
+  <div class="container">
+
+    <div class="steps">
+      <!-- Step 1: Sign up -->
+      <div class="step" id="step1">
+        <div class="step-num">1</div>
+        <h3>Create your TrackIQ account</h3>
+        <p class="desc">Free, 30 seconds. We use this to issue your MCP token and track your daily limits.</p>
+        <div class="panel" style="padding: 24px 28px;">
+          <div style="display: flex; gap: 12px; align-items: center;">
+            <input type="email" placeholder="you@yourbrand.com" id="signupEmail" style="flex: 1; padding: 12px 16px; border: 1px solid var(--hair); border-radius: 10px; font-size: 14px; font-family: var(--font-sans); outline: none;" />
+            <button class="btn btn-teal btn-arrow" id="signupBtn">Get token</button>
+          </div>
+          <p style="margin: 14px 0 0; font-size: 12px; color: var(--muted); font-family: var(--font-mono); letter-spacing: .04em;">
+            ALREADY HAVE AN ACCOUNT? <a href="#" style="color: var(--teal-ink);">SIGN IN</a>
+          </p>
+        </div>
+      </div>
+
+      <!-- Step 2: Install (per-client) -->
+      <div class="step" id="step2">
+        <div class="step-num">2</div>
+        <h3>Install the MCP server</h3>
+        <p class="desc" id="step2Desc">Run this command in your terminal. It registers TrackIQ with Claude Desktop.</p>
+        <div class="panel" style="padding: 0;">
+          <div class="code-block" id="installCode">
+            <button class="copy-btn" data-code-target="installCode">Copy</button>
+            <span class="comment"># Add TrackIQ to Claude Desktop</span><br>
+            <span class="prompt">$ </span>claude mcp add trackiq <span class="string">"https://trackiq.com/mcp"</span><br>
+            <span class="comment"># Restart Claude Desktop, then verify</span><br>
+            <span class="prompt">$ </span>claude mcp list<br>
+            <span class="comment">→ trackiq · connected · 16 tools</span>
+          </div>
+          <div class="config-snippet" id="configHint">
+            Or edit <span class="path">~/Library/Application Support/Claude/claude_desktop_config.json</span> manually. <a href="#" style="color: var(--teal-ink);">Show me how →</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 3: OAuth -->
+      <div class="step" id="step3">
+        <div class="step-num">3</div>
+        <h3>Connect your Amazon account</h3>
+        <p class="desc">One-click OAuth through Amazon Seller Central. We never see your password — Amazon issues a scoped token directly to TrackIQ.</p>
+        <div class="panel" style="padding: 28px;">
+          <div class="oauth-mock">
+            <div class="oauth-head">
+              <span class="amzlogo">amazon</span>
+              <span class="url-bar">sellercentral.amazon.com / oauth</span>
+            </div>
+            <div class="oauth-body">
+              <h4>TrackIQ wants permission to access your account</h4>
+              <p>By authorizing, you'll let TrackIQ read the following data on your behalf:</p>
+              <ul class="scope-list">
+                <li>Sales &amp; Orders Reports</li>
+                <li>Advertising Performance</li>
+                <li>Inventory &amp; Listings</li>
+                <li>Brand Analytics (Plus tier)</li>
+              </ul>
+              <p style="font-size: 12px; color: var(--muted);">You can revoke this access at any time from Seller Central → Apps &amp; Services.</p>
+              <div class="oauth-actions">
+                <button class="oauth-btn">Cancel</button>
+                <button class="oauth-btn primary" id="oauthBtn">Authorize</button>
+              </div>
+              <div class="oauth-result" id="oauthResult">
+                Connected · 4 marketplaces · token issued to TrackIQ
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 4: Test -->
+      <div class="step" id="step4">
+        <div class="step-num">4</div>
+        <h3>Run your first query</h3>
+        <p class="desc" id="step4Desc">Open Claude Desktop and try a prompt. The MCP returns structured data; Claude turns it into a readable answer.</p>
+        <div class="panel" style="padding: 0;">
+          <div class="test-conv">
+            <div class="you">"What were my Amazon sales yesterday?"</div>
+            <div class="answer">
+              <div class="tool-call">trackiq.get_sales · date=2026-04-29</div>
+              <div>
+                Yesterday you did <strong>$12,408</strong> in Amazon revenue across <strong>187 orders</strong>. That's up <strong>9%</strong> vs. the prior 7-day average. Halo Kettle was the top SKU at $2,840.
+              </div>
+              <div class="stat-row">
+                <div>
+                  <div class="stat" style="color: var(--ink);">$12,408</div>
+                  <span class="stat-lbl">Revenue</span>
+                </div>
+                <div>
+                  <div class="stat" style="color: var(--teal-ink);">187</div>
+                  <span class="stat-lbl">Orders</span>
+                </div>
+                <div>
+                  <div class="stat" style="color: var(--moss);">+9%</div>
+                  <span class="stat-lbl">vs. 7-day avg</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Troubleshooting -->
+    <div style="max-width: 920px; margin: 80px auto 0;">
+      <div style="margin-bottom: 24px;">
+        <div class="eyebrow no-rule" style="color: var(--teal-ink);">Hit a snag?</div>
+        <h2 class="display" style="font-size: 32px; margin-top: 12px;">Troubleshooting.</h2>
+      </div>
+      <div class="troubleshoot-grid">
+        <div class="ts-card">
+          <h4>"Claude doesn't see TrackIQ"</h4>
+          <p>Restart Claude Desktop after running the install command. Check <code>claude mcp list</code>; if TrackIQ isn't there, run install again with the verbose flag.</p>
+        </div>
+        <div class="ts-card">
+          <h4>"OAuth says invalid scope"</h4>
+          <p>Make sure you're signed into Seller Central as an Admin user. Marketplace-restricted accounts can't grant the Brand Analytics scope.</p>
+        </div>
+        <div class="ts-card">
+          <h4>"Tool call returned empty"</h4>
+          <p>If your data is fewer than 24 hours old, Amazon's reporting API may not have it yet. Try a date range from 2+ days ago.</p>
+        </div>
+      </div>
+      <p style="margin-top: 32px; text-align: center; color: var(--muted); font-size: 14px;">
+        Still stuck? <a href="#" style="color: var(--teal-ink); text-decoration: underline;">Read the docs</a> · <a href="#" style="color: var(--teal-ink); text-decoration: underline;">Email support</a> · <a href="#" style="color: var(--teal-ink); text-decoration: underline;">Join the Slack</a>
+      </p>
+    </div>
+
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="logo">{ <b>TRACKIQ</b> }</div>
+        <p>The AI Business Analyst for Amazon sellers &amp; agencies. Built in California, powered by your data.</p>
+        <div class="footer-badges"><span>AMAZON ADS</span><span>AMZ VERIFIED</span><span>SOC 2</span></div>
+      </div>
+      <div class="footer-col"><h5>Platform</h5><ul>
+        <li><a href="meet-your-ai-agent.html">Meet Your AI Agent</a></li>
+        <li><a href="how-it-works.html">How it Works</a></li>
+        <li><a href="plans-and-pricing.html">Plans &amp; Pricing</a></li>
+        <li><a href="contact.html">Contact Us</a></li>
+      </ul></div>
+      <div class="footer-col"><h5>MCP <span style="font-family:var(--font-mono); font-size:9px; letter-spacing:.1em; background:var(--teal); color:#fff; padding:1px 5px; border-radius:3px; margin-left:6px; vertical-align:1px;">NEW</span></h5><ul>
+        <li><a href="mcp.html">MCP Overview</a></li>
+        <li><a href="mcp-pricing.html">MCP Pricing</a></li>
+        <li><a href="mcp-tools.html">MCP Tools</a></li>
+        <li><a href="mcp-install.html">Install Guide</a></li>
+        <li><a href="#">Documentation</a></li>
+      </ul></div>
+      <div class="footer-col"><h5>Resources</h5><ul>
+        <li><a href="#">Roadmap</a></li><li><a href="#">Help Desk</a></li><li><a href="#">Changelog</a></li><li><a href="#">Status</a></li>
+      </ul></div>
+      <div class="footer-col"><h5>Social</h5><ul>
+        <li><a href="#">LinkedIn</a></li><li><a href="#">Twitter (X)</a></li><li><a href="#">YouTube</a></li><li><a href="#">Substack</a></li>
+      </ul></div>
+      <div class="footer-col"><h5>Legal</h5><ul>
+        <li><a href="#">Privacy</a></li><li><a href="#">Terms</a></li><li><a href="#">Security</a></li>
+      </ul></div>
+    </div>
+    <div class="footer-bottom">
+      <div>© 2026 TrackIQ. All rights reserved.</div>
+      <div>Made for Amazon sellers &amp; agencies.</div>
+    </div>
+  </div>
+</footer>
+
+<script>
+// === Per-client install snippets ===
+const clients = {
+  'claude-desktop': {
+    desc: 'Run this command in your terminal. It registers TrackIQ with Claude Desktop.',
+    code: `<button class="copy-btn" data-code-target="installCode">Copy</button>
+<span class="comment"># Add TrackIQ to Claude Desktop</span><br>
+<span class="prompt">$ </span>claude mcp add trackiq <span class="string">"https://trackiq.com/mcp"</span><br>
+<span class="comment"># Restart Claude Desktop, then verify</span><br>
+<span class="prompt">$ </span>claude mcp list<br>
+<span class="comment">→ trackiq · connected · 16 tools</span>`,
+    config: 'Or edit <span class="path">~/Library/Application Support/Claude/claude_desktop_config.json</span> manually. <a href="#" style="color: var(--teal-ink);">Show me how →</a>',
+    testDesc: 'Open Claude Desktop and try a prompt. The MCP returns structured data; Claude turns it into a readable answer.'
+  },
+  'claude-ai': {
+    desc: 'No CLI needed. Add TrackIQ as a Connected App from Claude.ai → Settings → Integrations.',
+    code: `<button class="copy-btn" data-code-target="installCode">Copy</button>
+<span class="comment"># In Claude.ai → Settings → Integrations → Add custom MCP</span><br>
+<span class="key">Name</span>: trackiq<br>
+<span class="key">URL</span>: <span class="string">https://trackiq.com/mcp</span><br>
+<span class="key">Auth</span>: Bearer &lt;your-token-from-step-1&gt;<br>
+<span class="comment">→ Save. Tools appear in your next conversation.</span>`,
+    config: 'Works on Claude Pro and Team plans. <a href="#" style="color: var(--teal-ink);">See full guide →</a>',
+    testDesc: 'Start a new chat in Claude.ai. Tools show up under the &nbsp;⚙&nbsp; menu in the composer.'
+  },
+  'chatgpt': {
+    desc: 'ChatGPT Plus or Team — add TrackIQ as a Custom GPT Action via the connector URL.',
+    code: `<button class="copy-btn" data-code-target="installCode">Copy</button>
+<span class="comment"># In ChatGPT → My GPTs → New → Configure → Actions</span><br>
+<span class="key">Schema URL</span>: <span class="string">https://trackiq.com/mcp/openapi.json</span><br>
+<span class="key">Auth</span>: Bearer &lt;your-token-from-step-1&gt;<br>
+<span class="comment">→ Save the GPT. Pin it to your sidebar.</span>`,
+    config: 'Note: ChatGPT translates MCP into OpenAPI under the hood — same tools, slightly different invocation. <a href="#" style="color: var(--teal-ink);">See guide →</a>',
+    testDesc: 'Open the TrackIQ GPT and try a prompt. Authorize the action when ChatGPT prompts you the first time.'
+  },
+  'cursor': {
+    desc: 'Cursor reads MCP servers from a JSON config. Add TrackIQ once and use it in any project.',
+    code: `<button class="copy-btn" data-code-target="installCode">Copy</button>
+<span class="comment"># Edit ~/.cursor/mcp.json</span><br>
+{<br>
+&nbsp;&nbsp;<span class="key">"mcpServers"</span>: {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="key">"trackiq"</span>: {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="key">"url"</span>: <span class="string">"https://trackiq.com/mcp"</span>,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="key">"auth"</span>: <span class="string">"Bearer &lt;your-token&gt;"</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;}<br>
+}`,
+    config: 'Restart Cursor after editing. Tools appear in the chat composer command palette. <a href="#" style="color: var(--teal-ink);">See guide →</a>',
+    testDesc: 'Open Cursor chat and ask: "Hey, what were my Amazon sales yesterday?" Cursor will call TrackIQ in the background.'
+  }
+};
+
+document.querySelectorAll('.client-tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.client-tab').forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+    const c = clients[tab.dataset.client];
+    document.getElementById('step2Desc').textContent = c.desc;
+    document.getElementById('installCode').innerHTML = c.code;
+    document.getElementById('configHint').innerHTML = c.config;
+    document.getElementById('step4Desc').innerHTML = c.testDesc;
+    bindCopyButtons();
+  });
+});
+
+function bindCopyButtons() {
+  document.querySelectorAll('.copy-btn').forEach(btn => {
+    btn.onclick = () => {
+      const target = document.getElementById(btn.dataset.codeTarget);
+      const text = target.innerText.replace(/^Copy\s*/, '');
+      navigator.clipboard?.writeText(text);
+      btn.textContent = 'Copied';
+      btn.classList.add('copied');
+      setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 1500);
+    };
+  });
+}
+bindCopyButtons();
+
+// Step progression
+document.getElementById('signupBtn').addEventListener('click', (e) => {
+  e.preventDefault();
+  const email = document.getElementById('signupEmail').value || 'you@yourbrand.com';
+  const step1 = document.getElementById('step1');
+  step1.classList.add('complete');
+  document.getElementById('signupBtn').textContent = 'Token issued ✓';
+  document.getElementById('signupBtn').classList.remove('btn-teal');
+  document.getElementById('signupBtn').style.background = 'var(--moss)';
+  document.getElementById('signupBtn').style.color = '#fff';
+  document.getElementById('step2').classList.add('active');
+  document.getElementById('step2').scrollIntoView({behavior: 'smooth', block: 'center'});
+});
+
+document.getElementById('oauthBtn').addEventListener('click', () => {
+  const result = document.getElementById('oauthResult');
+  result.classList.add('show');
+  document.getElementById('step3').classList.add('complete');
+  document.getElementById('oauthBtn').textContent = 'Authorized ✓';
+  document.getElementById('oauthBtn').disabled = true;
+  document.getElementById('step4').classList.add('active');
+});
+</script>
+
+</body>
+</html>

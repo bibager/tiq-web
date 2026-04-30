@@ -1,0 +1,442 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>TrackIQ MCP — Documentation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@300;400;500;600;700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="trackiq.css">
+
+<style>
+.docs-layout {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  gap: 60px;
+  align-items: start;
+  padding: 60px 0 120px;
+}
+.docs-sidebar {
+  position: sticky;
+  top: 140px;
+}
+.docs-nav {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.docs-nav-section {
+  margin-bottom: 32px;
+}
+.docs-nav-section h4 {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin: 0 0 12px;
+  font-weight: 500;
+}
+.docs-nav-section ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.docs-nav-section a {
+  display: block;
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-size: 14px;
+  color: var(--ink-2);
+  transition: all .15s;
+}
+.docs-nav-section a:hover { background: var(--bg-alt); color: var(--ink); }
+.docs-nav-section a.active { background: var(--teal-pale); color: var(--teal-ink); font-weight: 500; }
+
+.docs-content {
+  max-width: 760px;
+}
+.docs-content h1 {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-size: 48px;
+  letter-spacing: -0.02em;
+  margin: 0 0 14px;
+}
+.docs-content .page-meta {
+  color: var(--muted);
+  font-size: 15px;
+  margin-bottom: 40px;
+  padding-bottom: 28px;
+  border-bottom: 1px solid var(--hair);
+}
+.docs-content h2 {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-size: 32px;
+  letter-spacing: -0.02em;
+  margin: 56px 0 18px;
+  scroll-margin-top: 100px;
+}
+.docs-content h2:first-of-type { margin-top: 0; }
+.docs-content h3 {
+  font-size: 20px;
+  font-weight: 500;
+  margin: 32px 0 14px;
+  scroll-margin-top: 100px;
+}
+.docs-content p {
+  font-size: 16px;
+  line-height: 1.65;
+  color: var(--ink-2);
+  margin: 0 0 18px;
+}
+.docs-content ul, .docs-content ol {
+  margin: 0 0 18px;
+  padding-left: 24px;
+  color: var(--ink-2);
+  font-size: 16px;
+  line-height: 1.65;
+}
+.docs-content li { margin-bottom: 8px; }
+.docs-content code {
+  font-family: var(--font-mono);
+  font-size: 13.5px;
+  background: var(--bg-alt);
+  padding: 2px 6px;
+  border-radius: 4px;
+  color: var(--teal-ink);
+}
+.docs-content pre {
+  background: #0E1116;
+  color: #E8E3D6;
+  padding: 20px 24px;
+  border-radius: 12px;
+  overflow-x: auto;
+  margin: 0 0 24px;
+  font-family: var(--font-mono);
+  font-size: 13.5px;
+  line-height: 1.6;
+}
+.docs-content pre code {
+  background: none;
+  padding: 0;
+  color: inherit;
+}
+.docs-content .note {
+  background: var(--teal-pale);
+  border-left: 3px solid var(--teal);
+  padding: 16px 20px;
+  border-radius: 8px;
+  margin: 24px 0;
+}
+.docs-content .note p { color: var(--ink); margin: 0; }
+.docs-content .note strong { color: var(--teal-ink); }
+
+.docs-content table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 24px 0;
+  font-size: 14.5px;
+}
+.docs-content th {
+  text-align: left;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--hair);
+  font-weight: 500;
+}
+.docs-content td {
+  padding: 14px;
+  border-bottom: 1px solid var(--hair);
+  color: var(--ink-2);
+  vertical-align: top;
+}
+.docs-content td code { font-size: 12.5px; }
+
+@media (max-width: 1024px) {
+  .docs-layout { grid-template-columns: 1fr; gap: 32px; }
+  .docs-sidebar { position: static; }
+}
+</style>
+</head>
+<body>
+
+<div class="grain"></div>
+
+<nav class="nav" id="nav">
+  <div class="container nav-inner">
+    <a href="index.html" class="logo">{ <b>TRACKIQ</b> }</a>
+    <div class="nav-links">
+      <a href="meet-your-ai-agent.html">Platform</a>
+      <a href="mcp.html" class="active">MCP <span class="nav-new-pill">New</span></a>
+      <a href="plans-and-pricing.html">Pricing</a>
+      <a href="how-it-works.html">Resources</a>
+    </div>
+    <div class="nav-cta">
+      <a href="#" class="btn btn-ghost">Sign in</a>
+      <a href="mcp-pricing.html" class="btn btn-primary">Get started</a>
+    </div>
+  </div>
+</nav>
+
+<div class="subnav">
+  <div class="container subnav-inner">
+    <span class="subnav-mcp-label">TrackIQ MCP</span>
+    <a href="mcp.html">Overview</a>
+    <a href="mcp-pricing.html">Pricing</a>
+    <a href="mcp-tools.html">Tools</a>
+    <a href="mcp-install.html">Install</a>
+    <a href="mcp-docs.html" class="active">Docs</a>
+    <a href="mcp-security.html">Security</a>
+  </div>
+</div>
+
+<div class="container">
+  <div class="docs-layout">
+    <aside class="docs-sidebar">
+      <nav class="docs-nav">
+        <div class="docs-nav-section">
+          <h4>Getting Started</h4>
+          <ul>
+            <li><a href="#quick-start" class="active">Quick Start</a></li>
+            <li><a href="#authentication">Authentication</a></li>
+            <li><a href="#clients">Supported Clients</a></li>
+          </ul>
+        </div>
+        <div class="docs-nav-section">
+          <h4>Tools Reference</h4>
+          <ul>
+            <li><a href="#tool-sales">Sales &amp; Inventory</a></li>
+            <li><a href="#tool-ads">Advertising</a></li>
+            <li><a href="#tool-premium">Premium Data</a></li>
+            <li><a href="#tool-write">Write Actions</a></li>
+          </ul>
+        </div>
+        <div class="docs-nav-section">
+          <h4>Advanced</h4>
+          <ul>
+            <li><a href="#rate-limits">Rate Limits</a></li>
+            <li><a href="#error-handling">Error Handling</a></li>
+            <li><a href="#data-retention">Data Retention</a></li>
+          </ul>
+        </div>
+      </nav>
+    </aside>
+
+    <article class="docs-content">
+      <h1>TrackIQ MCP Documentation</h1>
+      <div class="page-meta">Everything you need to integrate your Amazon data with your AI assistant. Last updated April 30, 2026.</div>
+
+      <h2 id="quick-start">Quick Start</h2>
+      <p>TrackIQ MCP connects your Amazon Seller Central account to Claude, ChatGPT, Cursor, or any MCP-compatible AI assistant. Follow these steps to get started:</p>
+
+      <h3>1. Create an account</h3>
+      <p>Sign up at <a href="mcp-install.html" style="color: var(--teal-ink); text-decoration: underline;">trackiq.com/mcp</a>. Free tier requires no credit card.</p>
+
+      <h3>2. Install the MCP server</h3>
+      <p>For <strong>Claude Desktop</strong>:</p>
+      <pre><code>claude mcp add trackiq "https://trackiq.com/mcp"
+claude mcp list  # verify installation</code></pre>
+
+      <p>For <strong>Claude.ai</strong>, add a Custom Integration in Settings → Integrations.</p>
+
+      <h3>3. Connect Amazon</h3>
+      <p>Authorize via OAuth. We never see your password — Amazon issues a scoped token directly to TrackIQ.</p>
+
+      <h3>4. Run your first query</h3>
+      <p>Open your AI assistant and try:</p>
+      <pre><code>"What were my Amazon sales yesterday?"
+"Which campaigns are overspending?"
+"Show me inventory stockout risk by SKU"</code></pre>
+
+      <div class="note">
+        <p><strong>Note:</strong> Data is refreshed every 6 hours. For real-time queries, use the TrackIQ Platform web app instead.</p>
+      </div>
+
+      <h2 id="authentication">Authentication</h2>
+      <p>TrackIQ uses Amazon's official OAuth 2.0 flow. You authorize once; the token is valid for 12 months and auto-renews.</p>
+
+      <h3>Scopes requested</h3>
+      <ul>
+        <li><code>sp-api:reports</code> — Sales, orders, returns</li>
+        <li><code>sp-api:advertising</code> — Campaign performance, keywords, search terms</li>
+        <li><code>sp-api:fba-inventory</code> — FBA inventory levels</li>
+        <li><code>sp-api:brand-analytics</code> — Brand Analytics (Plus tier only)</li>
+      </ul>
+
+      <p>Revoke access any time from Seller Central → Apps &amp; Services → Manage Your Apps.</p>
+
+      <h2 id="clients">Supported Clients</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Client</th>
+            <th>Protocol</th>
+            <th>Setup Guide</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Claude Desktop</td>
+            <td>MCP native</td>
+            <td><a href="mcp-install.html" style="color: var(--teal-ink);">Install guide →</a></td>
+          </tr>
+          <tr>
+            <td>Claude.ai</td>
+            <td>MCP via Custom Integration</td>
+            <td><a href="mcp-install.html" style="color: var(--teal-ink);">Install guide →</a></td>
+          </tr>
+          <tr>
+            <td>ChatGPT</td>
+            <td>OpenAPI translation</td>
+            <td><a href="mcp-install.html" style="color: var(--teal-ink);">Install guide →</a></td>
+          </tr>
+          <tr>
+            <td>Cursor</td>
+            <td>MCP via config file</td>
+            <td><a href="mcp-install.html" style="color: var(--teal-ink);">Install guide →</a></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h2 id="tool-sales">Sales &amp; Inventory Tools</h2>
+      <h3><code>get_sales</code></h3>
+      <p>Daily revenue, units, and order count broken out by ASIN, parent SKU, or marketplace.</p>
+      <pre><code>{
+  "tool": "trackiq.get_sales",
+  "date_range": "last_7_days",
+  "group_by": "asin"
+}</code></pre>
+
+      <h3><code>get_inventory</code></h3>
+      <p>FBA inventory levels per SKU per fulfillment center. Days-of-cover calculated automatically.</p>
+
+      <h3><code>get_orders</code></h3>
+      <p>Find specific orders by date range, status, or buyer-anonymized ID.</p>
+
+      <h3><code>get_returns</code></h3>
+      <p>Return reasons, rates, and SKU-level patterns.</p>
+
+      <h2 id="tool-ads">Advertising Tools</h2>
+      <h3><code>get_campaigns</code></h3>
+      <p>Spend, sales, ROAS, and ACoS by campaign across SP, SB, SD, and DSP.</p>
+
+      <h3><code>get_keywords</code></h3>
+      <p>Match type, bid, impressions, clicks, and conversion rate. Filter by ACoS thresholds.</p>
+
+      <h3><code>get_search_terms</code></h3>
+      <p>What customers actually searched for — including wasted spend and negative-keyword candidates.</p>
+
+      <p>See the <a href="mcp-tools.html" style="color: var(--teal-ink); text-decoration: underline;">full tool catalog</a> for all 16 tools.</p>
+
+      <h2 id="tool-premium">Premium Data (Plus tier)</h2>
+      <ul>
+        <li><code>get_amc_audiences</code> — AMC audiences and cross-channel attribution</li>
+        <li><code>get_buybox_history</code> — Buy Box win rate and competitor pricing</li>
+        <li><code>get_brand_analytics</code> — Top search terms and click-share</li>
+        <li><code>get_market_share</code> — Category-level share estimates</li>
+      </ul>
+
+      <h2 id="tool-write">Write Actions (Plus tier)</h2>
+      <p>All write actions require explicit confirmation from your AI assistant before execution.</p>
+      <ul>
+        <li><code>set_bid</code> — Update keyword bids</li>
+        <li><code>add_negative_keyword</code> — Add exact, phrase, or campaign-level negatives</li>
+        <li><code>set_budget</code> — Adjust campaign budgets</li>
+        <li><code>pause_campaign</code> — Pause or resume campaigns, ad groups, or keywords</li>
+      </ul>
+
+      <h2 id="rate-limits">Rate Limits</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Tier</th>
+            <th>Tool Calls / Day</th>
+            <th>Conversations / Day</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Free</td><td>50</td><td>10</td></tr>
+          <tr><td>Lite</td><td>500</td><td>100</td></tr>
+          <tr><td>Plus</td><td>Unlimited</td><td>Unlimited</td></tr>
+        </tbody>
+      </table>
+
+      <p>Limits reset daily at midnight UTC. When you hit your limit, tools return a clear "limit reached" message.</p>
+
+      <h2 id="error-handling">Error Handling</h2>
+      <p>TrackIQ returns structured error messages your AI assistant can parse:</p>
+      <pre><code>{
+  "error": "rate_limit_exceeded",
+  "message": "Daily tool call limit reached. Upgrade to Lite or wait until reset.",
+  "reset_at": "2026-05-01T00:00:00Z"
+}</code></pre>
+
+      <p>Common errors:</p>
+      <ul>
+        <li><code>auth_expired</code> — Re-authorize via OAuth</li>
+        <li><code>rate_limit_exceeded</code> — Upgrade or wait for daily reset</li>
+        <li><code>invalid_date_range</code> — Date range exceeds your tier's lookback limit</li>
+        <li><code>amazon_api_timeout</code> — Amazon's API is slow; retry in 30s</li>
+      </ul>
+
+      <h2 id="data-retention">Data Retention</h2>
+      <p>We cache responses for performance and rate-limiting. Caches expire within 24 hours. We don't train models on your data.</p>
+      <p>You can revoke access and trigger deletion at any time from Account Settings → Data &amp; Privacy.</p>
+
+      <div style="margin-top: 80px; padding-top: 40px; border-top: 1px solid var(--hair); text-align: center;">
+        <p style="color: var(--muted); font-size: 14px;">Need help? <a href="contact.html" style="color: var(--teal-ink); text-decoration: underline;">Contact support</a> or join our <a href="#" style="color: var(--teal-ink); text-decoration: underline;">Slack community</a>.</p>
+      </div>
+    </article>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="logo">{ <b>TRACKIQ</b> }</div>
+        <p>The AI Business Analyst for Amazon sellers &amp; agencies. Built in California, powered by your data.</p>
+        <div class="footer-badges"><span>AMAZON ADS</span><span>AMZ VERIFIED</span><span>SOC 2</span></div>
+      </div>
+      <div class="footer-col"><h5>Platform</h5><ul>
+        <li><a href="meet-your-ai-agent.html">Meet Your AI Agent</a></li>
+        <li><a href="how-it-works.html">How it Works</a></li>
+        <li><a href="plans-and-pricing.html">Plans &amp; Pricing</a></li>
+        <li><a href="contact.html">Contact Us</a></li>
+      </ul></div>
+      <div class="footer-col"><h5>MCP <span style="font-family:var(--font-mono); font-size:9px; letter-spacing:.1em; background:var(--teal); color:#fff; padding:1px 5px; border-radius:3px; margin-left:6px; vertical-align:1px;">NEW</span></h5><ul>
+        <li><a href="mcp.html">MCP Overview</a></li>
+        <li><a href="mcp-pricing.html">MCP Pricing</a></li>
+        <li><a href="mcp-tools.html">MCP Tools</a></li>
+        <li><a href="mcp-install.html">Install Guide</a></li>
+        <li><a href="mcp-docs.html">Documentation</a></li>
+      </ul></div>
+      <div class="footer-col"><h5>Resources</h5><ul>
+        <li><a href="#">Roadmap</a></li><li><a href="#">Help Desk</a></li><li><a href="#">Changelog</a></li><li><a href="#">Status</a></li>
+      </ul></div>
+      <div class="footer-col"><h5>Social</h5><ul>
+        <li><a href="#">LinkedIn</a></li><li><a href="#">Twitter (X)</a></li><li><a href="#">YouTube</a></li><li><a href="#">Substack</a></li>
+      </ul></div>
+      <div class="footer-col"><h5>Legal</h5><ul>
+        <li><a href="#">Privacy</a></li><li><a href="#">Terms</a></li><li><a href="mcp-security.html">Security</a></li>
+      </ul></div>
+    </div>
+    <div class="footer-bottom">
+      <div>© 2026 TrackIQ. All rights reserved.</div>
+      <div>Made for Amazon sellers &amp; agencies.</div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,449 @@
+<!doctype html>
+<html lang="en" data-palette="warm" data-accent="blue" data-grain="on">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Meet Your AI Agent · TrackIQ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@300;400;500;600;700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#FBF9F4;--bg-alt:#F3EFE6;--surface:#fff;--ink:#0E1116;--ink-2:#2A2F38;--muted:#6E7582;--hair:#E9E4D8;--hair-strong:#D9D2BF;--accent:#2563EB;--accent-ink:#1E3A8A;--accent-pale:#F2F6FF;--amber:#D4A017;--rust:#B8542A;--moss:#4A6B3A;--radius:14px;--radius-lg:22px;--shadow-xl:0 40px 60px -20px rgba(16,18,24,.22),0 10px 20px -10px rgba(16,18,24,.10);--font-sans:"Geist",system-ui,sans-serif;--font-serif:"Instrument Serif",serif;--font-mono:"Geist Mono",monospace}
+*{box-sizing:border-box}html,body{margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font-family:var(--font-sans);font-size:17px;line-height:1.55;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}img,svg{display:block;max-width:100%}
+.container{max-width:1240px;margin:0 auto;padding:0 28px}
+.container-narrow{max-width:960px;margin:0 auto;padding:0 28px}
+.grain{position:fixed;inset:0;pointer-events:none;z-index:999;opacity:.35;mix-blend-mode:multiply;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.08 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>")}
+.eyebrow{font-family:var(--font-mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);display:inline-flex;align-items:center;gap:10px}
+.eyebrow::before{content:"";width:22px;height:1px;background:var(--ink);opacity:.7}
+h1,h2,h3,h4{margin:0;letter-spacing:-.02em;font-weight:500}
+h1{font-family:var(--font-serif);font-weight:400;font-size:clamp(46px,6vw,84px);line-height:1.02;letter-spacing:-.025em}
+h1 em,h2 em{font-style:italic;color:var(--accent-ink)}
+h2.display{font-family:var(--font-serif);font-weight:400;font-size:clamp(36px,4vw,56px);line-height:1.05;letter-spacing:-.02em}
+h3{font-size:22px;line-height:1.3;font-weight:500}
+h4{font-size:16px;font-weight:500}
+.lede{font-size:19px;line-height:1.5;color:var(--ink-2);max-width:58ch}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:12px 18px;border-radius:999px;font-weight:500;font-size:15px;border:1px solid transparent;transition:all .15s}
+.btn-primary{background:var(--ink);color:#fff}.btn-primary:hover{background:#000}
+.btn-accent{background:var(--accent);color:#fff}.btn-accent:hover{filter:brightness(1.05)}
+.btn-ghost{border-color:var(--hair-strong);color:var(--ink)}.btn-ghost:hover{background:var(--surface);border-color:var(--ink)}
+.btn-link{color:var(--ink);border-bottom:1px solid currentColor;padding-bottom:2px}
+.btn-arrow::after{content:"→";transition:transform .2s}.btn-arrow:hover::after{transform:translateX(3px)}
+
+.nav{position:sticky;top:0;z-index:50;background:color-mix(in srgb,var(--bg) 82%,transparent);backdrop-filter:blur(14px);border-bottom:1px solid var(--hair)}
+.nav-inner{display:flex;align-items:center;justify-content:space-between;padding:18px 0}
+.logo{font-family:var(--font-mono);font-size:16px;font-weight:500}.logo b{color:var(--accent);font-weight:500}
+.nav-links{display:flex;gap:28px}.nav-links a{font-size:14.5px;color:var(--ink-2)}.nav-links a[aria-current]{color:var(--ink);font-weight:500}
+.nav-cta{display:flex;gap:10px}
+
+section{padding:88px 0}
+.hero{padding-top:64px;padding-bottom:40px}
+.hero-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:60px;align-items:end}
+.hero h1{max-width:15ch;margin-bottom:24px}
+.hero .lede{margin-bottom:32px}
+.hero-cta{display:flex;gap:14px;flex-wrap:wrap}
+
+/* Agent avatar card */
+.agent-card{background:var(--surface);border:1px solid var(--hair);border-radius:var(--radius-lg);padding:32px;box-shadow:var(--shadow-xl);position:relative;transform:rotate(-.5deg)}
+.agent-badge{display:inline-flex;align-items:center;gap:8px;font-size:12px;font-family:var(--font-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--moss);margin-bottom:14px}
+.agent-badge::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--moss);box-shadow:0 0 0 4px color-mix(in srgb,var(--moss) 20%,transparent)}
+.agent-avatar{width:80px;height:80px;border-radius:18px;background:var(--ink);color:#fff;display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:22px;font-weight:500;margin-bottom:14px;position:relative}
+.agent-avatar::after{content:"";position:absolute;bottom:-3px;right:-3px;width:22px;height:22px;border-radius:50%;background:var(--moss);border:3px solid var(--surface)}
+.agent-card h3{font-family:var(--font-serif);font-weight:400;font-size:32px;margin-bottom:4px}
+.agent-card .role{color:var(--muted);font-size:14px;margin-bottom:18px}
+.agent-stats{display:grid;grid-template-columns:1fr 1fr;gap:14px;border-top:1px solid var(--hair);padding-top:18px}
+.agent-stat{font-size:13px;color:var(--muted)}
+.agent-stat b{display:block;font-family:var(--font-serif);font-size:24px;color:var(--ink);font-weight:400;margin-bottom:2px}
+
+/* ======= Intro strip ======= */
+.intro{background:var(--bg-alt);border-top:1px solid var(--hair);border-bottom:1px solid var(--hair)}
+.intro-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center}
+.intro p{font-family:var(--font-serif);font-size:28px;line-height:1.3;color:var(--ink);letter-spacing:-.01em;margin:0}
+.intro p em{font-style:italic;color:var(--accent-ink)}
+.intro-stats{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+.intro-stat{background:var(--surface);border:1px solid var(--hair);border-radius:var(--radius);padding:22px 20px}
+.intro-stat b{font-family:var(--font-serif);font-size:44px;font-weight:400;line-height:1;color:var(--accent-ink);display:block;margin-bottom:6px;letter-spacing:-.02em}
+.intro-stat span{font-size:13.5px;color:var(--ink-2);line-height:1.4;display:block}
+
+/* ======= Four pillars ======= */
+.pillars{display:grid;grid-template-columns:repeat(2,1fr);gap:20px;margin-top:52px}
+.pillar{background:var(--surface);border:1px solid var(--hair);border-radius:var(--radius-lg);padding:36px;display:flex;flex-direction:column;gap:14px;transition:transform .2s,box-shadow .2s}
+.pillar:hover{transform:translateY(-3px);box-shadow:0 14px 30px -18px rgba(16,18,24,.18)}
+.pillar .num{font-family:var(--font-serif);font-style:italic;font-size:44px;color:var(--accent-ink);line-height:1}
+.pillar h3{margin-top:6px}
+.pillar p{color:var(--ink-2);margin:0;font-size:15.5px;line-height:1.5}
+.pillar .tag{font-family:var(--font-mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.pillar ul{margin:6px 0 0;padding-left:18px;color:var(--ink-2);font-size:14.5px;line-height:1.7}
+.pillar .ex{margin-top:10px;padding:14px 16px;background:var(--bg-alt);border-left:3px solid var(--accent);border-radius:6px;font-size:14px;color:var(--ink-2);line-height:1.5}
+.pillar .ex b{color:var(--ink);font-weight:500}
+
+/* ======= Conversation ======= */
+.convo-wrap{display:grid;grid-template-columns:.9fr 1.1fr;gap:60px;align-items:start;margin-top:48px}
+.convo{background:var(--surface);border:1px solid var(--hair);border-radius:var(--radius-lg);padding:0;box-shadow:var(--shadow-xl);overflow:hidden}
+.convo-head{padding:14px 20px;border-bottom:1px solid var(--hair);font-size:13px;color:var(--muted);display:flex;align-items:center;gap:8px;background:#F7F5F2}
+.convo-head .hash{color:var(--muted)}
+.convo-body{padding:22px 24px;display:flex;flex-direction:column;gap:0}
+.convo-msg{display:grid;grid-template-columns:40px 1fr;gap:14px;padding:14px 0;border-bottom:1px solid var(--hair)}
+.convo-msg:last-child{border-bottom:none}
+.av{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-weight:600;font-family:var(--font-mono);font-size:13px;color:#fff}
+.av.u{background:var(--amber)}.av.a{background:var(--ink)}
+.convo-name{font-weight:600;font-size:14px;margin-bottom:4px}.convo-name span{color:var(--muted);font-weight:400;margin-left:8px;font-size:12px}
+.convo-text{color:var(--ink-2);font-size:14.5px;line-height:1.55}
+.convo-text .callout{background:var(--accent-pale);border-left:3px solid var(--accent);padding:12px 14px;border-radius:6px;margin-top:10px;font-size:13.5px}
+.convo-text .callout ul{margin:6px 0 0 18px;padding:0}
+.convo-text .callout li{margin-bottom:2px}
+
+/* ======= Day in life timeline ======= */
+.timeline{margin-top:44px;border-left:2px solid var(--hair);padding-left:28px;display:flex;flex-direction:column;gap:32px}
+.tl-item{position:relative}
+.tl-item::before{content:"";position:absolute;left:-37px;top:6px;width:14px;height:14px;border-radius:50%;background:var(--bg);border:2px solid var(--accent)}
+.tl-time{font-family:var(--font-mono);font-size:11px;letter-spacing:.12em;color:var(--accent);margin-bottom:6px}
+.tl-item h4{font-size:18px;margin-bottom:6px}
+.tl-item p{color:var(--ink-2);font-size:14.5px;margin:0;line-height:1.55;max-width:62ch}
+
+/* ======= Capabilities grid ======= */
+.caps{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:44px}
+.cap{background:var(--surface);border:1px solid var(--hair);border-radius:var(--radius);padding:24px}
+.cap .ico{width:36px;height:36px;border-radius:8px;background:var(--accent-pale);color:var(--accent);display:flex;align-items:center;justify-content:center;margin-bottom:14px;font-family:var(--font-mono);font-weight:600}
+.cap h4{margin-bottom:6px;font-size:17px}
+.cap p{color:var(--muted);font-size:14px;margin:0;line-height:1.5}
+
+/* ======= IRO deep dive ======= */
+.iro{background:var(--ink);color:#F1EEE5;border-radius:24px;padding:64px 56px;margin-top:56px;position:relative;overflow:hidden}
+.iro::before{content:"";position:absolute;top:0;right:0;width:320px;height:320px;background:radial-gradient(circle,color-mix(in srgb,var(--accent) 40%,transparent),transparent 70%);pointer-events:none}
+.iro .eyebrow{color:#9BA3B4;position:relative}
+.iro .eyebrow::before{background:#9BA3B4}
+.iro-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:60px;align-items:center;position:relative;z-index:1}
+.iro h2{color:#F1EEE5;font-family:var(--font-serif);font-weight:400;font-size:44px;line-height:1.05;margin:18px 0 20px;letter-spacing:-.02em}
+.iro h2 em{font-style:italic;color:#7DA7FF}
+.iro p{color:#D9D6CC;font-size:16px;line-height:1.55;max-width:50ch}
+.iro ul{list-style:none;padding:0;margin:22px 0 0;display:flex;flex-direction:column;gap:10px;color:#D9D6CC;font-size:14.5px}
+.iro ul li{display:grid;grid-template-columns:18px 1fr;gap:10px}
+.iro ul li::before{content:"→";color:#7DA7FF}
+.iro-math{background:#1A1E27;border:1px solid #2A2F38;border-radius:var(--radius);padding:28px;font-family:var(--font-mono);font-size:13px;line-height:1.7}
+.iro-math .step-label{color:#9BA3B4;font-size:10px;letter-spacing:.14em;text-transform:uppercase;margin-bottom:8px}
+.iro-math .math-row{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px dashed #2A2F38}
+.iro-math .math-row:last-of-type{border-bottom:none}
+.iro-math .result{margin-top:14px;padding:14px 16px;background:color-mix(in srgb,#7DA7FF 12%,transparent);border-radius:8px;color:#F1EEE5;font-family:var(--font-serif);font-size:22px;font-style:italic}
+.iro-math .result b{color:#7DA7FF;font-weight:400}
+
+/* ======= Comparison table ======= */
+.vs{margin-top:44px;background:var(--surface);border:1px solid var(--hair);border-radius:var(--radius-lg);overflow:hidden}
+.vs table{width:100%;border-collapse:collapse;font-size:14.5px}
+.vs th,.vs td{padding:16px 22px;border-bottom:1px solid var(--hair);vertical-align:top}
+.vs th{background:var(--bg-alt);font-weight:500;text-align:left;font-family:var(--font-mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);width:28%}
+.vs td:nth-child(2){color:var(--muted);width:36%}
+.vs td:nth-child(3){color:var(--ink);font-weight:500;background:color-mix(in srgb,var(--accent) 4%,transparent);width:36%}
+.vs tr:last-child th,.vs tr:last-child td{border-bottom:none}
+.vs .header-row th{background:var(--ink);color:#F1EEE5;font-size:12px;letter-spacing:.1em}
+.vs .header-row th:nth-child(2){background:var(--bg-alt);color:var(--muted)}
+.vs .header-row th:nth-child(3){background:var(--accent);color:#fff}
+
+/* ======= Trust strip ======= */
+.trust{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;margin-top:48px;padding-top:48px;border-top:1px solid var(--hair)}
+.trust-item h4{font-family:var(--font-serif);font-size:22px;font-weight:400;margin-bottom:6px;letter-spacing:-.01em}
+.trust-item p{color:var(--muted);font-size:13.5px;margin:0;line-height:1.5}
+
+/* ======= Closing CTA ======= */
+.close{background:var(--bg-alt);border:1px solid var(--hair);border-radius:var(--radius-lg);padding:64px;text-align:center;margin-top:60px}
+.close h2{max-width:22ch;margin:0 auto 18px}
+.close .lede{margin:0 auto 28px;text-align:center}
+.close-cta{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+
+footer{border-top:1px solid var(--hair);padding:60px 0 40px;margin-top:60px;color:var(--muted);font-size:14px}
+.footer-grid{display:flex;justify-content:space-between;flex-wrap:wrap;gap:20px}
+
+@media (max-width:1000px){
+  .hero-grid,.intro-grid,.convo-wrap,.iro-grid{grid-template-columns:1fr;gap:40px}
+  .pillars,.caps{grid-template-columns:1fr}
+  .trust{grid-template-columns:1fr 1fr}
+  .iro{padding:44px 32px}
+  .close{padding:44px 28px}
+}
+@media (max-width:640px){.nav-links{display:none}.trust{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="grain"></div>
+
+<nav class="nav"><div class="container nav-inner">
+  <a href="index.html" class="logo">{ <b>TRACKIQ</b> }</a>
+  <div class="nav-links">
+    <a href="meet-your-ai-agent.html" aria-current="page">Meet Your AI Agent</a>
+    <a href="how-it-works.html">How it Works</a>
+    <a href="mcp.html" style="display:inline-flex;align-items:center;gap:6px">MCP <span style="font-family:var(--font-mono);font-size:9px;letter-spacing:.12em;background:#0D9488;color:#fff;padding:2px 6px;border-radius:3px">NEW</span></a>
+    <a href="plans-and-pricing.html">Plans &amp; Pricing</a>
+    <a href="contact.html">Contact</a>
+  </div>
+  <div class="nav-cta">
+    <a href="#" class="btn btn-ghost">Sign in</a>
+    <a href="plans-and-pricing.html" class="btn btn-primary">Get started</a>
+  </div>
+</div></nav>
+
+<!-- ======= HERO ======= -->
+<header class="container hero">
+  <div class="hero-grid">
+    <div>
+      <div class="eyebrow" style="margin-bottom:28px">Meet your AI agent</div>
+      <h1>The <em>senior analyst</em> your team didn't know it could afford.</h1>
+      <p class="lede">Aria reads every Amazon surface — Retail, Sponsored Ads, DSP, AMC, Inventory, Buy Box — and turns the firehose into ranked decisions, delivered where your team already works.</p>
+      <div class="hero-cta">
+        <a href="plans-and-pricing.html" class="btn btn-accent">Start for $149/mo</a>
+        <a href="how-it-works.html" class="btn btn-link btn-arrow">See how it's deployed</a>
+      </div>
+    </div>
+    <div class="agent-card">
+      <div class="agent-badge">Online · always on</div>
+      <div class="agent-avatar">{T}</div>
+      <h3>Aria</h3>
+      <div class="role">AI Business Analyst · trained on your data</div>
+      <div class="agent-stats">
+        <div class="agent-stat"><b>24/7</b>monitoring your accounts, never out of office</div>
+        <div class="agent-stat"><b>&lt;30s</b>median time to answer &quot;why did X happen?&quot;</div>
+        <div class="agent-stat"><b>6</b>data surfaces unified: retail, ads, DSP, AMC, inventory, reviews</div>
+        <div class="agent-stat"><b>$0</b>analyst headcount required</div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ======= INTRO ======= -->
+<section class="intro">
+  <div class="container intro-grid">
+    <p>Most Amazon teams are drowning in dashboards, not decisions. Aria flips that — it reads the data, forms a hypothesis, and tells you <em>what to do next.</em></p>
+    <div class="intro-stats">
+      <div class="intro-stat"><b>73%</b><span>of brands disable ad auto-optimization after losing trust — Aria earns it back</span></div>
+      <div class="intro-stat"><b>12×</b><span>average return on IRO-driven ad reallocation ($10K→$120K+)</span></div>
+      <div class="intro-stat"><b>4hr</b><span>typical alert latency on suppressions &amp; Buy Box loss, down from days</span></div>
+      <div class="intro-stat"><b>100+</b><span>brands &amp; agencies run their weekly cadence on Aria</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ======= FOUR PILLARS ======= -->
+<section class="container">
+  <div class="eyebrow">The four pillars</div>
+  <h2 class="display" style="margin-top:18px;max-width:18ch">What Aria <em>actually</em> does.</h2>
+  <p class="lede" style="margin-top:16px">Four analyst-grade jobs running continuously — no prompts, no new dashboards, no extra headcount. Every pillar is available from day one, on every plan.</p>
+  <div class="pillars">
+    <div class="pillar">
+      <div class="num">01</div>
+      <div class="tag">Root Cause Analysis</div>
+      <h3>Instant answers to &ldquo;why?&rdquo;</h3>
+      <p>Why did revenue drop Tuesday? The agent investigates across ads, inventory, Buy Box, pricing, and seasonality — then delivers a ranked explanation.</p>
+      <ul>
+        <li>Cross-signal diagnosis, ranked by contribution</li>
+        <li>Plain-English explanations, not chart dumps</li>
+        <li>One-click follow-up questions</li>
+      </ul>
+      <div class="ex"><b>Example:</b> &ldquo;Revenue dipped 16% WoW. 58% explained by Buy Box loss on B09XYZ, 27% by SB campaign overspend, 15% by suppressed listing B08AAA.&rdquo;</div>
+    </div>
+    <div class="pillar">
+      <div class="num">02</div>
+      <div class="tag">Agentic Ad Optimization · IRO</div>
+      <h3>Incremental Revenue Optimization</h3>
+      <p>Our patent-pending IRO engine reallocates spend to the SKUs that drive <em>new</em> revenue — not vanity ROAS. Proposes moves, quantifies lift, waits for your approval.</p>
+      <ul>
+        <li>Patent 63/985,607 · Economic Impact-Based Confidence</li>
+        <li>Model-backed counterfactuals, not rules-of-thumb</li>
+        <li>Approval workflow — agent never spends without a human</li>
+      </ul>
+      <div class="ex"><b>Example:</b> &ldquo;Shift $8.4K from branded search to SD on 6 hero SKUs. Projected +$127K incremental revenue this month at 94% confidence.&rdquo;</div>
+    </div>
+    <div class="pillar">
+      <div class="num">03</div>
+      <div class="tag">Intelligent Alerting</div>
+      <h3>Catch issues in hours, not days</h3>
+      <p>Listing suppressions, Buy Box loss, overspend, stockouts — routed to the right person with severity scores and suggested fixes attached.</p>
+      <ul>
+        <li>Per-role subscriptions (buyer, PPC lead, director)</li>
+        <li>Severity scoring &amp; automatic deduplication</li>
+        <li>Fix suggestions inline — not just &ldquo;something broke&rdquo;</li>
+      </ul>
+      <div class="ex"><b>Example:</b> &ldquo;B09XYZ lost Buy Box to Seller X (price $24.99 vs yours $27.49). Suggested: match to $25.49, projected Buy Box recovery 78%.&rdquo;</div>
+    </div>
+    <div class="pillar">
+      <div class="num">04</div>
+      <div class="tag">Automated Reporting</div>
+      <h3>Reports delivered, not demanded</h3>
+      <p>WBRs, client updates, and exec digests — generated, formatted, and posted. Nobody chases a slide deck on a Sunday night.</p>
+      <ul>
+        <li>Monday WBRs auto-posted to Slack</li>
+        <li>Per-client reports for agencies · white-label ready</li>
+        <li>Custom KPI sets, scheduled or on-demand</li>
+      </ul>
+      <div class="ex"><b>Example:</b> &ldquo;Monday 8:00 AM: WBR posted to #kettleco-ops. Sales $308K (−16.8% WoW), 2 anomalies flagged, 1 replenishment needed.&rdquo;</div>
+    </div>
+  </div>
+</section>
+
+<!-- ======= CONVERSATION ======= -->
+<section class="container" style="padding-top:0">
+  <div class="eyebrow">A conversation, not a report</div>
+  <h2 class="display" style="margin-top:18px;max-width:20ch">Plain English in. <em>Real</em> answers out.</h2>
+  <div class="convo-wrap">
+    <div>
+      <p class="lede">Ask anything — in Slack, in email, or on the web. The agent reads your actual data in real time, then replies with specifics, numbers, and next-steps. No prompting tricks. No templates.</p>
+      <ul style="margin-top:22px;padding-left:20px;color:var(--ink-2);font-size:15px;line-height:1.8">
+        <li>Multi-turn: follow up without re-explaining context</li>
+        <li>Cites the data it used — you can always drill in</li>
+        <li>Knows your brand, SKUs, campaigns, and history</li>
+        <li>Approvals required for any action that spends money</li>
+      </ul>
+      <a href="how-it-works.html" class="btn btn-link btn-arrow" style="margin-top:28px;display:inline-flex">See how the agent is deployed</a>
+    </div>
+    <div class="convo">
+      <div class="convo-head"><span class="hash">#</span> <b>kettleco-ops</b> <span style="margin-left:auto">4 members</span></div>
+      <div class="convo-body">
+        <div class="convo-msg">
+          <div class="av u">MR</div>
+          <div>
+            <div class="convo-name">Maria R. <span>9:02 AM</span></div>
+            <div class="convo-text">why did revenue dip for KettleCo last week?</div>
+          </div>
+        </div>
+        <div class="convo-msg">
+          <div class="av a">{T}</div>
+          <div>
+            <div class="convo-name">TrackIQ Agent <span>9:02 AM · TrackIQ agent</span></div>
+            <div class="convo-text">Revenue was down 16.8% WoW ($308K vs $370K). Three drivers:
+              <div class="callout"><b>Root cause breakdown</b>
+                <ul>
+                  <li>B09XYZ: Buy Box slipped 38% after a price-match competitor</li>
+                  <li>SB campaign &ldquo;Prime Kettle&rdquo;: budget exhausted 4 days early</li>
+                  <li>Listing B08AAA suppressed Tue–Thu (image compliance)</li>
+                </ul>
+              </div>
+              Want me to draft a fix plan for each?
+            </div>
+          </div>
+        </div>
+        <div class="convo-msg">
+          <div class="av u">MR</div>
+          <div>
+            <div class="convo-name">Maria R. <span>9:04 AM</span></div>
+            <div class="convo-text">yes — and show me the IRO recommendation for this month's ad budget.</div>
+          </div>
+        </div>
+        <div class="convo-msg">
+          <div class="av a">{T}</div>
+          <div>
+            <div class="convo-name">TrackIQ Agent <span>9:04 AM · TrackIQ agent</span></div>
+            <div class="convo-text">IRO recommends shifting $8,400 from branded search (low incremental lift) into Sponsored Display on 6 hero SKUs. Projected incremental revenue: <b>+$127K this month</b> at 94% confidence. Approve to execute?</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======= DAY IN LIFE ======= -->
+<section class="intro">
+  <div class="container">
+    <div class="eyebrow">A day with TrackIQ</div>
+    <h2 class="display" style="margin-top:18px;max-width:22ch">An analyst that <em>never sleeps.</em></h2>
+    <p class="lede" style="margin-top:16px">Here's what Monday looks like when the agent is on duty. Every event is logged, every recommendation is explainable, and every action that spends money requires a human approval.</p>
+    <div class="timeline">
+      <div class="tl-item"><div class="tl-time">06:12 AM</div><h4>Overnight anomaly caught</h4><p>Detected a 38% Buy Box drop on B09XYZ at 04:47 AM. Cross-checked competitor prices and flagged a repricer loop on the 3P side. Alert posted to #alerts with a suggested match price.</p></div>
+      <div class="tl-item"><div class="tl-time">08:00 AM</div><h4>WBR delivered</h4><p>Monday Weekly Business Review generated for 11 KPIs, posted to #wbr with a TL;DR, trendlines, anomaly callouts, and a ranked action list. 0 humans involved.</p></div>
+      <div class="tl-item"><div class="tl-time">09:02 AM</div><h4>Root-cause ask answered</h4><p>Buyer asks &ldquo;why did revenue dip last week?&rdquo; in Slack. Agent returns a 3-driver breakdown with SKU and campaign attribution in 14 seconds.</p></div>
+      <div class="tl-item"><div class="tl-time">10:42 AM</div><h4>IRO plan proposed</h4><p>Monthly ad reallocation proposed: $8.4K moved from branded search into SD on 6 hero SKUs. Projected +$127K incremental revenue, 94% confidence. Awaiting approval.</p></div>
+      <div class="tl-item"><div class="tl-time">02:18 PM</div><h4>Suppression fixed</h4><p>B08AAA auto-flagged as image-non-compliant at 12:04 PM. Agent drafted a replacement A+ image request, pinged the listing owner, and tracked the resubmission to resolution at 02:18 PM.</p></div>
+      <div class="tl-item"><div class="tl-time">05:30 PM</div><h4>EOD digest sent</h4><p>Day-end summary emailed to the director: sales delta, ad pacing, inventory DOH, 3 resolved items, 1 awaiting approval. 6-line read.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ======= CAPABILITIES ======= -->
+<section class="container">
+  <div class="eyebrow">Capabilities</div>
+  <h2 class="display" style="margin-top:18px;max-width:20ch">Nine things you can <em>stop doing</em> by Friday.</h2>
+  <div class="caps">
+    <div class="cap"><div class="ico">01</div><h4>Manual WBR assembly</h4><p>The agent writes the Weekly Business Review — with narrative, anomalies, and a ranked action list.</p></div>
+    <div class="cap"><div class="ico">02</div><h4>Ad-spend spreadsheet math</h4><p>IRO models incremental lift per campaign and proposes reallocations with confidence intervals.</p></div>
+    <div class="cap"><div class="ico">03</div><h4>Buy Box babysitting</h4><p>Sub-hour alerts on Buy Box loss, with root cause (price, inventory, seller) and suggested fix.</p></div>
+    <div class="cap"><div class="ico">04</div><h4>Suppression firefights</h4><p>Listings flagged the moment they're suppressed, with compliance reason and resubmission path.</p></div>
+    <div class="cap"><div class="ico">05</div><h4>Inventory panic</h4><p>Velocity-based forecasts, stockout risk per FC, and replenishment POs with confidence bands.</p></div>
+    <div class="cap"><div class="ico">06</div><h4>AMC query writing</h4><p>Natural-language questions translated into AMC SQL, run, and summarized — no analyst needed.</p></div>
+    <div class="cap"><div class="ico">07</div><h4>Client update emails</h4><p>Per-client digests for agencies, white-labeled, sent on your cadence — weekly, monthly, or both.</p></div>
+    <div class="cap"><div class="ico">08</div><h4>&ldquo;What happened?&rdquo; meetings</h4><p>Root-cause answers in seconds in Slack replace 30-minute war rooms at standup.</p></div>
+    <div class="cap"><div class="ico">09</div><h4>Creative &amp; PPC audits</h4><p>Weekly audits of ad creative performance, wasted spend, keyword cannibalization — flagged with fixes.</p></div>
+  </div>
+</section>
+
+<!-- ======= IRO DEEP DIVE ======= -->
+<section class="container">
+  <div class="iro">
+    <div class="iro-grid">
+      <div>
+        <div class="eyebrow">Featured capability · Patent 63/985,607</div>
+        <h2>IRO: stop optimizing for <em>vanity ROAS.</em></h2>
+        <p>Traditional ad tools optimize for reported ROAS — which rewards branded search and cannibalizes organic sales. Incremental Revenue Optimization models the <em>counterfactual</em>: what would have happened without the ad? That's the true contribution. Aria runs IRO continuously and proposes weekly reallocations.</p>
+        <ul>
+          <li>Economic Impact-Based Confidence scoring</li>
+          <li>Counterfactual modeling per SKU &amp; campaign</li>
+          <li>Approval workflow — the agent never moves money alone</li>
+          <li>Typical lift: $10K reallocated → $120K+ incremental revenue</li>
+        </ul>
+      </div>
+      <div class="iro-math">
+        <div class="step-label">Example reallocation</div>
+        <div class="math-row"><span>Branded search spend</span><span>$12,000</span></div>
+        <div class="math-row"><span>Reported ROAS</span><span>8.2×</span></div>
+        <div class="math-row"><span>Incremental ROAS</span><span style="color:#FF9A7A">1.1×</span></div>
+        <div class="math-row"><span style="color:#7DA7FF">→ Shift $8.4K to SD</span><span style="color:#7DA7FF">on 6 SKUs</span></div>
+        <div class="math-row"><span>Projected iROAS</span><span>15.1×</span></div>
+        <div class="math-row"><span>Confidence</span><span>94%</span></div>
+        <div class="result"><b>+$127K</b> incremental revenue / month</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======= VS TRADITIONAL ======= -->
+<section class="container">
+  <div class="eyebrow">How it compares</div>
+  <h2 class="display" style="margin-top:18px;max-width:22ch">Dashboards show numbers. <em>The agent gives answers.</em></h2>
+  <div class="vs">
+    <table>
+      <tr class="header-row"><th>&nbsp;</th><th>Traditional dashboard tools</th><th>Aria</th></tr>
+      <tr><th>Primary output</th><td>Charts &amp; tables</td><td>Ranked decisions &amp; recommended actions</td></tr>
+      <tr><th>&ldquo;Why did X happen?&rdquo;</th><td>You dig through 14 tabs</td><td>Cross-signal diagnosis in seconds</td></tr>
+      <tr><th>Ad optimization</th><td>Rules on reported ROAS</td><td>IRO — true incremental contribution</td></tr>
+      <tr><th>Reporting cadence</th><td>You build it, weekly</td><td>Auto-posted with narrative &amp; anomalies</td></tr>
+      <tr><th>Alert quality</th><td>Generic thresholds, lots of noise</td><td>Severity-scored, deduped, fix-suggested</td></tr>
+      <tr><th>Interface</th><td>Another login, another dashboard</td><td>Slack, email, and web — where you already work</td></tr>
+      <tr><th>Data coverage</th><td>Usually retail OR ads</td><td>Retail · Ads · DSP · AMC · Inventory · Buy Box</td></tr>
+    </table>
+  </div>
+
+  <div class="trust">
+    <div class="trust-item"><h4>SOC 2 Type II</h4><p>Audited security controls. Your data never leaves your tenant, never trains shared models.</p></div>
+    <div class="trust-item"><h4>Human in the loop</h4><p>Every money-moving action requires a human approval. The agent proposes; you approve.</p></div>
+    <div class="trust-item"><h4>Explainable by design</h4><p>Every answer cites the rows and signals it used. Drill in, audit, disagree — it's all visible.</p></div>
+    <div class="trust-item"><h4>Amazon-native</h4><p>Built on official Amazon APIs (SP-API, Ads API, DSP, AMC). No screen scraping, no fragile hacks.</p></div>
+  </div>
+</section>
+
+<!-- ======= CLOSING CTA ======= -->
+<section class="container" style="padding-top:0">
+  <div class="close">
+    <div class="eyebrow" style="justify-content:center;margin-bottom:20px">Ready when you are</div>
+    <h2 class="display">Put Aria <em>on your team.</em></h2>
+    <p class="lede">30-minute onboarding for brands. One day for agencies. Cancel anytime. Your first WBR lands in Slack next Monday.</p>
+    <div class="close-cta">
+      <a href="plans-and-pricing.html" class="btn btn-accent">See plans &amp; pricing</a>
+      <a href="how-it-works.html" class="btn btn-ghost btn-arrow">How it's deployed</a>
+      <a href="contact.html" class="btn btn-link btn-arrow">Talk to us</a>
+    </div>
+  </div>
+</section>
+
+<footer><div class="container footer-grid">
+  <div>© 2026 TrackIQ. AI-Powered eCommerce Intelligence.</div>
+  <div><a href="index.html">Home</a> · <a href="how-it-works.html">How it Works</a> · <a href="plans-and-pricing.html">Pricing</a> · <a href="mcp.html" style="color:#0B6F65">MCP</a> · <a href="contact.html">Contact</a></div>
+</div></footer>
+</body>
+</html>

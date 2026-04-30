@@ -1,0 +1,1940 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>TrackIQ — The AI Business Analyst for Amazon Sellers</title>
+<link rel="stylesheet" href="trackiq.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@300;400;500;600;700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<script>
+const TWEAKS = /*EDITMODE-BEGIN*/{
+  "palette": "warm",
+  "accent": "blue",
+  "heroLayout": "split",
+  "showGrainOverlay": true
+}/*EDITMODE-END*/;
+</script>
+
+<style>
+  :root {
+    /* Palettes */
+    --bg: #FBF9F4;          /* warm off-white */
+    --bg-alt: #F3EFE6;      /* warmer card */
+    --surface: #FFFFFF;
+    --ink: #0E1116;         /* near-black */
+    --ink-2: #2A2F38;
+    --muted: #6E7582;
+    --hair: #E9E4D8;         /* warm hairline */
+    --hair-strong: #D9D2BF;
+
+    --accent: #2563EB;
+    --accent-ink: #1E3A8A;
+    --accent-soft: #E4ECFF;
+    --accent-pale: #F2F6FF;
+
+    --amber: #D4A017;
+    --rust:  #B8542A;
+    --moss:  #4A6B3A;
+
+    --teal: #0D9488;
+    --teal-ink: #0B6F65;
+    --teal-soft: #D1F1ED;
+    --teal-pale: #ECF8F6;
+
+    --radius-sm: 8px;
+    --radius: 14px;
+    --radius-lg: 22px;
+    --shadow-sm: 0 1px 2px rgba(16,18,24,.04), 0 1px 0 rgba(16,18,24,.02);
+    --shadow-md: 0 10px 30px -12px rgba(16,18,24,.18), 0 2px 6px rgba(16,18,24,.05);
+    --shadow-xl: 0 40px 60px -20px rgba(16,18,24,.22), 0 10px 20px -10px rgba(16,18,24,.10);
+
+    --container: 1240px;
+    --gutter: 28px;
+
+    --font-sans: "Geist", ui-sans-serif, system-ui, -apple-system, "Inter", sans-serif;
+    --font-serif: "Instrument Serif", "Times New Roman", serif;
+    --font-mono: "Geist Mono", ui-monospace, Menlo, monospace;
+  }
+
+  /* Cool variant */
+  html[data-palette="cool"] {
+    --bg: #F5F7FB;
+    --bg-alt: #EBEFF7;
+    --hair: #DDE3EE;
+    --hair-strong: #C7CFDE;
+  }
+  html[data-palette="white"] {
+    --bg: #FFFFFF;
+    --bg-alt: #F7F7F5;
+    --hair: #EDECE6;
+    --hair-strong: #DDD;
+  }
+  html[data-accent="indigo"] {
+    --accent: #4338CA;
+    --accent-ink: #312E81;
+    --accent-soft: #E0E2FF;
+    --accent-pale: #F2F3FF;
+  }
+  html[data-accent="green"] {
+    --accent: #167C54;
+    --accent-ink: #0B4A33;
+    --accent-soft: #D5ECE0;
+    --accent-pale: #EEF8F3;
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--font-sans);
+    font-size: 17px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+    font-feature-settings: "ss01", "cv11";
+  }
+  a { color: inherit; text-decoration: none; }
+  img, svg { display: block; max-width: 100%; }
+  button { font-family: inherit; cursor: pointer; }
+
+  .container { max-width: var(--container); margin: 0 auto; padding: 0 var(--gutter); }
+  .container-wide { max-width: 1440px; margin: 0 auto; padding: 0 var(--gutter); }
+
+  /* Subtle paper grain */
+  .grain {
+    position: fixed; inset: 0; pointer-events: none; z-index: 999;
+    opacity: .35; mix-blend-mode: multiply;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.08 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  }
+  html[data-grain="off"] .grain { display: none; }
+
+  /* === Typography === */
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--muted);
+    display: inline-flex; align-items: center; gap: 10px;
+  }
+  .eyebrow::before {
+    content: ""; display: inline-block; width: 22px; height: 1px;
+    background: var(--ink); opacity: .7;
+  }
+  h1, h2, h3, h4 { margin: 0; letter-spacing: -0.02em; font-weight: 500; }
+  h1 {
+    font-family: var(--font-serif);
+    font-weight: 400;
+    font-size: clamp(46px, 6.2vw, 88px);
+    line-height: 1.02;
+    letter-spacing: -0.025em;
+  }
+  h1 em {
+    font-style: italic;
+    color: var(--accent-ink);
+  }
+  h2.display {
+    font-family: var(--font-serif);
+    font-weight: 400;
+    font-size: clamp(36px, 4.4vw, 64px);
+    line-height: 1.04;
+    letter-spacing: -0.02em;
+  }
+  h2.display em { font-style: italic; color: var(--accent-ink); }
+  h3 {
+    font-size: 22px;
+    line-height: 1.25;
+    letter-spacing: -0.015em;
+    font-weight: 500;
+  }
+  .lede {
+    font-size: 19px; line-height: 1.5; color: var(--ink-2);
+    max-width: 56ch;
+  }
+  .small { font-size: 14px; color: var(--muted); }
+
+  /* === Buttons === */
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 12px 18px;
+    border-radius: 999px;
+    font-weight: 500; font-size: 15px;
+    border: 1px solid transparent;
+    transition: transform .15s ease, background .15s ease, border-color .15s ease, box-shadow .15s ease;
+  }
+  .btn:active { transform: translateY(1px); }
+  .btn-primary {
+    background: var(--ink); color: #fff;
+    box-shadow: 0 1px 0 rgba(255,255,255,.3) inset, 0 6px 18px -6px rgba(16,18,24,.35);
+  }
+  .btn-primary:hover { background: #000; }
+  .btn-accent {
+    background: var(--accent); color: #fff;
+  }
+  .btn-accent:hover { filter: brightness(1.05); }
+  .btn-ghost {
+    background: transparent; color: var(--ink);
+    border-color: var(--hair-strong);
+  }
+  .btn-ghost:hover { background: var(--surface); border-color: var(--ink); }
+  .btn-link {
+    color: var(--ink);
+    font-weight: 500;
+    display: inline-flex; align-items: center; gap: 6px;
+    border-bottom: 1px solid currentColor;
+    padding-bottom: 2px;
+  }
+  .btn-arrow::after { content: "→"; font-weight: 400; transition: transform .2s; }
+  .btn-arrow:hover::after { transform: translateX(3px); }
+
+  /* === Nav === */
+  .nav {
+    position: sticky; top: 0; z-index: 50;
+    background: color-mix(in srgb, var(--bg) 82%, transparent);
+    backdrop-filter: saturate(1.4) blur(14px);
+    -webkit-backdrop-filter: saturate(1.4) blur(14px);
+    border-bottom: 1px solid transparent;
+    transition: border-color .2s;
+  }
+  .nav.scrolled { border-bottom-color: var(--hair); }
+  .nav-inner {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 18px 0;
+  }
+  .logo {
+    font-family: var(--font-mono);
+    font-size: 16px;
+    letter-spacing: -0.01em;
+    font-weight: 500;
+  }
+  .logo b { color: var(--accent); font-weight: 500; }
+  .nav-links { display: flex; gap: 28px; align-items: center; }
+  .nav-links a { font-size: 14.5px; color: var(--ink-2); }
+  .nav-links a:hover { color: var(--ink); }
+  .nav-cta { display: flex; gap: 10px; align-items: center; }
+
+  /* === Hero === */
+  .hero {
+    padding: 72px 0 24px;
+    position: relative;
+  }
+  .hero-grid {
+    display: grid;
+    grid-template-columns: 1.1fr .9fr;
+    gap: 60px;
+    align-items: end;
+  }
+  .hero-copy { padding-bottom: 30px; }
+  .hero h1 { margin-bottom: 24px; max-width: 14ch; }
+  .hero .lede { margin-bottom: 36px; }
+  .hero-meta {
+    display: flex; align-items: center; gap: 20px;
+    color: var(--muted); font-size: 13.5px;
+    margin-top: 22px;
+  }
+  .hero-meta .stars { color: var(--amber); letter-spacing: 2px; }
+  .avatars { display: inline-flex; }
+  .avatars span {
+    width: 26px; height: 26px; border-radius: 50%;
+    border: 2px solid var(--bg);
+    background-size: cover; background-position: center;
+    margin-left: -8px;
+  }
+  .avatars span:first-child { margin-left: 0; }
+
+  .hero-cta { display: flex; gap: 14px; align-items: center; flex-wrap: wrap; }
+
+  /* Hero dashboard art */
+  .hero-art {
+    position: relative;
+    min-height: 560px;
+  }
+  .dashboard-card {
+    background: var(--surface);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--hair);
+    box-shadow: var(--shadow-xl);
+    overflow: hidden;
+    position: relative;
+  }
+  .hero-art .dashboard-card {
+    transform: rotate(-0.6deg);
+  }
+  .dash-head {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 14px 18px;
+    border-bottom: 1px solid var(--hair);
+  }
+  .dash-title { font-weight: 500; font-size: 15px; }
+  .dash-brand-pill {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 4px 10px; border-radius: 999px;
+    background: var(--accent-pale); color: var(--accent-ink);
+    font-size: 12px; font-weight: 500;
+  }
+  .dash-brand-pill::before {
+    content: ""; width: 8px; height: 8px; border-radius: 2px; background: var(--accent);
+  }
+
+  .dash-filters {
+    display: flex; gap: 8px; padding: 12px 18px;
+    border-bottom: 1px solid var(--hair);
+    font-size: 12px; color: var(--muted);
+    align-items: center;
+  }
+  .chip {
+    padding: 4px 10px; border-radius: 999px;
+    background: var(--bg-alt); color: var(--ink-2);
+    border: 1px solid var(--hair);
+  }
+
+  .kpis {
+    display: grid; grid-template-columns: repeat(5, 1fr);
+    gap: 0;
+    border-bottom: 1px solid var(--hair);
+  }
+  .kpi {
+    padding: 14px 16px;
+    border-right: 1px solid var(--hair);
+  }
+  .kpi:last-child { border-right: none; }
+  .kpi-label { font-size: 11px; color: var(--muted); letter-spacing: .04em; }
+  .kpi-val { font-size: 20px; font-weight: 500; margin-top: 4px; letter-spacing: -0.01em; }
+  .kpi-val small { font-size: 12px; font-weight: 400; }
+  .kpi-delta { font-size: 11px; margin-top: 4px; display: inline-flex; gap: 4px; align-items: center; }
+  .delta-up { color: #067a4d; }
+  .delta-down { color: #b94a2a; }
+
+  .chart-wrap { padding: 16px 18px 20px; }
+  .chart-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+  .chart-head h4 { font-size: 14px; font-weight: 500; }
+  .legend { display: flex; gap: 14px; font-size: 11px; color: var(--muted); }
+  .legend span { display: inline-flex; align-items: center; gap: 5px; }
+  .dot { width: 7px; height: 7px; border-radius: 2px; display: inline-block; }
+
+  /* Floating elements on hero */
+  .floater {
+    position: absolute;
+    background: var(--surface);
+    border-radius: var(--radius);
+    border: 1px solid var(--hair);
+    box-shadow: var(--shadow-md);
+    padding: 12px 14px;
+    font-size: 13px;
+  }
+  .floater-alert {
+    left: -40px; top: 18%;
+    width: 240px;
+    transform: rotate(-3deg);
+  }
+  .floater-alert .title { font-weight: 500; display: flex; align-items: center; gap: 6px; }
+  .floater-alert .title::before {
+    content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--rust);
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(184,84,42,.5); }
+    50% { box-shadow: 0 0 0 8px rgba(184,84,42,0); }
+  }
+  .floater-alert .sub { color: var(--muted); margin-top: 2px; }
+
+  .floater-chat {
+    right: -30px; bottom: 8%;
+    width: 260px;
+    transform: rotate(2deg);
+  }
+  .floater-chat .bubble {
+    background: var(--accent);
+    color: #fff;
+    padding: 10px 12px;
+    border-radius: 14px 14px 14px 4px;
+    font-size: 13.5px;
+    line-height: 1.4;
+  }
+  .floater-chat .you {
+    font-size: 11px; color: var(--muted); margin-top: 6px;
+    text-align: right;
+  }
+
+  /* === Logo strip === */
+  .logostrip {
+    padding: 36px 0 24px;
+    border-top: 1px solid var(--hair);
+    margin-top: 40px;
+  }
+  .logostrip-inner {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    gap: 40px;
+    color: var(--muted); font-size: 13px;
+  }
+  .logostrip-inner .label { text-transform: uppercase; letter-spacing: .14em; font-family: var(--font-mono); font-size: 11px; }
+  .logos {
+    display: flex;
+    gap: 36px;
+    font-family: var(--font-serif); font-size: 22px; font-style: italic;
+    color: var(--ink-2); opacity: .75;
+    white-space: nowrap;
+    animation: scroll-logos 20s linear infinite;
+  }
+  .logos span { letter-spacing: -0.01em; }
+  
+  @keyframes scroll-logos {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+
+  /* === Sections === */
+  section { padding: 100px 0; }
+  .section-head {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 60px;
+    align-items: end; margin-bottom: 56px;
+  }
+  .section-head .eyebrow { margin-bottom: 18px; }
+  .section-head-single { max-width: 920px; margin: 0 auto 56px; text-align: center; }
+  .section-head-single .eyebrow { justify-content: center; margin-bottom: 20px; }
+  .section-head-single .eyebrow::before { display: none; }
+
+  /* === Feature Grid (One Platform / pictures + words) === */
+  .feature-grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 20px;
+  }
+  .feature-card {
+    grid-column: span 4;
+    background: var(--surface);
+    border: 1px solid var(--hair);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    display: flex; flex-direction: column;
+    transition: transform .3s ease, box-shadow .3s ease;
+  }
+  .feature-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
+  .feature-card.wide { grid-column: span 12; }
+  .feature-card.tall { grid-row: span 2; }
+  .feature-media {
+    aspect-ratio: 16/10;
+    position: relative;
+    overflow: hidden;
+    border-bottom: 1px solid var(--hair);
+    background: var(--bg-alt);
+  }
+  .feature-card.wide .feature-media { aspect-ratio: 21/10; }
+  .feature-body { padding: 24px 26px 28px; }
+  .feature-body h3 { margin-bottom: 10px; }
+  .feature-body p { color: var(--muted); font-size: 15.5px; margin: 0; line-height: 1.5; }
+  .feature-tag {
+    display: inline-block;
+    font-family: var(--font-mono); font-size: 11px; letter-spacing: .1em;
+    text-transform: uppercase; color: var(--muted); margin-bottom: 8px;
+  }
+
+  /* Painted image placeholders -- we 'paint' with gradients + svg illustrations */
+  .paint {
+    width: 100%; height: 100%;
+    display: flex; align-items: center; justify-content: center;
+    position: relative;
+  }
+  .paint-dash { background: linear-gradient(180deg, #EEF3FF 0%, #DCE6FA 100%); }
+  .paint-slack { background: linear-gradient(160deg, #F4EDE1 0%, #E9DDC4 100%); }
+  .paint-warehouse { background: linear-gradient(200deg, #E6EDE1 0%, #C8D7BE 100%); }
+  .paint-chat { background: linear-gradient(180deg, #FFFFFF 0%, #F0F4FB 100%); }
+  .paint-sky { background: linear-gradient(180deg, #DCE9F7 0%, #B9D0EC 100%); }
+  .paint-rose { background: linear-gradient(180deg, #F8E9E1 0%, #EBCFC0 100%); }
+  .paint-sand { background: linear-gradient(180deg, #F5EDD9 0%, #E0CFA0 100%); }
+  .paint-ink { background: linear-gradient(180deg, #1A1E27 0%, #0E1116 100%); color: #fff; }
+
+  /* === Two Ways To Use TrackIQ === */
+  .two-ways {
+    padding-top: 40px;
+    padding-bottom: 40px;
+  }
+  .two-ways-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin-top: 48px;
+  }
+  .way-card {
+    background: var(--surface);
+    border: 1px solid var(--hair);
+    border-radius: var(--radius-lg);
+    padding: 48px 44px;
+    display: flex; flex-direction: column;
+    position: relative;
+    overflow: hidden;
+  }
+  .way-card.mcp {
+    background: linear-gradient(180deg, var(--teal-pale) 0%, var(--surface) 60%);
+    border-color: var(--teal-soft);
+  }
+  .way-tag {
+    font-family: var(--font-mono);
+    font-size: 11px; letter-spacing: .14em; text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 20px;
+    display: inline-flex; gap: 10px; align-items: center;
+  }
+  .way-tag .pill {
+    background: var(--teal); color: #fff;
+    padding: 2px 7px; border-radius: 3px;
+    font-size: 9px; letter-spacing: .12em;
+  }
+  .way-card h3 {
+    font-family: var(--font-serif);
+    font-weight: 400;
+    font-size: 38px;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    margin-bottom: 16px;
+  }
+  .way-card h3 em { font-style: italic; color: var(--accent-ink); }
+  .way-card.mcp h3 em { color: var(--teal-ink); }
+  .way-card p {
+    color: var(--ink-2); font-size: 16px; line-height: 1.55; margin: 0 0 24px;
+  }
+  .way-list { list-style: none; padding: 0; margin: 0 0 32px; display: flex; flex-direction: column; gap: 12px; }
+  .way-list li {
+    display: grid; grid-template-columns: 18px 1fr; gap: 12px;
+    color: var(--ink-2); font-size: 15px;
+  }
+  .way-list li::before {
+    content: "";
+    width: 8px; height: 8px; border-radius: 2px; margin-top: 8px;
+    background: var(--accent);
+  }
+  .way-card.mcp .way-list li::before { background: var(--teal); }
+  .way-card .btn { align-self: flex-start; margin-top: auto; }
+  @media (max-width: 1024px) {
+    .two-ways-grid { grid-template-columns: 1fr; }
+    .way-card { padding: 36px 28px; }
+    .way-card h3 { font-size: 32px; }
+  }
+  .steps-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+  }
+  .steps-list { display: flex; flex-direction: column; gap: 28px; }
+  .step {
+    display: grid;
+    grid-template-columns: 48px 1fr;
+    gap: 22px;
+    padding-bottom: 28px;
+    border-bottom: 1px solid var(--hair);
+  }
+  .step:last-child { border-bottom: none; }
+  .step-num {
+    font-family: var(--font-serif); font-style: italic;
+    font-size: 38px;
+    line-height: 1;
+    color: var(--accent-ink);
+  }
+  .step h3 { margin-bottom: 6px; }
+  .step p { color: var(--muted); margin: 0; font-size: 15.5px; }
+
+  .slack-mock {
+    background: var(--surface);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--hair);
+    box-shadow: var(--shadow-xl);
+    overflow: hidden;
+    transform: rotate(-0.5deg);
+  }
+  .slack-head {
+    display: flex; align-items: center; gap: 8px; padding: 12px 16px;
+    background: #F7F5F2; border-bottom: 1px solid var(--hair);
+    font-size: 13px;
+  }
+  .slack-head .hash { color: var(--muted); }
+  .slack-msgs { padding: 18px; display: flex; flex-direction: column; gap: 14px; max-height: 420px; overflow: hidden; }
+  .slack-msg { display: grid; grid-template-columns: 34px 1fr; gap: 10px; font-size: 13.5px; }
+  .slack-avatar {
+    width: 34px; height: 34px; border-radius: 6px;
+    background: var(--accent);
+    display: flex; align-items: center; justify-content: center;
+    color: #fff; font-size: 12px; font-weight: 600;
+  }
+  .slack-avatar.bot { background: #0E1116; color: #fff; }
+  .slack-name { font-weight: 600; font-size: 13.5px; }
+  .slack-ts { color: var(--muted); font-size: 11px; margin-left: 6px; font-weight: 400; }
+  .slack-body { color: var(--ink-2); margin-top: 2px; line-height: 1.5; }
+  .slack-body .callout {
+    background: var(--accent-pale);
+    border-left: 3px solid var(--accent);
+    padding: 10px 12px;
+    border-radius: 6px;
+    margin-top: 8px;
+    font-size: 13px;
+    color: var(--ink-2);
+  }
+  .slack-body ul { margin: 6px 0 0 18px; padding: 0; color: var(--muted); font-size: 13px; }
+
+  /* === Pricing teaser (converted from dark to light) === */
+  .pricing-card {
+    background: var(--bg-alt);
+    border-radius: 24px;
+    padding: 60px;
+    position: relative;
+    overflow: hidden;
+    border: 1px solid var(--hair);
+  }
+  .pricing-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+  }
+  .pricing-price {
+    font-family: var(--font-mono); font-size: 14px;
+    color: var(--accent); font-weight: 500;
+    margin-bottom: 16px;
+    display: inline-block;
+  }
+  .pricing-features {
+    display: flex; flex-direction: column; gap: 20px;
+  }
+  .pricing-feat {
+    display: grid; grid-template-columns: 44px 1fr; gap: 16px; align-items: start;
+  }
+  .pricing-feat-icon {
+    width: 44px; height: 44px; border-radius: 10px;
+    background: var(--surface); border: 1px solid var(--hair);
+    display: flex; align-items: center; justify-content: center;
+    color: var(--accent);
+  }
+  .pricing-feat h4 { font-size: 16px; font-weight: 500; margin-bottom: 2px; }
+  .pricing-feat p { font-size: 14px; color: var(--muted); margin: 0; }
+
+  /* === Know what's working grid === */
+  .tiles-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 16px;
+  }
+  .tile {
+    background: var(--surface);
+    border: 1px solid var(--hair);
+    border-radius: var(--radius);
+    overflow: hidden;
+    grid-column: span 2;
+    transition: transform .2s;
+  }
+  .tile:hover { transform: translateY(-2px); }
+  .tile.span3 { grid-column: span 3; }
+  .tile.span4 { grid-column: span 4; }
+  .tile-media {
+    aspect-ratio: 3/2;
+    background: var(--bg-alt);
+    border-bottom: 1px solid var(--hair);
+    overflow: hidden;
+    position: relative;
+  }
+  .tile-body { padding: 18px 20px 22px; }
+  .tile-body h4 { font-size: 17px; margin-bottom: 6px; font-weight: 500; }
+  .tile-body p { font-size: 14px; color: var(--muted); margin: 0; }
+
+  /* === Built for sellers === */
+  .audience-grid {
+    display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1px;
+    background: var(--hair);
+    border: 1px solid var(--hair);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+  }
+  .audience-cell {
+    background: var(--bg);
+    padding: 40px 36px;
+  }
+  .audience-cell .icon {
+    width: 42px; height: 42px; margin-bottom: 22px;
+    color: var(--accent);
+  }
+  .audience-cell h3 { margin-bottom: 10px; }
+  .audience-cell p { color: var(--muted); font-size: 15px; margin: 0; }
+
+  /* Testimonials (editorial) */
+  .testimonials {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 48px;
+  }
+  .testimonial {
+    background: var(--surface);
+    border: 1px solid var(--hair);
+    border-radius: var(--radius-lg);
+    padding: 40px;
+    position: relative;
+  }
+  .testimonial.dark {
+    background: #0E1116; color: #F1EEE5; border-color: #0E1116;
+  }
+  .testimonial blockquote {
+    font-family: var(--font-serif); font-size: 24px; line-height: 1.35;
+    margin: 0 0 28px;
+    letter-spacing: -0.01em;
+    text-wrap: pretty;
+  }
+  .testimonial.dark blockquote { color: #F1EEE5; }
+  .testimonial .who {
+    display: flex; align-items: center; gap: 14px;
+    font-size: 14px;
+  }
+  .t-avatar {
+    width: 44px; height: 44px; border-radius: 50%; flex-shrink: 0;
+    background: linear-gradient(135deg, #D9C8A8, #A88E64);
+  }
+  .testimonial .who strong { font-weight: 500; display: block; }
+  .testimonial .who span { color: var(--muted); font-size: 13px; }
+  .testimonial.dark .who span { color: #9A9587; }
+
+  /* === Big CTA === */
+  .cta-big {
+    background: var(--surface);
+    border: 1px solid var(--hair);
+    border-radius: 28px;
+    overflow: hidden;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 0;
+    min-height: 480px;
+  }
+  .cta-copy {
+    padding: 72px 60px; display: flex; flex-direction: column; justify-content: space-between;
+  }
+  .cta-copy h2 { margin-bottom: 24px; }
+  .cta-points { list-style: none; padding: 0; margin: 0 0 36px; display: flex; flex-direction: column; gap: 14px; }
+  .cta-points li {
+    display: grid; grid-template-columns: 20px 1fr; gap: 12px;
+    color: var(--ink-2); font-size: 15.5px;
+  }
+  .cta-points li::before {
+    content: ""; display: inline-block; width: 16px; height: 16px;
+    background: var(--accent); border-radius: 50%; margin-top: 4px;
+    box-shadow: 0 0 0 3px var(--accent-pale);
+  }
+  .cta-art {
+    background: linear-gradient(135deg, var(--accent-pale) 0%, #FFFFFF 70%);
+    position: relative; overflow: hidden;
+    display: flex; align-items: center; justify-content: center;
+    padding: 50px;
+  }
+
+  /* === Footer === */
+  footer {
+    border-top: 1px solid var(--hair);
+    padding: 72px 0 48px;
+    margin-top: 80px;
+  }
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 1.6fr 1fr 1fr 1fr 1fr 1fr;
+    gap: 36px;
+  }
+  .footer-brand .logo { font-size: 18px; }
+  .footer-brand p { color: var(--muted); font-size: 14px; max-width: 30ch; margin-top: 14px; }
+  .footer-col h5 {
+    font-family: var(--font-mono); font-size: 11px;
+    letter-spacing: .14em; text-transform: uppercase;
+    color: var(--muted); margin: 0 0 14px; font-weight: 500;
+  }
+  .footer-col ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 10px; }
+  .footer-col a { font-size: 14px; color: var(--ink-2); }
+  .footer-col a:hover { color: var(--ink); }
+  .footer-bottom {
+    margin-top: 56px; padding-top: 24px;
+    border-top: 1px solid var(--hair);
+    display: flex; justify-content: space-between;
+    color: var(--muted); font-size: 13px;
+  }
+  .footer-badges {
+    margin-top: 20px;
+    display: flex; gap: 12px; align-items: center;
+    color: var(--muted); font-size: 12px;
+    font-family: var(--font-mono);
+  }
+  .footer-badges span {
+    padding: 4px 10px; border: 1px solid var(--hair); border-radius: 4px;
+  }
+
+  /* === Tweaks Panel === */
+  .tweaks-panel {
+    position: fixed; right: 24px; bottom: 24px;
+    width: 300px;
+    background: var(--surface);
+    border: 1px solid var(--hair-strong);
+    border-radius: 14px;
+    box-shadow: var(--shadow-xl);
+    padding: 18px;
+    font-size: 13px;
+    z-index: 200;
+    display: none;
+  }
+  .tweaks-panel.open { display: block; }
+  .tweaks-panel h4 {
+    font-family: var(--font-mono); font-size: 11px;
+    letter-spacing: .12em; text-transform: uppercase;
+    color: var(--muted); font-weight: 500; margin: 0 0 14px;
+    display: flex; justify-content: space-between;
+  }
+  .tweaks-row { margin-bottom: 14px; }
+  .tweaks-row:last-child { margin-bottom: 0; }
+  .tweaks-row label { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: .08em; display: block; margin-bottom: 6px; }
+  .tweaks-opts { display: flex; gap: 6px; flex-wrap: wrap; }
+  .tweaks-opt {
+    padding: 6px 10px; border-radius: 999px;
+    border: 1px solid var(--hair-strong); background: var(--bg);
+    font-size: 12px; cursor: pointer; color: var(--ink-2);
+  }
+  .tweaks-opt.active { background: var(--ink); color: #fff; border-color: var(--ink); }
+
+  .tweaks-toggle {
+    position: fixed; right: 24px; bottom: 24px;
+    background: var(--ink); color: #fff;
+    border: none; padding: 10px 16px; border-radius: 999px;
+    font-size: 12px; font-family: var(--font-mono); letter-spacing: .08em;
+    text-transform: uppercase; cursor: pointer;
+    z-index: 199;
+    display: none;
+  }
+
+  /* === Orbit animation === */
+  .orbit-spin { transform-origin: 0 0; transform-box: fill-box; }
+  .orbit-spin-1 { animation: orbit-rot-cw 22s linear infinite; }
+  .orbit-spin-2 { animation: orbit-rot-ccw 18s linear infinite; }
+  .orbit-spin-3 { animation: orbit-rot-cw 14s linear infinite; }
+  .orbit-ring-1 { animation: orbit-breathe 6s ease-in-out infinite; }
+  .orbit-ring-2 { animation: orbit-breathe 7s ease-in-out infinite .5s; }
+  .orbit-ring-3 { animation: orbit-breathe 5.5s ease-in-out infinite 1s; }
+  .orbit-grid circle { animation: orbit-twinkle 5s ease-in-out infinite; }
+  .orbit-grid circle:nth-child(3n) { animation-delay: 1.2s; }
+  .orbit-grid circle:nth-child(5n) { animation-delay: 2.4s; }
+  .orbit-grid circle:nth-child(7n) { animation-delay: 3.6s; }
+  @keyframes orbit-rot-cw { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+  @keyframes orbit-rot-ccw { from { transform: rotate(0deg); } to { transform: rotate(-360deg); } }
+  @keyframes orbit-breathe {
+    0%, 100% { opacity: var(--o, .35); }
+    50% { opacity: calc(var(--o, .35) * 0.45); }
+  }
+  @keyframes orbit-twinkle {
+    0%, 100% { opacity: 1; }
+    50% { opacity: .35; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .orbit-spin, .orbit-ring-1, .orbit-ring-2, .orbit-ring-3, .orbit-grid circle { animation: none !important; }
+    .orbit-svg animate { display: none; }
+  }
+
+  /* === Responsive === */  @media (max-width: 1024px) {
+    .hero-grid { grid-template-columns: 1fr; gap: 40px; }
+    .hero-art { min-height: 460px; }
+    .steps-grid { grid-template-columns: 1fr; gap: 40px; }
+    .pricing-grid { grid-template-columns: 1fr; gap: 30px; }
+    .section-head { grid-template-columns: 1fr; gap: 20px; }
+    .feature-card, .feature-card.wide { grid-column: span 12; }
+    .tile, .tile.span3, .tile.span4 { grid-column: span 6; }
+    .audience-grid { grid-template-columns: 1fr; }
+    .testimonials { grid-template-columns: 1fr; }
+    .cta-big { grid-template-columns: 1fr; }
+    .cta-copy { padding: 48px 32px; }
+    .footer-grid { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 640px) {
+    .nav-links { display: none; }
+    section { padding: 64px 0; }
+    .hero { padding: 48px 0 0; }
+    .tile, .tile.span3, .tile.span4 { grid-column: span 12; }
+    .kpis { grid-template-columns: repeat(3, 1fr); }
+    .kpi:nth-child(4), .kpi:nth-child(5) { border-top: 1px solid var(--hair); }
+    .floater { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="grain"></div>
+
+<!-- NAV -->
+<nav class="nav" id="nav">
+  <div class="container nav-inner">
+    <a href="index.html" class="logo">{ <b>TRACKIQ</b> }</a>
+    <div class="nav-links">
+      <a href="meet-your-ai-agent.html">Platform</a>
+      <a href="mcp.html">MCP <span class="nav-new-pill">New</span></a>
+      <a href="plans-and-pricing.html">Pricing</a>
+      <a href="how-it-works.html">Resources</a>
+    </div>
+    <div class="nav-cta">
+      <a href="#" class="btn btn-ghost">Sign in</a>
+      <a href="plans-and-pricing.html" class="btn btn-primary">Get started</a>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="container">
+    <div class="hero-grid" id="heroGrid">
+      <div class="hero-copy">
+        <div class="eyebrow" style="margin-bottom:28px">AI-Powered eCommerce Intelligence</div>
+        <h1>Meet Aria — your <em>always-on</em> Amazon analyst.</h1>
+        <p class="lede">TrackIQ connects your retail, Ads, and AMC data, then Aria does the work of a senior analyst: diagnosing why sales moved, optimizing ad spend, flagging risks, and delivering reports — all inside Slack.</p>
+        <div class="hero-cta">
+          <a href="plans-and-pricing.html" class="btn btn-accent">Try the platform</a>
+          <a href="mcp.html" class="btn btn-ghost btn-arrow" style="border-color:var(--teal); color:var(--teal-ink);">
+            <span style="font-family:var(--font-mono); font-size:9px; letter-spacing:.12em; background:var(--teal); color:#fff; padding:2px 6px; border-radius:3px; font-weight:500;">NEW</span>
+            Free MCP for Claude
+          </a>
+        </div>
+        <div class="hero-meta">
+          <div class="avatars" aria-hidden="true">
+            <span style="background:linear-gradient(135deg,#8AA9D0,#4C6E99)"></span>
+            <span style="background:linear-gradient(135deg,#D9B27A,#B8854A)"></span>
+            <span style="background:linear-gradient(135deg,#9AB489,#556E48)"></span>
+            <span style="background:linear-gradient(135deg,#C58EA0,#8A4C63)"></span>
+          </div>
+          <span class="stars">★★★★★</span>
+          <span>Trusted by $1M+ brands &amp; top Amazon agencies</span>
+        </div>
+      </div>
+
+      <div class="hero-art" id="heroArt">
+        <!-- Floating alert card -->
+        <div class="floater floater-alert">
+          <div class="title">ROAS dropped 18% overnight</div>
+          <div class="sub">SKU B09XYZ-PRIME · Sponsored Brands</div>
+          <div style="margin-top:10px; display:flex; gap:6px;">
+            <span class="chip" style="background:#FEEDE5; color:#B8542A; border-color:#F4D1BF">Investigate</span>
+            <span class="chip">Snooze</span>
+          </div>
+        </div>
+
+        <!-- Main dashboard -->
+        <div class="dashboard-card">
+          <div class="dash-head">
+            <div style="display:flex; align-items:center; gap:10px;">
+              <div style="width:24px; height:24px; border-radius:6px; background:var(--accent); display:flex; align-items:center; justify-content:center; color:#fff; font-size:11px; font-weight:600; font-family:var(--font-mono)">T</div>
+              <div class="dash-title">Dashboard Overview</div>
+            </div>
+            <div class="dash-brand-pill">Your Brand</div>
+          </div>
+          <div class="dash-filters">
+            <span class="chip">Total Sales</span>
+            <span class="chip">Ad Spend</span>
+            <span class="chip">ROAS</span>
+            <span style="margin-left:auto">Last 30 days ▾</span>
+          </div>
+          <div class="kpis">
+            <div class="kpi">
+              <div class="kpi-label">Total Sales</div>
+              <div class="kpi-val">$45,000<small>.20</small></div>
+              <div class="kpi-delta delta-up">↑ 2.5%</div>
+            </div>
+            <div class="kpi">
+              <div class="kpi-label">Ad Spend</div>
+              <div class="kpi-val">$10,500<small>.00</small></div>
+              <div class="kpi-delta delta-up">↑ 2.5%</div>
+            </div>
+            <div class="kpi">
+              <div class="kpi-label">Avg. ROAS</div>
+              <div class="kpi-val">4.85</div>
+              <div class="kpi-delta delta-down">↓ 0.5%</div>
+            </div>
+            <div class="kpi">
+              <div class="kpi-label">Inventory Risk</div>
+              <div class="kpi-val">Medium</div>
+              <div class="kpi-delta delta-up">↑ 2.5%</div>
+            </div>
+            <div class="kpi">
+              <div class="kpi-label">Buy Box</div>
+              <div class="kpi-val">25%</div>
+              <div class="kpi-delta delta-up">↑ 2.5%</div>
+            </div>
+          </div>
+          <div class="chart-wrap">
+            <div class="chart-head">
+              <h4>Sales Performance Trend</h4>
+              <div class="legend">
+                <span><i class="dot" style="background:var(--accent)"></i>Total Sales</span>
+                <span><i class="dot" style="background:#A78BFA"></i>AMS Spend</span>
+                <span><i class="dot" style="background:#22C55E"></i>DSP Spend</span>
+              </div>
+            </div>
+            <svg viewBox="0 0 600 200" width="100%" height="200" preserveAspectRatio="none">
+              <defs>
+                <linearGradient id="barG" x1="0" x2="0" y1="0" y2="1">
+                  <stop offset="0" stop-color="#A78BFA"/>
+                  <stop offset="1" stop-color="#6D54D1"/>
+                </linearGradient>
+                <linearGradient id="areaG" x1="0" x2="0" y1="0" y2="1">
+                  <stop offset="0" stop-color="#2563EB" stop-opacity=".25"/>
+                  <stop offset="1" stop-color="#2563EB" stop-opacity="0"/>
+                </linearGradient>
+              </defs>
+              <!-- gridlines -->
+              <g stroke="#EEE9DD" stroke-width="1">
+                <line x1="0" x2="600" y1="40" y2="40"/>
+                <line x1="0" x2="600" y1="90" y2="90"/>
+                <line x1="0" x2="600" y1="140" y2="140"/>
+              </g>
+              <!-- bars -->
+              <g fill="url(#barG)">
+                <rect x="20"  y="110" width="14" height="70" rx="2"/>
+                <rect x="60"  y="85" width="14" height="95" rx="2"/>
+                <rect x="100" y="65" width="14" height="115" rx="2"/>
+                <rect x="140" y="95" width="14" height="85" rx="2"/>
+                <rect x="180" y="50" width="14" height="130" rx="2"/>
+                <rect x="220" y="75" width="14" height="105" rx="2"/>
+                <rect x="260" y="60" width="14" height="120" rx="2"/>
+                <rect x="300" y="90" width="14" height="90" rx="2"/>
+                <rect x="340" y="55" width="14" height="125" rx="2"/>
+                <rect x="380" y="45" width="14" height="135" rx="2"/>
+                <rect x="420" y="80" width="14" height="100" rx="2"/>
+                <rect x="460" y="70" width="14" height="110" rx="2"/>
+                <rect x="500" y="55" width="14" height="125" rx="2"/>
+                <rect x="540" y="65" width="14" height="115" rx="2"/>
+              </g>
+              <!-- line -->
+              <path d="M10 80 C 80 60, 140 55, 210 70 S 340 95, 410 50 S 520 40, 590 55" stroke="var(--accent)" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+              <path d="M10 80 C 80 60, 140 55, 210 70 S 340 95, 410 50 S 520 40, 590 55 L 590 200 L 10 200 Z" fill="url(#areaG)"/>
+            </svg>
+          </div>
+        </div>
+
+        <!-- Floating AI chat bubble -->
+        <div class="floater floater-chat">
+          <div class="bubble">Your ROAS is down 18% on Prime-day SKUs — mostly driven by a bid spike on B09XYZ. Want me to pause the campaign?</div>
+          <div class="you">TrackIQ · just now</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Logo strip -->
+    <div class="logostrip">
+      <div class="logostrip-inner">
+        <div class="label">Used by</div>
+        <div style="overflow:hidden; max-width: 720px;">
+          <div class="logos">
+            <span>KettleCo.</span>
+            <span>Northfield</span>
+            <span>Varro &amp; Sons</span>
+            <span>MARLOW</span>
+            <span>Brightfield</span>
+            <span>Auden</span>
+            <!-- duplicate for seamless loop -->
+            <span>KettleCo.</span>
+            <span>Northfield</span>
+            <span>Varro &amp; Sons</span>
+            <span>MARLOW</span>
+            <span>Brightfield</span>
+            <span>Auden</span>
+          </div>
+        </div>
+        <div style="text-align:right" class="small">100+ Amazon agencies &amp; brands</div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- SECTION: ONE PLATFORM (feature grid, pictures + words) -->
+<section id="agent">
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <div class="eyebrow">The four pillars</div>
+        <h2 class="display">What Aria <em>actually</em> does for you.</h2>
+      </div>
+      <p class="lede">Root cause analysis, agentic ad optimization, intelligent alerting, and automated reporting — four analyst-grade jobs running continuously, wherever your team works.</p>
+    </div>
+
+    <div class="feature-grid">
+      <!-- Wide featured card -->
+      <article class="feature-card wide">
+        <div class="feature-media paint-dash">
+          <!-- mini dashboard painting -->
+          <svg viewBox="0 0 800 400" width="100%" height="100%" preserveAspectRatio="xMidYMid slice" style="display:block">
+            <rect width="800" height="400" fill="url(#bgd)"/>
+            <defs>
+              <linearGradient id="bgd" x1="0" x2="1" y1="0" y2="1">
+                <stop offset="0" stop-color="#EEF3FF"/>
+                <stop offset="1" stop-color="#D4E1F7"/>
+              </linearGradient>
+            </defs>
+            <!-- floating card 1 -->
+            <g transform="translate(60 70)">
+              <rect width="320" height="200" rx="14" fill="#fff" stroke="#E2E8F4"/>
+              <text x="20" y="34" font-family="Geist" font-size="13" fill="#6E7582">Weekly review</text>
+              <text x="20" y="66" font-family="Instrument Serif" font-size="34" fill="#0E1116">Sales ↑ 12%</text>
+              <g transform="translate(20 100)">
+                <rect x="0" y="60" width="16" height="30" rx="2" fill="#2563EB"/>
+                <rect x="24" y="40" width="16" height="50" rx="2" fill="#2563EB"/>
+                <rect x="48" y="25" width="16" height="65" rx="2" fill="#2563EB"/>
+                <rect x="72" y="45" width="16" height="45" rx="2" fill="#2563EB"/>
+                <rect x="96" y="15" width="16" height="75" rx="2" fill="#2563EB"/>
+                <rect x="120" y="35" width="16" height="55" rx="2" fill="#2563EB"/>
+                <rect x="144" y="20" width="16" height="70" rx="2" fill="#2563EB"/>
+                <rect x="168" y="50" width="16" height="40" rx="2" fill="#2563EB"/>
+                <rect x="192" y="30" width="16" height="60" rx="2" fill="#2563EB"/>
+                <rect x="216" y="10" width="16" height="80" rx="2" fill="#2563EB"/>
+                <rect x="240" y="40" width="16" height="50" rx="2" fill="#2563EB"/>
+                <rect x="264" y="25" width="16" height="65" rx="2" fill="#2563EB"/>
+              </g>
+            </g>
+            <!-- floating card 2 -->
+            <g transform="translate(440 130)">
+              <rect width="300" height="220" rx="14" fill="#fff" stroke="#E2E8F4"/>
+              <circle cx="32" cy="32" r="12" fill="#0E1116"/>
+              <text x="54" y="30" font-family="Geist" font-size="13" font-weight="600" fill="#0E1116">TrackIQ Agent</text>
+              <text x="54" y="46" font-family="Geist" font-size="11" fill="#6E7582">2:14 PM</text>
+              <rect x="22" y="66" width="256" height="36" rx="8" fill="#F2F6FF"/>
+              <text x="34" y="82" font-family="Geist" font-size="12" fill="#1E3A8A">Why did sales drop yesterday?</text>
+              <text x="34" y="96" font-family="Geist" font-size="11" fill="#6E7582">Asked by Maria · Just now</text>
+              <rect x="22" y="116" width="256" height="84" rx="8" fill="#0E1116"/>
+              <text x="34" y="138" font-family="Geist" font-size="12" fill="#fff">Prime-day SKUs saw a 22% dip —</text>
+              <text x="34" y="156" font-family="Geist" font-size="12" fill="#fff">2 ad campaigns went out of budget</text>
+              <text x="34" y="174" font-family="Geist" font-size="12" fill="#fff">at 4:12pm, inventory at 3 FCs is low.</text>
+              <text x="34" y="192" font-family="Geist" font-size="11" fill="#9BA3B4">Want me to replenish &amp; re-budget?</text>
+            </g>
+          </svg>
+        </div>
+        <div class="feature-body">
+          <div class="feature-tag">Root Cause Analysis</div>
+          <h3>Instant answers to &ldquo;why?&rdquo;</h3>
+          <p>Aria investigates revenue shifts across ads, inventory, pricing, and Buy Box in seconds — no waiting on a junior analyst, no 14-tab deep dive.</p>
+        </div>
+      </article>
+
+      <!-- Tall card -->
+      <article class="feature-card">
+        <div class="feature-media paint-slack">
+          <svg viewBox="0 0 400 250" width="100%" height="100%" preserveAspectRatio="xMidYMid slice">
+            <rect width="400" height="250" fill="url(#sl1)"/>
+            <defs>
+              <linearGradient id="sl1" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#F4EDE1"/><stop offset="1" stop-color="#E4D3B0"/></linearGradient>
+            </defs>
+            <!-- Slack-ish message -->
+            <g transform="translate(30 40)">
+              <rect width="340" height="170" rx="12" fill="#fff" stroke="#E2DCCB"/>
+              <rect x="14" y="14" width="30" height="30" rx="6" fill="#0E1116"/>
+              <text x="26" y="34" font-family="Geist Mono" font-size="14" fill="#fff" text-anchor="middle">T</text>
+              <text x="54" y="28" font-family="Geist" font-size="13" font-weight="600" fill="#0E1116">TrackIQ</text>
+              <text x="108" y="28" font-family="Geist" font-size="11" fill="#6E7582">8:00 AM</text>
+              <rect x="54" y="40" width="268" height="10" rx="3" fill="#EFE7D5"/>
+              <rect x="54" y="56" width="230" height="10" rx="3" fill="#EFE7D5"/>
+              <rect x="14" y="80" width="322" height="74" rx="8" fill="#F2F6FF" stroke="#D9E2F7"/>
+              <text x="28" y="104" font-family="Instrument Serif" font-size="18" fill="#1E3A8A" font-style="italic">Weekly Business Review</text>
+              <text x="28" y="124" font-family="Geist" font-size="12" fill="#0E1116">ROAS 4.85 · Sales $45K · Ads $10.5K</text>
+              <text x="28" y="142" font-family="Geist" font-size="11" fill="#6E7582">2 anomalies · 1 replenishment flagged</text>
+            </g>
+          </svg>
+        </div>
+        <div class="feature-body">
+          <div class="feature-tag">Automated Reporting</div>
+          <h3>WBRs delivered, not demanded</h3>
+          <p>Weekly Business Reviews generated automatically — revenue, ads, inventory, anomalies — and posted in Slack every Monday. No one chases them.</p>
+        </div>
+      </article>
+
+      <!-- Alert card -->
+      <article class="feature-card">
+        <div class="feature-media paint-rose">
+          <svg viewBox="0 0 400 250" width="100%" height="100%" preserveAspectRatio="xMidYMid slice">
+            <rect width="400" height="250" fill="url(#rs1)"/>
+            <defs>
+              <linearGradient id="rs1" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#F8E9E1"/><stop offset="1" stop-color="#E7CBB8"/></linearGradient>
+            </defs>
+            <!-- alert cards -->
+            <g transform="translate(40 40)">
+              <rect width="320" height="60" rx="10" fill="#fff" stroke="#EDD4C3"/>
+              <circle cx="28" cy="30" r="6" fill="#B8542A"/>
+              <text x="46" y="26" font-family="Geist" font-size="12" font-weight="600" fill="#0E1116">ROAS dropped 18%</text>
+              <text x="46" y="42" font-family="Geist" font-size="11" fill="#6E7582">SB campaign · B09XYZ · 5m ago</text>
+            </g>
+            <g transform="translate(40 110)">
+              <rect width="320" height="60" rx="10" fill="#fff" stroke="#EDD4C3"/>
+              <circle cx="28" cy="30" r="6" fill="#D4A017"/>
+              <text x="46" y="26" font-family="Geist" font-size="12" font-weight="600" fill="#0E1116">Inventory low · 3 FCs</text>
+              <text x="46" y="42" font-family="Geist" font-size="11" fill="#6E7582">Top SKU at 6 days of cover</text>
+            </g>
+            <g transform="translate(40 180)">
+              <rect width="320" height="40" rx="10" fill="#fff" stroke="#EDD4C3" opacity=".6"/>
+              <circle cx="28" cy="20" r="6" fill="#8A4C63" opacity=".6"/>
+              <text x="46" y="24" font-family="Geist" font-size="11" fill="#6E7582">Buy box share slipped 12%</text>
+            </g>
+          </svg>
+        </div>
+        <div class="feature-body">
+          <div class="feature-tag">Intelligent Alerting</div>
+          <h3>Catch issues in hours, not days</h3>
+          <p>Listing suppressions, Buy Box loss, ad overspend, inventory risk — routed to the right person with severity and fix suggestions.</p>
+        </div>
+      </article>
+
+      <!-- Warehouse -->
+      <article class="feature-card">
+        <div class="feature-media paint-warehouse">
+          <svg viewBox="0 0 400 250" width="100%" height="100%" preserveAspectRatio="xMidYMid slice">
+            <rect width="400" height="250" fill="url(#wh1)"/>
+            <defs>
+              <linearGradient id="wh1" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#E6EDE1"/><stop offset="1" stop-color="#B7CCA9"/></linearGradient>
+            </defs>
+            <!-- warehouse boxes illustration -->
+            <g transform="translate(50 70)">
+              <!-- shelves -->
+              <line x1="0" y1="40" x2="300" y2="40" stroke="#556E48" stroke-width="2"/>
+              <line x1="0" y1="110" x2="300" y2="110" stroke="#556E48" stroke-width="2"/>
+              <!-- boxes row 1 -->
+              <rect x="10" y="10" width="40" height="30" fill="#D4A017" stroke="#8A6A0F"/>
+              <rect x="54" y="15" width="40" height="25" fill="#B8854A" stroke="#7A5323"/>
+              <rect x="98" y="5" width="40" height="35" fill="#D4A017" stroke="#8A6A0F"/>
+              <rect x="142" y="12" width="40" height="28" fill="#E4C07A" stroke="#8A6A0F"/>
+              <rect x="186" y="8" width="40" height="32" fill="#B8854A" stroke="#7A5323"/>
+              <rect x="230" y="18" width="40" height="22" fill="#D4A017" stroke="#8A6A0F"/>
+              <!-- boxes row 2 -->
+              <rect x="20" y="80" width="38" height="30" fill="#B8854A" stroke="#7A5323"/>
+              <rect x="62" y="75" width="40" height="35" fill="#D4A017" stroke="#8A6A0F"/>
+              <rect x="106" y="85" width="36" height="25" fill="#E4C07A" stroke="#8A6A0F"/>
+              <rect x="146" y="78" width="40" height="32" fill="#B8854A" stroke="#7A5323"/>
+              <rect x="190" y="90" width="36" height="20" fill="#D4A017" stroke="#8A6A0F"/>
+              <!-- a red-flagged box -->
+              <rect x="230" y="75" width="40" height="35" fill="#B8542A" stroke="#7A2E10"/>
+              <text x="250" y="96" font-family="Geist Mono" font-size="10" fill="#fff" text-anchor="middle">LOW</text>
+            </g>
+          </svg>
+        </div>
+        <div class="feature-body">
+          <div class="feature-tag">Inventory &amp; Supply</div>
+          <h3>Stock the right SKU, at the right FC</h3>
+          <p>Velocity-based forecasts, stockout risk by fulfillment center, and restock alerts with confidence intervals.</p>
+        </div>
+      </article>
+
+      <!-- Automate -->
+      <article class="feature-card wide">
+        <div class="feature-media paint-ink">
+          <svg viewBox="0 0 800 400" width="100%" height="100%" preserveAspectRatio="xMidYMid slice" class="orbit-svg">
+            <rect width="800" height="400" fill="#0E1116"/>
+            <!-- dotted grid -->
+            <g fill="#242833" class="orbit-grid">
+              <circle cx="40" cy="40" r="1.2"/><circle cx="80" cy="40" r="1.2"/><circle cx="120" cy="40" r="1.2"/><circle cx="160" cy="40" r="1.2"/><circle cx="200" cy="40" r="1.2"/><circle cx="240" cy="40" r="1.2"/><circle cx="280" cy="40" r="1.2"/><circle cx="320" cy="40" r="1.2"/><circle cx="360" cy="40" r="1.2"/><circle cx="400" cy="40" r="1.2"/><circle cx="440" cy="40" r="1.2"/><circle cx="480" cy="40" r="1.2"/><circle cx="520" cy="40" r="1.2"/><circle cx="560" cy="40" r="1.2"/><circle cx="600" cy="40" r="1.2"/><circle cx="640" cy="40" r="1.2"/><circle cx="680" cy="40" r="1.2"/><circle cx="720" cy="40" r="1.2"/><circle cx="760" cy="40" r="1.2"/>
+              <circle cx="40" cy="80" r="1.2"/><circle cx="120" cy="80" r="1.2"/><circle cx="200" cy="80" r="1.2"/><circle cx="280" cy="80" r="1.2"/><circle cx="360" cy="80" r="1.2"/><circle cx="440" cy="80" r="1.2"/><circle cx="520" cy="80" r="1.2"/><circle cx="600" cy="80" r="1.2"/><circle cx="680" cy="80" r="1.2"/><circle cx="760" cy="80" r="1.2"/>
+            </g>
+            <!-- center big text -->
+            <text x="400" y="180" text-anchor="middle" font-family="Instrument Serif" font-style="italic" font-size="56" fill="#F1EEE5">24 / 7</text>
+            <text x="400" y="220" text-anchor="middle" font-family="Geist" font-size="14" fill="#9BA3B4" letter-spacing="1">YOUR AI OPS TEAM, ON AUTOPILOT</text>
+
+            <!-- Orbit 1 (outer) -->
+            <g transform="translate(400 200)">
+              <ellipse cx="0" cy="0" rx="280" ry="90" stroke="#2563EB" stroke-width="1" fill="none" opacity=".35" class="orbit-ring orbit-ring-1"/>
+              <g class="orbit-spin orbit-spin-1">
+                <circle cx="280" cy="0" r="5" fill="#2563EB" class="orbit-dot">
+                  <animate attributeName="r" values="4;6;4" dur="2.4s" repeatCount="indefinite"/>
+                </circle>
+                <circle cx="280" cy="0" r="10" fill="#2563EB" opacity=".25">
+                  <animate attributeName="r" values="8;16;8" dur="2.4s" repeatCount="indefinite"/>
+                  <animate attributeName="opacity" values=".35;0;.35" dur="2.4s" repeatCount="indefinite"/>
+                </circle>
+              </g>
+            </g>
+
+            <!-- Orbit 2 (inner) -->
+            <g transform="translate(400 200)">
+              <ellipse cx="0" cy="0" rx="220" ry="70" stroke="#2563EB" stroke-width="1" fill="none" opacity=".25" class="orbit-ring orbit-ring-2"/>
+              <g class="orbit-spin orbit-spin-2">
+                <circle cx="-220" cy="0" r="4.5" fill="#A78BFA" class="orbit-dot">
+                  <animate attributeName="r" values="3.5;5.5;3.5" dur="2.8s" repeatCount="indefinite"/>
+                </circle>
+                <circle cx="-220" cy="0" r="9" fill="#A78BFA" opacity=".25">
+                  <animate attributeName="r" values="7;14;7" dur="2.8s" repeatCount="indefinite"/>
+                  <animate attributeName="opacity" values=".3;0;.3" dur="2.8s" repeatCount="indefinite"/>
+                </circle>
+              </g>
+            </g>
+
+            <!-- Orbit 3 (innermost, counter-rotating) -->
+            <g transform="translate(400 200)">
+              <ellipse cx="0" cy="0" rx="160" ry="50" stroke="#22C55E" stroke-width="1" fill="none" opacity=".22" class="orbit-ring orbit-ring-3"/>
+              <g class="orbit-spin orbit-spin-3">
+                <circle cx="0" cy="50" r="4" fill="#22C55E" class="orbit-dot">
+                  <animate attributeName="r" values="3;5;3" dur="2.2s" repeatCount="indefinite"/>
+                </circle>
+                <circle cx="0" cy="50" r="8" fill="#22C55E" opacity=".25">
+                  <animate attributeName="r" values="6;12;6" dur="2.2s" repeatCount="indefinite"/>
+                  <animate attributeName="opacity" values=".3;0;.3" dur="2.2s" repeatCount="indefinite"/>
+                </circle>
+              </g>
+            </g>
+
+            <!-- Center pulse -->
+            <circle cx="400" cy="200" r="3" fill="#F1EEE5" opacity=".85">
+              <animate attributeName="opacity" values=".4;1;.4" dur="2s" repeatCount="indefinite"/>
+            </circle>
+          </svg>
+        </div>
+        <div class="feature-body">
+          <div class="feature-tag">Agentic Ad Optimization · IRO Engine</div>
+          <h3>Every dollar, shifted to the SKUs that actually grow revenue</h3>
+          <p>TrackIQ's patent-pending Incremental Revenue Optimization engine reallocates ad spend based on <em style="font-style:italic; font-family:var(--font-serif); color:#F1EEE5">incremental</em> revenue — not vanity ROAS. Same budget, measurably more growth.</p>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION: TWO WAYS TO USE TRACKIQ -->
+<section class="two-ways" data-screen-label="Homepage / Two ways">
+  <div class="container">
+    <div class="section-head-single" style="margin-bottom: 0;">
+      <div class="eyebrow no-rule">Two ways to use TrackIQ</div>
+      <h2 class="display" style="margin-top:18px">Pick the surface that <em>fits how you work.</em></h2>
+      <p class="lede" style="margin: 18px auto 0;">A full operations platform with Aria built in — or a lightweight MCP that brings your Amazon data straight into Claude, ChatGPT, or any AI assistant you already use.</p>
+    </div>
+
+    <div class="two-ways-grid">
+      <article class="way-card">
+        <div class="way-tag">TrackIQ Platform</div>
+        <h3>The full <em>platform.</em></h3>
+        <p>Dashboards, automated reports, ad-spend optimization, and Aria — your AI agent that lives inside the app. Built for serious operators and agencies.</p>
+        <ul class="way-list">
+          <li>Aria, your in-app AI analyst</li>
+          <li>Automated WBRs delivered to Slack</li>
+          <li>Incremental Revenue Optimization for ads</li>
+          <li>Multi-brand support for agencies</li>
+        </ul>
+        <a href="meet-your-ai-agent.html" class="btn btn-primary btn-arrow">Explore the platform</a>
+      </article>
+
+      <article class="way-card mcp">
+        <div class="way-tag">
+          <span class="pill">NEW</span>
+          TrackIQ MCP
+        </div>
+        <h3>Bring TrackIQ <em>to Claude.</em></h3>
+        <p>Connect your Amazon account to Claude, ChatGPT, or any AI assistant. Ask questions in plain English, get answers from your own data. Free to start.</p>
+        <ul class="way-list">
+          <li>16 tools across sales, ads, and inventory</li>
+          <li>Bring your own AI assistant</li>
+          <li>Free tier — no credit card</li>
+        </ul>
+        <a href="mcp.html" class="btn btn-teal btn-arrow">Try the MCP</a>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION: ONBOARDING -->
+<section id="how" style="background: var(--bg-alt); border-top: 1px solid var(--hair); border-bottom: 1px solid var(--hair);">
+  <div class="container">
+    <div class="steps-grid">
+      <div>
+        <div class="eyebrow">How it works</div>
+        <h2 class="display" style="margin-top:18px; margin-bottom:20px;">Connect. Activate. <em>Automate.</em></h2>
+        <p class="lede" style="margin-bottom:40px;">Onboard your new AI agent in three simple steps. Most teams are live before their first coffee refill.</p>
+        <div class="steps-list">
+          <div class="step">
+            <div class="step-num">01</div>
+            <div>
+              <h3>Connect Amazon Retail, Ads &amp; AMC</h3>
+              <p>TrackIQ ingests performance data from every Amazon channel (SP, SB, SD, DSP, AMC) in real time.</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">02</div>
+            <div>
+              <h3>Invite your AI agent to Slack</h3>
+              <p>Plug TrackIQ into your Slack workspace to receive alerts, insights, and answers right where your team already works.</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">03</div>
+            <div>
+              <h3>Let the agents run 24/7</h3>
+              <p>Your AI ops team delivers reports, surfaces issues, and answers questions — on autopilot.</p>
+            </div>
+          </div>
+        </div>
+        <div style="margin-top:40px">
+          <a href="how-it-works.html" class="btn btn-primary btn-arrow">Explore how it works</a>
+        </div>
+      </div>
+      <div>
+        <div class="slack-mock">
+          <div class="slack-head">
+            <span class="hash">#</span>
+            <span style="font-weight:600">trackiq-agency-ops</span>
+            <span style="color:var(--muted); margin-left:auto">4 members</span>
+          </div>
+          <div class="slack-msgs">
+            <div class="slack-msg">
+              <div class="slack-avatar" style="background:#D4A017">MR</div>
+              <div>
+                <div><span class="slack-name">Maria R.</span><span class="slack-ts">9:02 AM</span></div>
+                <div class="slack-body">Hey — can I get a 30-day overview comparing last month to the previous one, for all my profiles?</div>
+              </div>
+            </div>
+            <div class="slack-msg">
+              <div class="slack-avatar bot">{T}</div>
+              <div>
+                <div><span class="slack-name">TrackIQ</span><span class="slack-ts">9:02 AM · Agent</span></div>
+                <div class="slack-body">
+                  Here's the 30-day performance comparison for all profiles (2025-06-07 to 2025-07-07 vs. 2025-05-08 to 2025-06-06):
+                  <div class="callout">
+                    <strong>Overall Performance Changes</strong>
+                    <ul>
+                      <li>Cost: +5.6% ($148,010 → $139,910)</li>
+                      <li>Revenue: –16.8% ($308,020 → $379,500)</li>
+                      <li>ROI: –23.1% (2.08 → 2.71)</li>
+                      <li>Conversions: –20.5% (10,388 → 13,063)</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="slack-msg">
+              <div class="slack-avatar bot">{T}</div>
+              <div>
+                <div><span class="slack-name">TrackIQ</span><span class="slack-ts">9:02 AM · Agent</span></div>
+                <div class="slack-body">
+                  <strong>Profile breakdown:</strong> Zam Brand is your highest spender ($105,837), generating $207,809 in revenue. Second highest: Zam Brand with $64,516, up 2.53%.
+                  <div style="margin-top:10px; display:flex; gap:8px">
+                    <span class="chip" style="background:var(--accent); color:#fff; border-color:var(--accent)">Create report</span>
+                    <span class="chip">Share in #brands</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION: PRICING TEASER -->
+<section id="pricing">
+  <div class="container">
+    <div class="pricing-card">
+      <div class="pricing-grid">
+        <div>
+          <div class="eyebrow">All-in-one platform</div>
+          <h2 class="display" style="margin-top:18px;">One agent. Every Amazon <em>signal, channel, and decision.</em></h2>
+          <div class="pricing-price" style="margin-top:28px">Brands from $149/mo &middot; Agencies from $895/brand</div>
+          <p class="lede">Retail, Sponsored Ads, DSP, AMC, inventory, and Buy Box — unified, analyzed, and acted on by Aria. Replace a stack of six tools and two analysts.</p>
+          <div style="margin-top:32px; display:flex; gap:12px;">
+            <a href="plans-and-pricing.html" class="btn btn-primary">See all pricing</a>
+            <a href="meet-your-ai-agent.html" class="btn btn-ghost btn-arrow">Meet Aria</a>
+          </div>
+        </div>
+        <div class="pricing-features">
+          <div class="pricing-feat">
+            <div class="pricing-feat-icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2l2.4 7.2H22l-6.2 4.6L18 21l-6-4.4L6 21l2.2-7.2L2 9.2h7.6z"/></svg>
+            </div>
+            <div>
+              <h4>AI-Powered Insights</h4>
+              <p>Your personal business analyst working 24/7 via Slack or web chat.</p>
+            </div>
+          </div>
+          <div class="pricing-feat">
+            <div class="pricing-feat-icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M12 9v6M9 12h6"/></svg>
+            </div>
+            <div>
+              <h4>Included in every plan</h4>
+              <p>All AI features, tokens, and automations built into your monthly fee.</p>
+            </div>
+          </div>
+          <div class="pricing-feat">
+            <div class="pricing-feat-icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 17l6-6 4 4 8-8"/><path d="M14 7h7v7"/></svg>
+            </div>
+            <div>
+              <h4>Proven ROI</h4>
+              <p>Agencies and sellers typically save 4–8 hours weekly on reporting and analysis.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION: KNOW WHAT'S WORKING (tiles) -->
+<section style="padding-top: 40px;">
+  <div class="container">
+    <div class="section-head-single">
+      <div class="eyebrow" style="margin-bottom:20px">Built on data you already own</div>
+      <h2 class="display">Every signal, every channel. <em>One source of truth.</em></h2>
+      <p class="lede" style="margin: 20px auto 0;">Aria reads every Amazon surface — Sponsored Ads, DSP, AMC, Retail, Inventory, Buy Box — and turns the firehose into clear, ranked decisions.</p>
+    </div>
+
+    <div class="tiles-grid">
+      <!-- Weekly review -->
+      <div class="tile span3">
+        <div class="tile-media">
+          <svg viewBox="0 0 400 250" preserveAspectRatio="xMidYMid slice" width="100%" height="100%">
+            <rect width="400" height="250" fill="#F7FAFF"/>
+            <g transform="translate(40 40)">
+              <rect width="320" height="170" rx="10" fill="#fff" stroke="#E2E8F4"/>
+              <text x="20" y="34" font-family="Geist" font-size="12" fill="#6E7582">Weekly Business Review</text>
+              <text x="20" y="64" font-family="Instrument Serif" font-size="28" fill="#0E1116">Done for you</text>
+              <g transform="translate(20 90)">
+                <rect x="0" y="40" width="20" height="40" fill="#2563EB"/>
+                <rect x="28" y="25" width="20" height="55" fill="#2563EB"/>
+                <rect x="56" y="10" width="20" height="70" fill="#2563EB"/>
+                <rect x="84" y="30" width="20" height="50" fill="#2563EB"/>
+                <rect x="112" y="20" width="20" height="60" fill="#2563EB"/>
+                <rect x="140" y="5" width="20" height="75" fill="#2563EB"/>
+                <rect x="168" y="35" width="20" height="45" fill="#2563EB"/>
+                <rect x="196" y="15" width="20" height="65" fill="#2563EB"/>
+                <rect x="224" y="0" width="20" height="80" fill="#2563EB"/>
+                <rect x="252" y="25" width="20" height="55" fill="#2563EB"/>
+                <rect x="280" y="10" width="20" height="70" fill="#2563EB"/>
+              </g>
+            </g>
+          </svg>
+        </div>
+        <div class="tile-body">
+          <h4>Weekly Business Reviews</h4>
+          <p>Delivered WBRs covering revenue, top SKUs, ad performance, Buy Box %, inventory, pricing anomalies, and more — auto-generated.</p>
+        </div>
+      </div>
+
+      <!-- AI Chat -->
+      <div class="tile span3">
+        <div class="tile-media">
+          <svg viewBox="0 0 400 250" preserveAspectRatio="xMidYMid slice" width="100%" height="100%">
+            <rect width="400" height="250" fill="#FBF7F0"/>
+            <g transform="translate(40 30)">
+              <rect width="320" height="190" rx="10" fill="#fff" stroke="#E8E0CE"/>
+              <text x="20" y="30" font-family="Geist" font-size="11" fill="#6E7582">Where should we not spend?</text>
+              <rect x="20" y="42" width="280" height="1" fill="#EEE6D3"/>
+              <text x="20" y="70" font-family="Geist" font-size="11" fill="#6E7582">How did we perform on Prime Day?</text>
+              <rect x="20" y="82" width="280" height="1" fill="#EEE6D3"/>
+              <text x="20" y="110" font-family="Geist" font-size="11" fill="#6E7582">Which SKUs should I discount?</text>
+              <rect x="20" y="150" width="280" height="28" rx="8" fill="#2563EB"/>
+              <text x="34" y="168" font-family="Geist" font-size="11" fill="#fff">Ask anything…</text>
+              <circle cx="278" cy="164" r="9" fill="#fff" opacity=".25"/>
+            </g>
+          </svg>
+        </div>
+        <div class="tile-body">
+          <h4>AI chat with your data</h4>
+          <p>Ask questions like "what's my worst-performing SKU this month?" — get plain-English answers, not Excel formulas.</p>
+        </div>
+      </div>
+
+      <!-- Alerts -->
+      <div class="tile span2">
+        <div class="tile-media">
+          <svg viewBox="0 0 300 200" preserveAspectRatio="xMidYMid slice" width="100%" height="100%">
+            <rect width="300" height="200" fill="#FDF2EC"/>
+            <g transform="translate(30 30)">
+              <circle cx="120" cy="70" r="50" fill="none" stroke="#B8542A" stroke-width="2" opacity=".3"/>
+              <circle cx="120" cy="70" r="30" fill="none" stroke="#B8542A" stroke-width="2" opacity=".6"/>
+              <circle cx="120" cy="70" r="14" fill="#B8542A"/>
+              <text x="120" y="75" font-family="Geist" font-size="12" font-weight="700" fill="#fff" text-anchor="middle">!</text>
+              <text x="120" y="160" font-family="Geist Mono" font-size="10" fill="#B8542A" text-anchor="middle" letter-spacing="2">ROAS DROPPING</text>
+            </g>
+          </svg>
+        </div>
+        <div class="tile-body">
+          <h4>Real-time performance triggers</h4>
+          <p>ROAS drop? Ad overspend? Inventory risk? Buy Box loss? Get notified instantly — email, Slack, or both.</p>
+        </div>
+      </div>
+
+      <!-- Role based alerts -->
+      <div class="tile span2">
+        <div class="tile-media">
+          <svg viewBox="0 0 300 200" preserveAspectRatio="xMidYMid slice" width="100%" height="100%">
+            <rect width="300" height="200" fill="#F0F4EE"/>
+            <g transform="translate(30 40)">
+              <rect width="240" height="30" rx="6" fill="#fff" stroke="#D5E0CC"/>
+              <rect x="12" y="9" width="12" height="12" rx="2" fill="#4A6B3A"/>
+              <rect x="34" y="12" width="80" height="6" rx="2" fill="#0E1116"/>
+              <rect width="240" height="30" rx="6" y="40" fill="#fff" stroke="#D5E0CC"/>
+              <rect x="12" y="49" width="12" height="12" rx="2" fill="#D4A017"/>
+              <rect x="34" y="52" width="110" height="6" rx="2" fill="#0E1116"/>
+              <rect width="240" height="30" rx="6" y="80" fill="#fff" stroke="#D5E0CC"/>
+              <rect x="12" y="89" width="12" height="12" rx="2" fill="#2563EB"/>
+              <rect x="34" y="92" width="60" height="6" rx="2" fill="#0E1116"/>
+            </g>
+          </svg>
+        </div>
+        <div class="tile-body">
+          <h4>Role-based alerts</h4>
+          <p>Buyers get inventory alerts, PPC managers get ad anomalies, directors get the weekly digest. No cross-chatter.</p>
+        </div>
+      </div>
+
+      <!-- Insight feed -->
+      <div class="tile span2">
+        <div class="tile-media">
+          <svg viewBox="0 0 300 200" preserveAspectRatio="xMidYMid slice" width="100%" height="100%">
+            <rect width="300" height="200" fill="#F1EAFD"/>
+            <g transform="translate(30 30)">
+              <rect width="240" height="44" rx="10" fill="#fff" stroke="#DDD0F0"/>
+              <rect x="16" y="14" width="100" height="6" rx="2" fill="#0E1116"/>
+              <rect x="16" y="26" width="140" height="4" rx="2" fill="#A78BFA"/>
+              <rect y="54" width="240" height="44" rx="10" fill="#fff" stroke="#DDD0F0"/>
+              <rect x="16" y="68" width="140" height="6" rx="2" fill="#0E1116"/>
+              <rect x="16" y="80" width="90" height="4" rx="2" fill="#A78BFA"/>
+              <rect y="108" width="240" height="44" rx="10" fill="#A78BFA"/>
+              <rect x="16" y="122" width="120" height="6" rx="2" fill="#fff"/>
+              <rect x="16" y="134" width="160" height="4" rx="2" fill="#fff" opacity=".6"/>
+            </g>
+          </svg>
+        </div>
+        <div class="tile-body">
+          <h4>Insight feed — like a timeline</h4>
+          <p>A running narrative of what's happening across your account: ad-spend spikes, conversion dips, ASINs with no impressions, and more.</p>
+        </div>
+      </div>
+
+      <!-- AMC -->
+      <div class="tile span3">
+        <div class="tile-media">
+          <svg viewBox="0 0 400 250" preserveAspectRatio="xMidYMid slice" width="100%" height="100%">
+            <rect width="400" height="250" fill="#EEF8FF"/>
+            <g transform="translate(40 70)">
+              <!-- Amazon cloud side -->
+              <ellipse cx="70" cy="60" rx="55" ry="28" fill="#fff" stroke="#B9D0EC"/>
+              <text x="70" y="66" font-family="Geist" font-size="12" fill="#0E1116" text-anchor="middle">Amazon Cloud</text>
+              <!-- TrackIQ side -->
+              <rect x="200" y="32" width="120" height="56" rx="10" fill="#0E1116"/>
+              <text x="260" y="66" font-family="Geist Mono" font-size="13" fill="#fff" text-anchor="middle">{ TRACKIQ }</text>
+              <!-- connection -->
+              <path d="M125 60 C 160 60, 160 60, 200 60" stroke="#2563EB" stroke-width="2" fill="none"/>
+              <circle cx="162" cy="60" r="4" fill="#2563EB"/>
+            </g>
+          </svg>
+        </div>
+        <div class="tile-body">
+          <h4>AMC Cloud integration</h4>
+          <p>Get cross-channel attribution, audience insights, and ad-journey visibility beyond Amazon's 90-day limit. Direct &amp; secure.</p>
+        </div>
+      </div>
+
+      <!-- Inventory -->
+      <div class="tile span3">
+        <div class="tile-media">
+          <svg viewBox="0 0 400 250" preserveAspectRatio="xMidYMid slice" width="100%" height="100%">
+            <rect width="400" height="250" fill="#FFF"/>
+            <g transform="translate(30 30)">
+              <text x="0" y="18" font-family="Geist" font-size="12" fill="#6E7582">Product Inventory List</text>
+              <rect y="30" width="340" height="1" fill="#E9E4D8"/>
+              <g font-family="Geist" font-size="11" fill="#0E1116">
+                <text y="54">B09XYZ · Halo Kettle</text>
+                <text x="240" y="54" fill="#B8542A">6 days</text>
+                <text y="80">B08AAA · Marlow Mat</text>
+                <text x="240" y="80" fill="#D4A017">12 days</text>
+                <text y="106">B07BBB · Varro Blend</text>
+                <text x="240" y="106" fill="#4A6B3A">48 days</text>
+                <text y="132">B06CCC · Auden Throw</text>
+                <text x="240" y="132" fill="#4A6B3A">61 days</text>
+                <text y="158">B05DDD · Brightfield Oil</text>
+                <text x="240" y="158" fill="#D4A017">19 days</text>
+              </g>
+              <rect y="40" width="340" height="1" fill="#E9E4D8"/>
+              <rect y="66" width="340" height="1" fill="#E9E4D8"/>
+              <rect y="92" width="340" height="1" fill="#E9E4D8"/>
+              <rect y="118" width="340" height="1" fill="#E9E4D8"/>
+              <rect y="144" width="340" height="1" fill="#E9E4D8"/>
+              <circle cx="320" cy="180" r="14" fill="#2563EB"/>
+              <text x="320" y="184" font-family="Geist" font-size="12" fill="#fff" text-anchor="middle">↗</text>
+            </g>
+          </svg>
+        </div>
+        <div class="tile-body">
+          <h4>Inventory forecasting</h4>
+          <p>Predicts sell-through rates, stockouts, and purchase plans with confidence intervals.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION: BUILT FOR -->
+<section>
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <div class="eyebrow">Built for</div>
+        <h2 class="display">Sellers. <em>Agencies.</em> Both.</h2>
+      </div>
+      <p class="lede">TrackIQ fits where the work happens — whether you're scaling one brand into seven figures or running dashboards for fifty.</p>
+    </div>
+
+    <div class="audience-grid">
+      <div class="audience-cell">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 12l9-9 9 9"/><path d="M5 10v10h14V10"/><path d="M9 20v-6h6v6"/></svg>
+        <h3>$1M+ sellers</h3>
+        <p>Replace a fragmented stack of reporting tools with one always-on analyst. Scale without hiring a data team.</p>
+      </div>
+      <div class="audience-cell">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="9" cy="8" r="3"/><circle cx="17" cy="10" r="2.5"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/><path d="M14 20c0-2.6 2-5 5-5"/></svg>
+        <h3>Agencies managing 5+ brands</h3>
+        <p>Monitor 10, 30, or 50 brands without burning out. Per-client alerts and reporting on autopilot.</p>
+      </div>
+      <div class="audience-cell">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 18V6h16v12z"/><path d="M8 12h8M8 8h4M8 16h10"/></svg>
+        <h3>Brand managers &amp; media buyers</h3>
+        <p>Be the first to know when ROAS drops, Buy Box slips, or a listing gets suppressed. Act while it still matters.</p>
+      </div>
+    </div>
+
+    <div class="testimonials">
+      <figure class="testimonial">
+        <blockquote>"TrackIQ isn't just another reporting tool — it's like having a business analyst on call 24/7. It replaced hours of manual work every week and surfaces insights I didn't even know to look for. I feel more in control of my business than ever."</blockquote>
+        <figcaption class="who">
+          <div class="t-avatar" style="background: linear-gradient(135deg,#8AA9D0,#4C6E99)"></div>
+          <div>
+            <strong>Cole Hartmann</strong>
+            <span>8-figure Amazon seller · KettleCo.</span>
+          </div>
+        </figcaption>
+      </figure>
+      <figure class="testimonial dark">
+        <blockquote>"Before TrackIQ, our team spent hours building client reports and reacting to problems too late. Now we catch trends days earlier and walk into client calls with answers — not excuses. It's completely changed how we work."</blockquote>
+        <figcaption class="who">
+          <div class="t-avatar" style="background: linear-gradient(135deg,#D4A017,#8A6A0F)"></div>
+          <div>
+            <strong>Priya Ramanathan</strong>
+            <span style="color:#9A9587">Director of Strategy, Northfield Agency</span>
+          </div>
+        </figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<!-- BIG CTA -->
+<section>
+  <div class="container">
+    <div class="cta-big">
+      <div class="cta-copy">
+        <div>
+          <div class="eyebrow">Ready when you are</div>
+          <h2 class="display" style="margin-top:18px">Stop managing dashboards. <em>Start growing revenue.</em></h2>
+          <ul class="cta-points">
+            <li>Ask Aria anything, in plain English — and get answers grounded in your own Amazon data, in seconds.</li>
+            <li>See what's actually driving revenue — and what's quietly draining it — with Incremental Revenue Optimization.</li>
+            <li>Get WBRs, anomaly alerts, and weekly insights delivered automatically. For your team, your boss, your clients.</li>
+          </ul>
+        </div>
+        <div style="display:flex; gap:12px;">
+          <a href="plans-and-pricing.html" class="btn btn-accent">Compare plans &amp; pricing</a>
+          <a href="contact.html" class="btn btn-link btn-arrow">Talk to us</a>
+        </div>
+      </div>
+      <div class="cta-art">
+        <div class="dashboard-card" style="width:100%; max-width:440px; transform: rotate(-2deg);">
+          <div class="dash-head">
+            <div style="display:flex; align-items:center; gap:10px;">
+              <div style="width:22px; height:22px; border-radius:5px; background:var(--accent); display:flex; align-items:center; justify-content:center; color:#fff; font-size:10px; font-weight:600; font-family:var(--font-mono)">T</div>
+              <div class="dash-title" style="font-size:14px">Dashboard Overview</div>
+            </div>
+            <div class="dash-brand-pill">Your Brand</div>
+          </div>
+          <div class="kpis" style="grid-template-columns: repeat(2, 1fr);">
+            <div class="kpi">
+              <div class="kpi-label">Total Sales</div>
+              <div class="kpi-val">$45,000<small>.20</small></div>
+            </div>
+            <div class="kpi" style="border-right:none">
+              <div class="kpi-label">Ad Spend</div>
+              <div class="kpi-val">$10,500<small>.00</small></div>
+            </div>
+          </div>
+          <div style="padding:16px">
+            <div style="font-size:13px; font-weight:500; margin-bottom:8px">Sales Performance Trend</div>
+            <svg viewBox="0 0 300 120" width="100%" height="120" preserveAspectRatio="none">
+              <defs>
+                <linearGradient id="ag2" x1="0" x2="0" y1="0" y2="1">
+                  <stop offset="0" stop-color="#A78BFA"/><stop offset="1" stop-color="#6D54D1"/>
+                </linearGradient>
+              </defs>
+              <g fill="url(#ag2)">
+                <rect x="10" y="60" width="10" height="50" rx="1.5"/>
+                <rect x="30" y="40" width="10" height="70" rx="1.5"/>
+                <rect x="50" y="30" width="10" height="80" rx="1.5"/>
+                <rect x="70" y="55" width="10" height="55" rx="1.5"/>
+                <rect x="90" y="20" width="10" height="90" rx="1.5"/>
+                <rect x="110" y="45" width="10" height="65" rx="1.5"/>
+                <rect x="130" y="25" width="10" height="85" rx="1.5"/>
+                <rect x="150" y="60" width="10" height="50" rx="1.5"/>
+                <rect x="170" y="35" width="10" height="75" rx="1.5"/>
+                <rect x="190" y="15" width="10" height="95" rx="1.5"/>
+                <rect x="210" y="50" width="10" height="60" rx="1.5"/>
+                <rect x="230" y="40" width="10" height="70" rx="1.5"/>
+                <rect x="250" y="25" width="10" height="85" rx="1.5"/>
+                <rect x="270" y="35" width="10" height="75" rx="1.5"/>
+              </g>
+              <path d="M10 50 C 60 30, 120 25, 180 40 S 260 20, 290 30" stroke="#2563EB" stroke-width="2" fill="none"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer id="contact">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="logo">{ <b>TRACKIQ</b> }</div>
+        <p>The AI Business Analyst for Amazon sellers &amp; agencies. Built in California, powered by your data.</p>
+        <div class="footer-badges">
+          <span>AMAZON ADS</span>
+          <span>AMZ VERIFIED</span>
+          <span>SOC 2</span>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h5>Platform</h5>
+        <ul>
+          <li><a href="meet-your-ai-agent.html">Meet Your AI Agent</a></li>
+          <li><a href="how-it-works.html">How it Works</a></li>
+          <li><a href="plans-and-pricing.html">Plans &amp; Pricing</a></li>
+          <li><a href="contact.html">Contact Us</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>MCP <span style="font-family:var(--font-mono); font-size:9px; letter-spacing:.1em; background:var(--teal); color:#fff; padding:1px 5px; border-radius:3px; margin-left:6px; vertical-align:1px;">NEW</span></h5>
+        <ul>
+          <li><a href="mcp.html">MCP Overview</a></li>
+          <li><a href="mcp-pricing.html">MCP Pricing</a></li>
+          <li><a href="mcp-tools.html">MCP Tools</a></li>
+          <li><a href="mcp-install.html">Install Guide</a></li>
+          <li><a href="#">Documentation</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>More</h5>
+        <ul>
+          <li><a href="#">Roadmap</a></li>
+          <li><a href="#">Help Desk</a></li>
+          <li><a href="#">Affiliate Program</a></li>
+          <li><a href="#">Register</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Social</h5>
+        <ul>
+          <li><a href="#">LinkedIn</a></li>
+          <li><a href="#">Twitter (X)</a></li>
+          <li><a href="#">YouTube</a></li>
+          <li><a href="#">Substack</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Legal</h5>
+        <ul>
+          <li><a href="#">Privacy policy</a></li>
+          <li><a href="#">Terms &amp; conditions</a></li>
+          <li><a href="#">Data processing</a></li>
+          <li><a href="#">Status</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div>© 2026 TrackIQ. All rights reserved.</div>
+      <div>Made for Amazon sellers &amp; agencies.</div>
+    </div>
+  </div>
+</footer>
+
+<!-- TWEAKS -->
+<button class="tweaks-toggle" id="tweaksToggle">Tweaks</button>
+<aside class="tweaks-panel" id="tweaksPanel">
+  <h4>Tweaks <button id="tweaksClose" style="background:none; border:none; cursor:pointer; color:var(--muted); font-size:14px; line-height:1;">✕</button></h4>
+  <div class="tweaks-row">
+    <label>Palette</label>
+    <div class="tweaks-opts" data-key="palette">
+      <button class="tweaks-opt" data-val="warm">Warm</button>
+      <button class="tweaks-opt" data-val="cool">Cool slate</button>
+      <button class="tweaks-opt" data-val="white">Pure white</button>
+    </div>
+  </div>
+  <div class="tweaks-row">
+    <label>Accent</label>
+    <div class="tweaks-opts" data-key="accent">
+      <button class="tweaks-opt" data-val="blue">Blue</button>
+      <button class="tweaks-opt" data-val="indigo">Indigo</button>
+      <button class="tweaks-opt" data-val="green">Forest</button>
+    </div>
+  </div>
+  <div class="tweaks-row">
+    <label>Grain overlay</label>
+    <div class="tweaks-opts" data-key="showGrainOverlay">
+      <button class="tweaks-opt" data-val="true">On</button>
+      <button class="tweaks-opt" data-val="false">Off</button>
+    </div>
+  </div>
+</aside>
+
+<script>
+  // Nav scroll state
+  const nav = document.getElementById('nav');
+  const onScroll = () => { nav.classList.toggle('scrolled', window.scrollY > 8); };
+  window.addEventListener('scroll', onScroll, { passive: true }); onScroll();
+
+  // Apply tweaks on load
+  const applyTweaks = (t) => {
+    document.documentElement.dataset.palette = t.palette;
+    document.documentElement.dataset.accent = t.accent;
+    document.documentElement.dataset.grain = t.showGrainOverlay ? 'on' : 'off';
+    // sync button states
+    document.querySelectorAll('.tweaks-opts').forEach(row => {
+      const key = row.dataset.key;
+      row.querySelectorAll('.tweaks-opt').forEach(btn => {
+        btn.classList.toggle('active', String(t[key]) === btn.dataset.val);
+      });
+    });
+  };
+  applyTweaks(TWEAKS);
+
+  // Edit-mode protocol
+  let editModeOn = false;
+  window.addEventListener('message', (e) => {
+    const d = e.data || {};
+    if (d.type === '__activate_edit_mode') {
+      editModeOn = true;
+      document.getElementById('tweaksToggle').style.display = 'inline-flex';
+    } else if (d.type === '__deactivate_edit_mode') {
+      editModeOn = false;
+      document.getElementById('tweaksToggle').style.display = 'none';
+      document.getElementById('tweaksPanel').classList.remove('open');
+    }
+  });
+  window.parent.postMessage({type: '__edit_mode_available'}, '*');
+
+  // Toggle panel
+  document.getElementById('tweaksToggle').addEventListener('click', () => {
+    document.getElementById('tweaksPanel').classList.toggle('open');
+  });
+  document.getElementById('tweaksClose').addEventListener('click', () => {
+    document.getElementById('tweaksPanel').classList.remove('open');
+  });
+
+  // Click handlers
+  document.querySelectorAll('.tweaks-opts').forEach(row => {
+    row.addEventListener('click', (e) => {
+      const btn = e.target.closest('.tweaks-opt'); if (!btn) return;
+      const key = row.dataset.key;
+      let val = btn.dataset.val;
+      if (val === 'true' || val === 'false') val = (val === 'true');
+      TWEAKS[key] = val;
+      applyTweaks(TWEAKS);
+      window.parent.postMessage({type: '__edit_mode_set_keys', edits: {[key]: val}}, '*');
+    });
+  });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,602 @@
+<!doctype html>
+<html lang="en" data-palette="warm" data-accent="blue" data-grain="on">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>How it Works · TrackIQ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@300;400;500;600;700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#FBF9F4;--bg-alt:#F3EFE6;--bg-deep:#ECE6D6;--surface:#fff;
+  --ink:#0E1116;--ink-2:#2A2F38;--muted:#6E7582;
+  --hair:#E9E4D8;--hair-strong:#D9D2BF;
+  --accent:#2563EB;--accent-ink:#1E3A8A;--accent-pale:#F2F6FF;--accent-soft:#DCE6FB;
+  --ok:#15803D;--warn:#B45309;--err:#B91C1C;
+  --radius:14px;--radius-lg:22px;
+  --font-sans:"Geist",system-ui,sans-serif;--font-serif:"Instrument Serif",serif;--font-mono:"Geist Mono",monospace;
+}
+*{box-sizing:border-box}html,body{margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font-family:var(--font-sans);font-size:17px;line-height:1.55;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}img,svg{display:block;max-width:100%}
+.container{max-width:1240px;margin:0 auto;padding:0 28px}
+.container-narrow{max-width:960px;margin:0 auto;padding:0 28px}
+.grain{position:fixed;inset:0;pointer-events:none;z-index:999;opacity:.35;mix-blend-mode:multiply;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.08 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>")}
+
+.eyebrow{font-family:var(--font-mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);display:inline-flex;align-items:center;gap:10px}
+.eyebrow::before{content:"";width:22px;height:1px;background:var(--ink);opacity:.7}
+h1,h2,h3,h4{margin:0;letter-spacing:-.02em;font-weight:500}
+h1{font-family:var(--font-serif);font-weight:400;font-size:clamp(46px,6.2vw,86px);line-height:1.0}
+h1 em,h2 em,h3 em{font-style:italic;color:var(--accent-ink)}
+h2.display{font-family:var(--font-serif);font-weight:400;font-size:clamp(36px,4vw,56px);line-height:1.05}
+h3{font-size:22px;font-weight:500}
+h4{font-size:15px;font-weight:600;letter-spacing:-.005em}
+.lede{font-size:19px;line-height:1.5;color:var(--ink-2);max-width:58ch}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:12px 18px;border-radius:999px;font-weight:500;font-size:15px;border:1px solid transparent;transition:transform .2s}
+.btn:hover{transform:translateY(-1px)}
+.btn-primary{background:var(--ink);color:#fff}
+.btn-accent{background:var(--accent);color:#fff}
+.btn-ghost{border-color:var(--hair-strong)}
+.btn-link{border-bottom:1px solid currentColor;padding-bottom:2px;border-radius:0}
+.btn-arrow::after{content:"→";margin-left:2px;transition:transform .2s}
+.btn-arrow:hover::after{transform:translateX(3px)}
+
+/* NAV */
+.nav{position:sticky;top:0;z-index:50;background:color-mix(in srgb,var(--bg) 82%,transparent);backdrop-filter:blur(14px);border-bottom:1px solid var(--hair)}
+.nav-inner{display:flex;align-items:center;justify-content:space-between;padding:18px 0}
+.logo{font-family:var(--font-mono);font-size:16px;font-weight:500}.logo b{color:var(--accent);font-weight:500}
+.nav-links{display:flex;gap:28px}.nav-links a{font-size:14.5px;color:var(--ink-2)}.nav-links a[aria-current]{color:var(--ink);font-weight:500}
+.nav-cta{display:flex;gap:10px}
+
+section{padding:96px 0}
+section.tight{padding:64px 0}
+
+/* HERO */
+.hero{padding:72px 0 60px}
+.hero-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:72px;align-items:end}
+.hero h1{max-width:14ch;margin-bottom:28px}
+.hero .lede{margin-bottom:32px}
+.hero-cta{display:flex;gap:14px;flex-wrap:wrap}
+.hero-stats{display:grid;grid-template-columns:1fr 1fr;gap:18px;padding:24px;border:1px solid var(--hair-strong);border-radius:var(--radius-lg);background:linear-gradient(135deg,var(--accent-pale),transparent)}
+.hs-num{font-family:var(--font-serif);font-style:italic;font-size:44px;color:var(--accent-ink);line-height:1}
+.hs-lbl{color:var(--muted);font-size:13px;margin-top:4px;line-height:1.4}
+
+/* TIMELINE RAIL */
+.rail-wrap{position:relative;margin-top:20px;padding-left:56px}
+.rail-wrap::before{content:"";position:absolute;left:18px;top:8px;bottom:8px;width:1px;background:linear-gradient(to bottom,var(--hair-strong),var(--accent-soft) 40%,var(--hair-strong))}
+.rail-stop{position:relative;padding:20px 0}
+.rail-stop::before{content:"";position:absolute;left:-46px;top:28px;width:13px;height:13px;border-radius:999px;background:var(--bg);border:2px solid var(--accent);box-shadow:0 0 0 4px var(--bg)}
+.rail-time{font-family:var(--font-mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:4px}
+.rail-title{font-weight:500;font-size:16.5px;margin-bottom:2px}
+.rail-desc{color:var(--muted);font-size:14px;line-height:1.55}
+
+/* STEPS */
+.steps{margin-top:56px}
+.step{display:grid;grid-template-columns:120px 1.1fr 1fr;gap:48px;padding:56px 0;border-top:1px solid var(--hair);align-items:start}
+.step:last-child{border-bottom:1px solid var(--hair)}
+.step-num{font-family:var(--font-serif);font-style:italic;font-size:84px;color:var(--accent-ink);line-height:.9}
+.step-num-sub{font-family:var(--font-mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-top:8px}
+.step h3{margin-bottom:14px;font-size:26px;letter-spacing:-.015em}
+.step-body > p{color:var(--ink-2);margin:0 0 18px;font-size:16px;max-width:48ch}
+.step-checks{list-style:none;padding:0;margin:0 0 22px;display:grid;gap:10px}
+.step-checks li{display:flex;gap:10px;font-size:14.5px;color:var(--ink-2);line-height:1.5}
+.step-checks li::before{content:"";flex:0 0 16px;height:16px;margin-top:3px;border-radius:999px;background:var(--accent-pale);border:1.5px solid var(--accent);background-image:radial-gradient(circle,var(--accent) 2px,transparent 2.5px)}
+.step-meta{display:flex;gap:18px;flex-wrap:wrap;padding-top:16px;border-top:1px dashed var(--hair-strong);font-size:13px;color:var(--muted)}
+.step-meta b{color:var(--ink);font-weight:500;display:block;font-family:var(--font-mono);font-size:12px}
+
+/* Step visual "card" */
+.sv{background:var(--surface);border:1px solid var(--hair);border-radius:var(--radius);overflow:hidden;box-shadow:0 1px 0 rgba(0,0,0,.02),0 20px 40px -30px rgba(0,0,0,.12)}
+.sv-head{display:flex;justify-content:space-between;align-items:center;padding:14px 18px;border-bottom:1px solid var(--hair);background:var(--bg-alt)}
+.sv-head-l{display:flex;align-items:center;gap:10px;font-family:var(--font-mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.sv-dot{width:8px;height:8px;border-radius:999px;background:var(--ok);box-shadow:0 0 0 3px color-mix(in srgb,var(--ok) 22%,transparent)}
+.sv-body{padding:20px}
+
+/* Connection rows (step 1) */
+.conn-row{display:grid;grid-template-columns:24px 1fr auto;gap:12px;align-items:center;padding:11px 0;border-bottom:1px solid var(--hair);font-size:14px}
+.conn-row:last-child{border-bottom:none}
+.conn-ico{width:24px;height:24px;border-radius:6px;background:var(--bg-alt);border:1px solid var(--hair);display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:10px;color:var(--muted);font-weight:600}
+.conn-name{font-weight:500}
+.conn-sub{color:var(--muted);font-size:12px;margin-top:2px}
+.conn-pill{font-family:var(--font-mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;padding:3px 8px;border-radius:999px}
+.conn-pill.ok{background:color-mix(in srgb,var(--ok) 12%,transparent);color:var(--ok)}
+.conn-pill.wait{background:color-mix(in srgb,var(--warn) 15%,transparent);color:var(--warn)}
+
+/* Slack preview (step 2) */
+.slack{font-family:var(--font-sans);font-size:13.5px}
+.slack-head{display:flex;align-items:center;gap:8px;padding-bottom:10px;border-bottom:1px solid var(--hair);margin-bottom:14px}
+.slack-ch{font-weight:600;font-size:14px}.slack-ch::before{content:"# ";color:var(--muted)}
+.slack-sub{color:var(--muted);font-size:11.5px}
+.slack-msg{display:grid;grid-template-columns:28px 1fr;gap:10px;padding:6px 0}
+.slack-av{width:28px;height:28px;border-radius:6px;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:600;font-size:11px;font-family:var(--font-mono)}
+.slack-av.u{background:var(--ink-2)}
+.slack-name{font-weight:600;font-size:13px}.slack-name span{font-weight:400;color:var(--muted);font-size:11px;margin-left:6px;font-family:var(--font-mono)}
+.slack-text{color:var(--ink-2);line-height:1.5;font-size:13.5px}
+.slack-text code{font-family:var(--font-mono);font-size:12px;background:var(--bg-alt);padding:1px 5px;border-radius:3px}
+
+/* Today ticker (step 3) */
+.ticker-row{display:grid;grid-template-columns:64px 18px 1fr;gap:12px;padding:10px 0;border-bottom:1px solid var(--hair);font-size:13.5px;align-items:start}
+.ticker-row:last-child{border:none}
+.ticker-time{font-family:var(--font-mono);font-size:11.5px;color:var(--muted)}
+.ticker-dot{width:8px;height:8px;border-radius:999px;margin-top:6px}
+.ticker-dot.a{background:var(--err)}.ticker-dot.b{background:var(--accent)}.ticker-dot.c{background:var(--ok)}.ticker-dot.d{background:var(--warn)}
+.ticker-title{font-weight:500;font-size:13.5px;color:var(--ink)}
+.ticker-sub{color:var(--muted);font-size:12px;margin-top:1px}
+
+/* ARCHITECTURE DIAGRAM */
+.arch{background:var(--bg-alt);border:1px solid var(--hair);border-radius:var(--radius-lg);padding:56px}
+.arch-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;align-items:stretch}
+.arch-col{display:flex;flex-direction:column;gap:12px}
+.arch-col h4{font-size:11px;font-family:var(--font-mono);letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:4px}
+.arch-card{background:#fff;border:1px solid var(--hair);border-radius:var(--radius);padding:14px 16px;font-size:13.5px}
+.arch-card b{font-weight:500;display:block;margin-bottom:2px}
+.arch-card span{color:var(--muted);font-size:12px}
+.arch-col.mid{background:linear-gradient(180deg,var(--accent-pale),transparent);border:1px dashed var(--accent);border-radius:var(--radius-lg);padding:18px}
+.arch-col.mid .arch-card{background:#fff;border-color:var(--accent-soft)}
+.arch-arrows{display:flex;justify-content:space-between;margin-top:16px;color:var(--muted);font-family:var(--font-mono);font-size:11px;letter-spacing:.1em}
+.arch-arrows span::before{content:"→ ";color:var(--accent)}
+
+/* INTEGRATIONS */
+.int-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:40px}
+.int{background:var(--surface);border:1px solid var(--hair);border-radius:var(--radius);padding:22px 22px 20px;display:flex;flex-direction:column;gap:10px;transition:border-color .2s}
+.int:hover{border-color:var(--accent-soft)}
+.int-top{display:flex;justify-content:space-between;align-items:center}
+.int-ico{width:36px;height:36px;border-radius:10px;background:var(--bg-alt);border:1px solid var(--hair);display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:13px;font-weight:600;color:var(--ink-2)}
+.int-tag{font-family:var(--font-mono);font-size:10px;color:var(--accent);letter-spacing:.12em;text-transform:uppercase}
+.int-head{font-weight:600;font-size:15.5px;margin-top:2px}
+.int-sub{color:var(--muted);font-size:13px;margin:0;line-height:1.5}
+.int-fields{display:flex;flex-wrap:wrap;gap:5px;margin-top:6px}
+.int-fields span{font-family:var(--font-mono);font-size:10.5px;color:var(--ink-2);background:var(--bg-alt);border:1px solid var(--hair);padding:2px 7px;border-radius:4px}
+
+/* DATA FLOW */
+.flow{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center;margin-top:48px}
+.flow-list{display:grid;gap:18px}
+.flow-step{display:grid;grid-template-columns:44px 1fr;gap:16px;align-items:start}
+.flow-num{width:44px;height:44px;border-radius:12px;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-weight:600;font-size:14px}
+.flow-num.alt{background:var(--bg-alt);color:var(--ink);border:1px solid var(--hair-strong)}
+.flow-title{font-weight:500;font-size:16px;margin-bottom:3px}
+.flow-desc{color:var(--muted);font-size:13.5px;line-height:1.55}
+
+/* SECURITY STRIP */
+.sec{background:var(--ink);color:#fff;border-radius:var(--radius-lg);padding:56px;display:grid;grid-template-columns:1fr 1.6fr;gap:48px;align-items:center}
+.sec h2{color:#fff;font-family:var(--font-serif);font-weight:400;font-size:44px;line-height:1.05}
+.sec h2 em{color:#BFDBFE}
+.sec p{color:#C8CFDA;font-size:15px;line-height:1.55;margin:18px 0 0;max-width:38ch}
+.sec-grid{display:grid;grid-template-columns:1fr 1fr;gap:2px;background:#222731;border-radius:var(--radius);overflow:hidden}
+.sec-item{background:var(--ink);padding:22px}
+.sec-item h4{color:#fff;font-size:13px;font-family:var(--font-mono);letter-spacing:.1em;text-transform:uppercase;color:#93C5FD;margin-bottom:8px}
+.sec-item p{color:#C8CFDA;font-size:13.5px;margin:0;line-height:1.5}
+
+/* COMPARISON: time to value */
+.ttv{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:32px}
+.ttv-col{border:1px solid var(--hair);border-radius:var(--radius);padding:28px;background:var(--surface)}
+.ttv-col.brand{background:var(--accent-pale);border-color:var(--accent-soft)}
+.ttv-label{font-family:var(--font-mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+.ttv-brand .ttv-label{color:var(--accent-ink)}
+.ttv-time{font-family:var(--font-serif);font-style:italic;font-size:40px;color:var(--ink);margin-bottom:4px}
+.ttv-col.brand .ttv-time{color:var(--accent-ink)}
+.ttv-sub{color:var(--muted);font-size:13.5px;margin-bottom:16px}
+.ttv-list{list-style:none;padding:0;margin:0;display:grid;gap:8px;font-size:13.5px;color:var(--ink-2)}
+.ttv-list li{padding-left:18px;position:relative}
+.ttv-list li::before{content:"✓";position:absolute;left:0;color:var(--accent)}
+
+/* FAQ */
+.faq{max-width:860px;margin:40px auto 0}
+.faq details{border-top:1px solid var(--hair);padding:22px 0}
+.faq details:last-child{border-bottom:1px solid var(--hair)}
+.faq summary{list-style:none;cursor:pointer;font-size:18px;font-weight:500;display:flex;justify-content:space-between;align-items:center;gap:16px}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"+";font-family:var(--font-serif);font-style:italic;font-size:28px;color:var(--accent);transition:transform .3s}
+.faq details[open] summary::after{content:"−"}
+.faq p{color:var(--ink-2);font-size:15.5px;margin:14px 0 0;line-height:1.6;max-width:70ch}
+
+/* CLOSE */
+.close{text-align:center;background:var(--bg-alt);border:1px solid var(--hair);border-radius:var(--radius-lg);padding:72px 40px}
+.close h2{max-width:20ch;margin:14px auto 18px}
+.close-cta{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-top:24px}
+.close-fine{margin-top:22px;font-family:var(--font-mono);font-size:11.5px;letter-spacing:.08em;color:var(--muted)}
+
+/* FOOTER */
+footer{border-top:1px solid var(--hair);padding:60px 0 40px;margin-top:60px;color:var(--muted);font-size:14px}
+.footer-grid{display:flex;justify-content:space-between;flex-wrap:wrap;gap:20px}
+
+@media (max-width:980px){
+  .hero-grid{grid-template-columns:1fr;gap:40px}
+  .step{grid-template-columns:1fr}
+  .arch-grid,.flow,.sec,.int-grid,.ttv{grid-template-columns:1fr}
+  .arch,.sec{padding:32px}
+  .nav-links{display:none}
+}
+</style>
+</head>
+<body>
+<div class="grain"></div>
+
+<nav class="nav"><div class="container nav-inner">
+  <a href="index.html" class="logo">{ <b>TRACKIQ</b> }</a>
+  <div class="nav-links">
+    <a href="meet-your-ai-agent.html">Meet Your AI Agent</a>
+    <a href="how-it-works.html" aria-current="page">How it Works</a>
+    <a href="mcp.html" style="display:inline-flex;align-items:center;gap:6px">MCP <span style="font-family:var(--font-mono);font-size:9px;letter-spacing:.12em;background:#0D9488;color:#fff;padding:2px 6px;border-radius:3px">NEW</span></a>
+    <a href="plans-and-pricing.html">Plans &amp; Pricing</a>
+    <a href="contact.html">Contact</a>
+  </div>
+  <div class="nav-cta">
+    <a href="#" class="btn btn-ghost">Sign in</a>
+    <a href="plans-and-pricing.html" class="btn btn-primary">Get started</a>
+  </div>
+</div></nav>
+
+<!-- HERO -->
+<header class="container hero">
+  <div class="hero-grid">
+    <div>
+      <div class="eyebrow" style="margin-bottom:28px">How it works</div>
+      <h1>Connect. Activate. <em>Automate.</em></h1>
+      <p class="lede">Three steps to a fully operational AI ops team. No SQL. No BI stack. No implementation fees. Most brands are live in under 30 minutes; agencies in under a day.</p>
+      <div class="hero-cta">
+        <a href="plans-and-pricing.html" class="btn btn-accent">Start for $149/mo</a>
+        <a href="meet-your-ai-agent.html" class="btn btn-link btn-arrow">See what the agent does</a>
+      </div>
+    </div>
+    <div class="hero-stats">
+      <div><div class="hs-num">28m</div><div class="hs-lbl">Median brand onboarding, connect to first answer</div></div>
+      <div><div class="hs-num">1 day</div><div class="hs-lbl">Full agency portfolio live across all client accounts</div></div>
+      <div><div class="hs-num">15m</div><div class="hs-lbl">Polling cadence for anomalies, inventory &amp; Buy Box</div></div>
+      <div><div class="hs-num">0</div><div class="hs-lbl">Dashboards to learn. Zero new tabs in your week.</div></div>
+    </div>
+  </div>
+</header>
+
+<!-- TYPICAL ONBOARDING RAIL -->
+<section class="container tight">
+  <div class="eyebrow">A typical onboarding</div>
+  <h2 class="display" style="margin-top:18px;max-width:22ch">What the first <em>24 hours</em> actually look like.</h2>
+  <p class="lede" style="margin-top:14px">No kickoff calls stretched across four weeks. No Gantt chart. You authorize the connections, pick the channels, and the agent begins work the same day.</p>
+
+  <div class="rail-wrap" style="margin-top:36px">
+    <div class="rail-stop">
+      <div class="rail-time">T + 0 min · Sign-up</div>
+      <div class="rail-title">Create your workspace</div>
+      <div class="rail-desc">Add your brand or client list. Choose the KPIs that matter — revenue, TACoS, contribution margin, incremental ROAS.</div>
+    </div>
+    <div class="rail-stop">
+      <div class="rail-time">T + 8 min · OAuth</div>
+      <div class="rail-title">Authorize Amazon Ads &amp; Seller/Vendor Central</div>
+      <div class="rail-desc">One-click OAuth across every profile and marketplace. We handle token refresh, rate limits and region routing.</div>
+    </div>
+    <div class="rail-stop">
+      <div class="rail-time">T + 14 min · Backfill</div>
+      <div class="rail-title">90 days of history ingested</div>
+      <div class="rail-desc">Orders, ads, search terms, inventory, Buy Box history, AMC events. Enough context for the agent to baseline every SKU.</div>
+    </div>
+    <div class="rail-stop">
+      <div class="rail-time">T + 22 min · Channels</div>
+      <div class="rail-title">Invite the agent to Slack</div>
+      <div class="rail-desc">Pick the channels. Set severity thresholds. Decide which actions need human approval vs. autonomous execution.</div>
+    </div>
+    <div class="rail-stop">
+      <div class="rail-time">T + 28 min · First answer</div>
+      <div class="rail-title">Ask your first question in Slack</div>
+      <div class="rail-desc">&ldquo;What's dragging TACoS this week?&rdquo; The agent responds with ranked causes and recommended actions.</div>
+    </div>
+    <div class="rail-stop">
+      <div class="rail-time">Next Monday, 9:00 AM</div>
+      <div class="rail-title">Your first Weekly Business Review auto-posts</div>
+      <div class="rail-desc">Full narrative WBR in your chosen channel. By-brand, by-client, or rolled up. Delivered before your standup.</div>
+    </div>
+  </div>
+</section>
+
+<!-- THREE STEPS -->
+<section class="container">
+  <div class="eyebrow">The three steps</div>
+  <h2 class="display" style="margin-top:18px;max-width:18ch">Three steps. <em>Then it runs itself.</em></h2>
+
+  <div class="steps">
+
+    <!-- STEP 1 -->
+    <div class="step">
+      <div>
+        <div class="step-num">01</div>
+        <div class="step-num-sub">Connect</div>
+      </div>
+      <div class="step-body">
+        <h3>Link every Amazon surface in one flow</h3>
+        <p>Authorize TrackIQ to read from every Amazon API your team needs — Retail, Ads, DSP, AMC. The agent handles OAuth, API quotas, refresh cycles, and cross-marketplace joins so your data model is unified from minute one.</p>
+        <ul class="step-checks">
+          <li>Seller Central, Vendor Central, and Amazon Ads API</li>
+          <li>Sponsored Products, Brands, Display &amp; Amazon DSP</li>
+          <li>Amazon Marketing Cloud (AMC) — instance-level access</li>
+          <li>Inventory, Buy Box, Brand Analytics &amp; search query performance</li>
+          <li>Multi-marketplace: US, CA, MX, UK, EU, JP, AU supported at launch</li>
+        </ul>
+        <div class="step-meta">
+          <div><b>Time</b> 8–14 minutes</div>
+          <div><b>Who</b> Anyone with admin in Seller Central</div>
+          <div><b>Lift</b> Zero engineering work</div>
+        </div>
+      </div>
+      <div class="sv">
+        <div class="sv-head"><div class="sv-head-l"><div class="sv-dot"></div>Connections · KettleCo</div><div style="font-family:var(--font-mono);font-size:11px;color:var(--muted)">4 of 5 live</div></div>
+        <div class="sv-body">
+          <div class="conn-row"><div class="conn-ico">SC</div><div><div class="conn-name">Seller Central</div><div class="conn-sub">US · CA · MX · 18 brands</div></div><div class="conn-pill ok">Connected</div></div>
+          <div class="conn-row"><div class="conn-ico">AD</div><div><div class="conn-name">Amazon Ads API</div><div class="conn-sub">SP · SB · SD · 4 profiles</div></div><div class="conn-pill ok">Connected</div></div>
+          <div class="conn-row"><div class="conn-ico">AM</div><div><div class="conn-name">Amazon Marketing Cloud</div><div class="conn-sub">instance · us-east-1</div></div><div class="conn-pill ok">Connected</div></div>
+          <div class="conn-row"><div class="conn-ico">VC</div><div><div class="conn-name">Vendor Central</div><div class="conn-sub">PO &amp; chargebacks</div></div><div class="conn-pill ok">Connected</div></div>
+          <div class="conn-row"><div class="conn-ico">DS</div><div><div class="conn-name">Amazon DSP</div><div class="conn-sub">waiting on advertiser confirmation</div></div><div class="conn-pill wait">Authorizing</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 2 -->
+    <div class="step">
+      <div>
+        <div class="step-num">02</div>
+        <div class="step-num-sub">Activate</div>
+      </div>
+      <div class="step-body">
+        <h3>Drop the agent into the channels your team already uses</h3>
+        <p>No one has to learn a new product. The agent joins Slack, reads threads, answers questions inline, and posts alerts where your team already lives. Email and the TrackIQ web console are available for anyone who prefers them.</p>
+        <ul class="step-checks">
+          <li>Native Slack app with per-channel permissions and read-only modes</li>
+          <li>Email digests for execs and stakeholders who don't live in Slack</li>
+          <li>Web console for deep dives, filters, and exporting custom reports</li>
+          <li>Per-channel scoping: one channel per brand, or portfolio roll-ups</li>
+          <li>Approval workflows: choose which recommended actions need a human &ldquo;yes&rdquo;</li>
+        </ul>
+        <div class="step-meta">
+          <div><b>Time</b> 4–6 minutes</div>
+          <div><b>Who</b> Workspace admin for Slack install</div>
+          <div><b>Lift</b> One click, per channel</div>
+        </div>
+      </div>
+      <div class="sv">
+        <div class="sv-head"><div class="sv-head-l"><div class="sv-dot"></div>#trackiq-alerts</div><div style="font-family:var(--font-mono);font-size:11px;color:var(--muted)">2 members · pinned</div></div>
+        <div class="sv-body slack">
+          <div class="slack-head"><div><div class="slack-ch">trackiq-alerts</div><div class="slack-sub">Amazon ops signals for KettleCo · added by Maria</div></div></div>
+          <div class="slack-msg"><div class="slack-av u">MR</div><div><div class="slack-name">Maria R. <span>9:02 AM</span></div><div class="slack-text">TrackIQ — post WBRs here every Monday and any P1 alerts in real time.</div></div></div>
+          <div class="slack-msg"><div class="slack-av">T</div><div><div class="slack-name">TrackIQ <span>9:02 AM</span></div><div class="slack-text">Got it. WBRs land Mondays 9:00 local. P1 covers Buy Box loss, suppressions, revenue drops &gt; <code>12%</code> DoD, and OOS risk inside 7 days. Adjust anytime with <code>/trackiq settings</code>.</div></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 3 -->
+    <div class="step">
+      <div>
+        <div class="step-num">03</div>
+        <div class="step-num-sub">Automate</div>
+      </div>
+      <div class="step-body">
+        <h3>Let the agent run the cadence 24 / 7</h3>
+        <p>From day two, four analyst-grade jobs run continuously: anomaly detection, weekly reporting, incremental ad reallocation, and a conversational agent that answers Amazon questions in context. You set the thresholds; the agent does the work.</p>
+        <ul class="step-checks">
+          <li>Anomaly detection running every 15 minutes across every SKU</li>
+          <li>Weekly Business Reviews auto-posted every Monday, narrative-first</li>
+          <li>IRO reallocations proposed weekly, with approval workflows built in</li>
+          <li>Always-on Slack Q&amp;A — ask anything, get an answer with sources</li>
+          <li>Human-in-the-loop: approve, reject, or tweak any recommended action</li>
+        </ul>
+        <div class="step-meta">
+          <div><b>Cadence</b> 15-minute signal loop</div>
+          <div><b>Output</b> Ranked decisions, not charts</div>
+          <div><b>Control</b> You approve everything</div>
+        </div>
+      </div>
+      <div class="sv">
+        <div class="sv-head"><div class="sv-head-l"><div class="sv-dot"></div>Today · live feed</div><div style="font-family:var(--font-mono);font-size:11px;color:var(--muted)">4 events</div></div>
+        <div class="sv-body">
+          <div class="ticker-row"><div class="ticker-time">06:12</div><div class="ticker-dot a"></div><div><div class="ticker-title">Buy Box lost · B09XYZ</div><div class="ticker-sub">3P seller undercut $2.41 · reprice suggested</div></div></div>
+          <div class="ticker-row"><div class="ticker-time">08:00</div><div class="ticker-dot c"></div><div><div class="ticker-title">WBR posted to #trackiq-wbr</div><div class="ticker-sub">14 brands · revenue +6.8% WoW · TACoS 11.3%</div></div></div>
+          <div class="ticker-row"><div class="ticker-time">10:42</div><div class="ticker-dot b"></div><div><div class="ticker-title">IRO plan ready for review</div><div class="ticker-sub">$18.4K shift out of branded SP → Awareness SB · +$142K proj.</div></div></div>
+          <div class="ticker-row"><div class="ticker-time">14:18</div><div class="ticker-dot d"></div><div><div class="ticker-title">Listing suppression resolved</div><div class="ticker-sub">B07ABC image compliance · auto-opened case #82109</div></div></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- DATA FLOW -->
+<section class="container">
+  <div class="eyebrow">BUILT ON DATA YOU ALREADY OWN</div>
+  <h2 class="display" style="margin-top:18px;max-width:20ch">
+    <span style="display: inline-block; transform: translateX(-20px);">←</span> Every signal, every channel. <em style="color: var(--blue);">One source of truth.</em> <span style="display: inline-block; transform: translateX(20px);">→</span>
+  </h2>
+  <p class="lede" style="margin-top:14px">Aria reads every Amazon surface — Sponsored Ads, DSP, AMC, Retail, Inventory, Buy Box — and turns the firehose into clear, ranked decisions.</p>
+
+  <div class="flow">
+    <div class="flow-list">
+      <div class="flow-step"><div class="flow-num">1</div><div><div class="flow-title">Ingest</div><div class="flow-desc">Pull fresh data from Seller/Vendor Central, Ads API, DSP and AMC. Multi-region, multi-marketplace, rate-limit aware.</div></div></div>
+      <div class="flow-step"><div class="flow-num">2</div><div><div class="flow-title">Join &amp; enrich</div><div class="flow-desc">Stitch SKU, campaign, keyword, search-query and customer-journey tables into a unified economic model per ASIN.</div></div></div>
+      <div class="flow-step"><div class="flow-num">3</div><div><div class="flow-title">Baseline</div><div class="flow-desc">Seasonality-aware forecasts for every KPI on every SKU. The agent knows what &ldquo;normal&rdquo; looks like for Tuesday at 3 PM.</div></div></div>
+      <div class="flow-step"><div class="flow-num">4</div><div><div class="flow-title">Detect</div><div class="flow-desc">Statistical anomaly tests across revenue, ACOS, session share, Buy Box %, CVR and inventory cover days.</div></div></div>
+      <div class="flow-step"><div class="flow-num">5</div><div><div class="flow-title">Diagnose</div><div class="flow-desc">Cross-signal root-cause analysis. Not &ldquo;revenue is down&rdquo; — &ldquo;revenue is down because Buy Box loss on your top 3 ASINs reduced ad-eligibility by 41%.&rdquo;</div></div></div>
+      <div class="flow-step"><div class="flow-num">6</div><div><div class="flow-title">Rank &amp; route</div><div class="flow-desc">Economic Impact scoring ranks findings. High-impact items go to Slack; the rest stay in the weekly digest.</div></div></div>
+      <div class="flow-step"><div class="flow-num alt">7</div><div><div class="flow-title">Act (with approval)</div><div class="flow-desc">Reprice, reallocate budget, open a compliance case — with human approval by default, autonomous on your signal.</div></div></div>
+    </div>
+
+    <!-- ARCH DIAGRAM -->
+    <div class="arch">
+      <div class="arch-grid">
+        <div class="arch-col">
+          <h4>Sources</h4>
+          <div class="arch-card"><b>Seller / Vendor Central</b><span>Orders, inventory, Buy Box</span></div>
+          <div class="arch-card"><b>Amazon Ads API</b><span>SP · SB · SD · search terms</span></div>
+          <div class="arch-card"><b>Amazon DSP</b><span>Programmatic, audiences</span></div>
+          <div class="arch-card"><b>Amazon Marketing Cloud</b><span>Attribution, paths</span></div>
+          <div class="arch-card"><b>Brand Analytics</b><span>Share of voice, SQR</span></div>
+        </div>
+        <div class="arch-col mid">
+          <h4>TrackIQ engine</h4>
+          <div class="arch-card"><b>Unified data model</b><span>SKU · keyword · customer</span></div>
+          <div class="arch-card"><b>Anomaly detection</b><span>Every 15 minutes</span></div>
+          <div class="arch-card"><b>IRO incrementality</b><span>Patent-pending model</span></div>
+          <div class="arch-card"><b>Agentic reasoning</b><span>Diagnose · rank · act</span></div>
+        </div>
+        <div class="arch-col">
+          <h4>Delivery</h4>
+          <div class="arch-card"><b>Slack</b><span>Alerts · WBR · Q&amp;A</span></div>
+          <div class="arch-card"><b>Email digests</b><span>Execs &amp; stakeholders</span></div>
+          <div class="arch-card"><b>Web console</b><span>Deep dives · exports</span></div>
+          <div class="arch-card"><b>Actions</b><span>Reprice · budget · cases</span></div>
+        </div>
+      </div>
+      <div class="arch-arrows"><span>pull every 15 min</span><span>model &amp; rank</span><span>route by impact</span></div>
+    </div>
+
+  </div>
+</section>
+
+<!-- SECURITY -->
+<section class="container">
+  <div class="sec">
+    <div>
+      <div class="eyebrow" style="color:#93C5FD;margin-bottom:14px"><span style="background:#93C5FD;opacity:1"></span>Security &amp; governance</div>
+      <h2>Read-only by default. <em>You</em> own the actions.</h2>
+      <p>TrackIQ authenticates via Amazon's official OAuth flows — no stored passwords. Every write action is opt-in and logged. Your data is yours; you can export or delete it at any time.</p>
+    </div>
+    <div class="sec-grid">
+      <div class="sec-item"><h4>OAuth only</h4><p>Amazon LWA + Ads API OAuth. No credentials ever stored, tokens rotated automatically.</p></div>
+      <div class="sec-item"><h4>SOC 2 in progress</h4><p>Type II audit underway. Encryption in transit &amp; at rest (AES-256 / TLS 1.3).</p></div>
+      <div class="sec-item"><h4>Human-in-the-loop</h4><p>Every write action — reprice, budget shift, case open — requires approval unless you explicitly enable autonomy.</p></div>
+      <div class="sec-item"><h4>Export &amp; delete</h4><p>Full data export on request. 30-day deletion SLA on account close. No training on your data.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- INTEGRATIONS -->
+<section class="container">
+  <div class="eyebrow">Integrations</div>
+  <h2 class="display" style="margin-top:18px;max-width:20ch">Everywhere your data <em>already lives.</em></h2>
+  <p class="lede" style="margin-top:14px">First-party integrations with every Amazon API and the channels your team uses every day. More surfaces shipping monthly.</p>
+  <div class="int-grid">
+    <div class="int"><div class="int-top"><div class="int-ico">SC</div><div class="int-tag">Retail</div></div><div class="int-head">Amazon Seller Central</div><p class="int-sub">Orders, returns, pricing, Buy Box history, listing health, account health.</p><div class="int-fields"><span>orders</span><span>returns</span><span>buy_box</span><span>listings</span></div></div>
+    <div class="int"><div class="int-top"><div class="int-ico">VC</div><div class="int-tag">Retail</div></div><div class="int-head">Vendor Central</div><p class="int-sub">PO performance, chargebacks, shipment accuracy, cost &amp; margin sync.</p><div class="int-fields"><span>po</span><span>chargebacks</span><span>shipments</span></div></div>
+    <div class="int"><div class="int-top"><div class="int-ico">AD</div><div class="int-tag">Advertising</div></div><div class="int-head">Amazon Ads API</div><p class="int-sub">Sponsored Products, Brands, and Display across all profiles &amp; marketplaces.</p><div class="int-fields"><span>sp</span><span>sb</span><span>sd</span><span>search_terms</span></div></div>
+    <div class="int"><div class="int-top"><div class="int-ico">DS</div><div class="int-tag">Advertising</div></div><div class="int-head">Amazon DSP</div><p class="int-sub">Programmatic reach, audiences, off-Amazon inventory and OTT placements.</p><div class="int-fields"><span>programmatic</span><span>audiences</span><span>ott</span></div></div>
+    <div class="int"><div class="int-top"><div class="int-ico">AM</div><div class="int-tag">Measurement</div></div><div class="int-head">Amazon Marketing Cloud</div><p class="int-sub">Cross-channel attribution, path analysis, custom audience creation.</p><div class="int-fields"><span>attribution</span><span>paths</span><span>audiences</span></div></div>
+    <div class="int"><div class="int-top"><div class="int-ico">BA</div><div class="int-tag">Measurement</div></div><div class="int-head">Brand Analytics</div><p class="int-sub">Share of voice, search query performance, repeat purchase behavior.</p><div class="int-fields"><span>sov</span><span>sqr</span><span>repeat</span></div></div>
+    <div class="int"><div class="int-top"><div class="int-ico">SL</div><div class="int-tag">Delivery</div></div><div class="int-head">Slack</div><p class="int-sub">Native app with per-channel routing, approvals, and in-thread Q&amp;A.</p><div class="int-fields"><span>alerts</span><span>wbr</span><span>q&amp;a</span></div></div>
+    <div class="int"><div class="int-top"><div class="int-ico">EM</div><div class="int-tag">Delivery</div></div><div class="int-head">Email &amp; Digests</div><p class="int-sub">Daily or weekly rollups for execs and stakeholders who live outside Slack.</p><div class="int-fields"><span>daily</span><span>weekly</span><span>exec</span></div></div>
+    <div class="int"><div class="int-top"><div class="int-ico">WB</div><div class="int-tag">Delivery</div></div><div class="int-head">Web console</div><p class="int-sub">Deep dives, custom filters, portfolio views and CSV/Sheets exports.</p><div class="int-fields"><span>explore</span><span>export</span><span>portfolio</span></div></div>
+  </div>
+</section>
+
+<!-- TIME TO VALUE -->
+<section class="container">
+  <div class="eyebrow">Time to value</div>
+  <h2 class="display" style="margin-top:18px;max-width:22ch">Same product. <em>Tuned</em> for how you work.</h2>
+  <div class="ttv">
+    <div class="ttv-col brand">
+      <div class="ttv-label">If you're a brand</div>
+      <div class="ttv-time">≈ 30 minutes</div>
+      <div class="ttv-sub">From sign-up to the first actionable answer in Slack.</div>
+      <ul class="ttv-list">
+        <li>Single-workspace onboarding flow</li>
+        <li>Pre-tuned KPI defaults for DTC brands</li>
+        <li>One-click Slack install, one channel to start</li>
+        <li>First WBR the following Monday</li>
+        <li>Autonomy off by default — approve everything until you trust it</li>
+      </ul>
+    </div>
+    <div class="ttv-col">
+      <div class="ttv-label">If you're an agency</div>
+      <div class="ttv-time">≈ 1 day</div>
+      <div class="ttv-sub">Full client portfolio connected across marketplaces &amp; regions.</div>
+      <ul class="ttv-list">
+        <li>Multi-client portfolio workspace with per-client permissions</li>
+        <li>Bulk OAuth for up to 25 clients in a single session</li>
+        <li>Per-client Slack channels, branding, &amp; digest cadences</li>
+        <li>White-label WBR templates for client distribution</li>
+        <li>Rolled-up portfolio views for ops &amp; leadership</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="container tight">
+  <div class="eyebrow" style="justify-content:center;display:flex">Frequently asked</div>
+  <h2 class="display" style="text-align:center;margin-top:18px">Setup questions, <em>answered.</em></h2>
+  <div class="faq">
+    <details open>
+      <summary>Do I need a BI team, data warehouse, or SQL knowledge?</summary>
+      <p>No. TrackIQ is a finished product, not a BI tool. There's nothing to model, no schema to learn, no warehouse to stand up. You authorize your Amazon connections and the agent answers questions in plain English — in Slack, email, or the web console.</p>
+    </details>
+    <details>
+      <summary>What permissions does TrackIQ ask for?</summary>
+      <p>Read access by default across Seller/Vendor Central, Amazon Ads API, DSP and AMC. Write access (reprice, budget shifts, case opens) is separately scoped and off until you explicitly enable it. Every write action is logged and reversible.</p>
+    </details>
+    <details>
+      <summary>Is my data used to train anyone else's model?</summary>
+      <p>Never. Your data is isolated to your workspace and is never used to train foundation models or shared cross-tenant. You can export or delete everything at any time — we honor a 30-day deletion SLA on account close.</p>
+    </details>
+    <details>
+      <summary>How much history does the agent backfill?</summary>
+      <p>90 days of history for every surface by default. Brand and Agency plans can request extended backfill up to 24 months at no additional cost during onboarding.</p>
+    </details>
+    <details>
+      <summary>Can I run the agent across multiple marketplaces?</summary>
+      <p>Yes. US, CA, MX, UK, EU (5 marketplaces), JP and AU are supported at launch. The agent handles currency conversion and per-region seasonality in its baselines automatically.</p>
+    </details>
+    <details>
+      <summary>Do I have to switch off my existing ad tools or dashboards?</summary>
+      <p>No. TrackIQ runs alongside Helium 10, Perpetua, Skai, Amazon's own consoles — anything. Most customers keep their existing tools for execution and use TrackIQ for the analyst layer on top.</p>
+    </details>
+    <details>
+      <summary>What happens when the agent doesn't know something?</summary>
+      <p>It tells you. The agent is designed to say &ldquo;I don't have enough signal to answer that confidently&rdquo; and explain what data would resolve the question. Hallucinated answers are treated as incidents internally.</p>
+    </details>
+    <details>
+      <summary>Can I cancel or downgrade at any time?</summary>
+      <p>Yes — month-to-month on every plan, no annual contracts required. If you downgrade, your data and Slack integration stay intact; only retention windows and concurrent client slots change.</p>
+    </details>
+  </div>
+</section>
+
+<!-- CLOSE -->
+<section class="container">
+  <div class="close">
+    <div class="eyebrow" style="justify-content:center;display:flex">Ready when you are</div>
+    <h2 class="display">Thirty minutes from now, <em>your first answer</em> is in Slack.</h2>
+    <p class="lede" style="margin:20px auto 0">No implementation fees. No annual contracts. Cancel anytime.</p>
+    <div class="close-cta">
+      <a href="plans-and-pricing.html" class="btn btn-accent">See plans &amp; start</a>
+      <a href="meet-your-ai-agent.html" class="btn btn-ghost btn-arrow">Meet the agent first</a>
+    </div>
+    <div class="close-fine">28 min median onboarding · read-only by default · $149/mo to start</div>
+  </div>
+</section>
+
+<footer><div class="container footer-grid">
+  <div>© 2026 TrackIQ. AI-Powered eCommerce Intelligence.</div>
+  <div><a href="index.html">Home</a> · <a href="meet-your-ai-agent.html">Meet the agent</a> · <a href="plans-and-pricing.html">Pricing</a> · <a href="mcp.html" style="color:#0B6F65">MCP</a> · <a href="contact.html">Contact</a></div>
+</div></footer>
+<script>
+// Scroll animation for timeline
+const observerOptions = {
+  threshold: 0.2,
+  rootMargin: '0px 0px -100px 0px'
+};
+
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach((entry, index) => {
+    if (entry.isIntersecting) {
+      // Stagger the animation slightly
+      setTimeout(() => {
+        entry.target.classList.add('visible');
+      }, index * 80);
+      observer.unobserve(entry.target);
+    }
+  });
+}, observerOptions);
+
+// Observe all timeline items
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('.rail-stop').forEach(stop => {
+    observer.observe(stop);
+  });
+});
+</script>
+</body>
+</html>

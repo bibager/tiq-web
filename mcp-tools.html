@@ -1,0 +1,555 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>TrackIQ MCP — Tool catalog</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@300;400;500;600;700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="trackiq.css">
+
+<style>
+.page-hero {
+  padding: 72px 0 32px;
+}
+.page-hero h1 {
+  font-size: clamp(46px, 5.6vw, 76px);
+  margin-bottom: 22px;
+  max-width: 16ch;
+}
+.page-hero h1 em { color: var(--teal-ink); font-style: italic; }
+.page-hero-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  align-items: end;
+}
+@media (max-width: 900px) { .page-hero-grid { grid-template-columns: 1fr; gap: 24px; } }
+
+/* Filter pills + search */
+.filter-bar {
+  display: flex; align-items: center; gap: 24px;
+  padding: 20px 0;
+  border-top: 1px solid var(--hair);
+  border-bottom: 1px solid var(--hair);
+  background: var(--bg);
+  position: sticky; top: 64px;
+  z-index: 10;
+  backdrop-filter: blur(8px);
+}
+.filter-pills {
+  display: flex; gap: 6px; align-items: center; flex-wrap: wrap;
+}
+.filter-pill {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: .08em;
+  color: var(--muted);
+  padding: 6px 12px;
+  border: 1px solid var(--hair);
+  border-radius: 999px;
+  background: var(--surface);
+  cursor: pointer;
+  transition: all .15s;
+  text-transform: uppercase;
+}
+.filter-pill:hover { color: var(--ink); border-color: var(--ink); }
+.filter-pill.active {
+  background: var(--ink); color: #fff; border-color: var(--ink);
+}
+.filter-pill[data-filter="free"].active { background: var(--moss); border-color: var(--moss); }
+.filter-pill[data-filter="lite"].active { background: var(--accent); border-color: var(--accent); }
+.filter-pill[data-filter="plus"].active { background: var(--teal); border-color: var(--teal); }
+
+.filter-search {
+  margin-left: auto;
+  position: relative;
+}
+.filter-search input {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  padding: 8px 14px 8px 32px;
+  width: 240px;
+  border: 1px solid var(--hair);
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--ink);
+  outline: none;
+}
+.filter-search input:focus { border-color: var(--teal); }
+.filter-search::before {
+  content: ""; position: absolute; left: 12px; top: 50%;
+  width: 12px; height: 12px;
+  border: 1.5px solid var(--muted);
+  border-radius: 50%;
+  transform: translateY(-50%);
+}
+@media (max-width: 700px) {
+  .filter-search { display: none; }
+  .filter-bar { gap: 12px; padding: 14px 0; }
+}
+
+/* Tool catalog */
+.tool-section {
+  margin-bottom: 60px;
+}
+.tool-section h2 {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-size: 32px;
+  letter-spacing: -0.02em;
+  margin-bottom: 6px;
+}
+.tool-section .section-meta {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 24px;
+}
+
+.tools-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1px;
+  background: var(--hair);
+  border: 1px solid var(--hair);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+.tool-card {
+  background: var(--surface);
+  padding: 22px 26px;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 12px;
+  align-items: start;
+  transition: background .15s;
+}
+.tool-card:hover { background: var(--bg-alt); cursor: pointer; }
+.tool-card.hidden { display: none; }
+.tool-card .name {
+  font-family: var(--font-mono);
+  font-size: 13.5px;
+  color: var(--ink);
+  font-weight: 500;
+  margin-bottom: 4px;
+  display: flex; align-items: center; gap: 8px;
+}
+.tool-card .name .write-tag {
+  font-family: var(--font-mono);
+  font-size: 9px; letter-spacing: .14em;
+  background: var(--rust); color: #fff;
+  padding: 2px 6px; border-radius: 3px;
+}
+.tool-card .human {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 18px;
+  color: var(--ink);
+  margin-bottom: 4px;
+  letter-spacing: -0.01em;
+}
+.tool-card .desc {
+  color: var(--muted);
+  font-size: 13.5px;
+  line-height: 1.45;
+}
+.tool-tier {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: .14em;
+  padding: 3px 7px;
+  border-radius: 4px;
+  text-transform: uppercase;
+  white-space: nowrap;
+  flex: 0 0 auto;
+}
+.tool-tier.free { background: #E5F2EE; color: var(--moss); }
+.tool-tier.lite { background: var(--accent-pale); color: var(--accent-ink); }
+.tool-tier.plus { background: var(--teal); color: #fff; }
+
+@media (max-width: 800px) { .tools-grid { grid-template-columns: 1fr; } }
+
+/* Empty state */
+.empty {
+  padding: 60px;
+  text-align: center;
+  color: var(--muted);
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 22px;
+  display: none;
+}
+.empty.show { display: block; }
+</style>
+</head>
+<body>
+
+<div class="grain"></div>
+
+<nav class="nav" id="nav">
+  <div class="container nav-inner">
+    <a href="index.html" class="logo">{ <b>TRACKIQ</b> }</a>
+    <div class="nav-links">
+      <a href="meet-your-ai-agent.html">Platform</a>
+      <a href="mcp.html" class="active">MCP <span class="nav-new-pill">New</span></a>
+      <a href="plans-and-pricing.html">Pricing</a>
+      <a href="how-it-works.html">Resources</a>
+    </div>
+    <div class="nav-cta">
+      <a href="#" class="btn btn-ghost">Sign in</a>
+      <a href="mcp-pricing.html" class="btn btn-primary">Get started</a>
+    </div>
+  </div>
+</nav>
+
+<div class="subnav">
+  <div class="container subnav-inner">
+    <span class="subnav-mcp-label">TrackIQ MCP</span>
+    <a href="mcp.html">Overview</a>
+    <a href="mcp-pricing.html">Pricing</a>
+    <a href="mcp-tools.html" class="active">Tools</a>
+    <a href="mcp-install.html">Install</a>
+    <a href="#">Docs</a>
+    <a href="#">Security</a>
+  </div>
+</div>
+
+<header class="page-hero" data-screen-label="MCP Tools / Hero">
+  <div class="container">
+    <div class="page-hero-grid">
+      <div>
+        <div class="eyebrow no-rule" style="color:var(--teal-ink); margin-bottom: 22px;">
+          <span style="font-family:var(--font-mono); font-size:9px; letter-spacing:.12em; background:var(--teal); color:#fff; padding:2px 6px; border-radius:3px;">MCP</span>
+          16 tools
+        </div>
+        <h1>Every tool, <em>every tier.</em></h1>
+      </div>
+      <p class="lede">A complete catalog of what your AI assistant can read and do, organized by category. Tools become available as you upgrade — Free unlocks the basics, Plus unlocks everything including write actions.</p>
+    </div>
+  </div>
+</header>
+
+<div class="filter-bar" id="filterBar">
+  <div class="container" style="display: flex; align-items: center; gap: 24px; width: 100%;">
+    <div class="filter-pills">
+      <button class="filter-pill active" data-filter="all">All 16</button>
+      <button class="filter-pill" data-filter="free">Free</button>
+      <button class="filter-pill" data-filter="lite">Lite</button>
+      <button class="filter-pill" data-filter="plus">Plus</button>
+      <button class="filter-pill" data-filter="read">Read-only</button>
+      <button class="filter-pill" data-filter="write">Write actions</button>
+    </div>
+    <div class="filter-search">
+      <input type="text" id="toolSearch" placeholder="Search tools…" />
+    </div>
+  </div>
+</div>
+
+<section data-screen-label="MCP Tools / Catalog">
+  <div class="container">
+
+    <!-- Sales & Inventory -->
+    <div class="tool-section">
+      <h2>Sales &amp; Inventory</h2>
+      <div class="section-meta">4 tools · all available on Free</div>
+      <div class="tools-grid">
+        <div class="tool-card" data-tier="free" data-rw="read" data-name="get_sales sales orders revenue">
+          <div>
+            <div class="name">get_sales</div>
+            <div class="human">Sales by date and SKU</div>
+            <div class="desc">Daily revenue, units, and order count broken out by ASIN, parent SKU, or marketplace.</div>
+          </div>
+          <span class="tool-tier free">Free</span>
+        </div>
+        <div class="tool-card" data-tier="free" data-rw="read" data-name="get_orders shipping fulfillment">
+          <div>
+            <div class="name">get_orders</div>
+            <div class="human">Order detail lookup</div>
+            <div class="desc">Find specific orders by date range, status, or buyer-anonymized ID. Includes ship-by, fulfillment channel, and refunds.</div>
+          </div>
+          <span class="tool-tier free">Free</span>
+        </div>
+        <div class="tool-card" data-tier="free" data-rw="read" data-name="get_inventory stock fba">
+          <div>
+            <div class="name">get_inventory</div>
+            <div class="human">FBA inventory levels</div>
+            <div class="desc">On-hand, inbound, and reserved units per SKU per fulfillment center. Days-of-cover calculated automatically.</div>
+          </div>
+          <span class="tool-tier free">Free</span>
+        </div>
+        <div class="tool-card" data-tier="free" data-rw="read" data-name="get_returns refunds">
+          <div>
+            <div class="name">get_returns</div>
+            <div class="human">Returns &amp; refunds</div>
+            <div class="desc">Return reasons, rates, and SKU-level patterns over any date range up to your tier's lookback limit.</div>
+          </div>
+          <span class="tool-tier free">Free</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Advertising Read -->
+    <div class="tool-section">
+      <h2>Advertising — Read</h2>
+      <div class="section-meta">8 tools · 2 on Free, all 8 on Lite &amp; Plus</div>
+      <div class="tools-grid">
+        <div class="tool-card" data-tier="free" data-rw="read" data-name="get_campaigns roas spend">
+          <div>
+            <div class="name">get_campaigns</div>
+            <div class="human">Campaign performance</div>
+            <div class="desc">Spend, sales, ROAS, and ACoS by campaign across SP, SB, SD, and DSP.</div>
+          </div>
+          <span class="tool-tier free">Free</span>
+        </div>
+        <div class="tool-card" data-tier="free" data-rw="read" data-name="get_ad_groups">
+          <div>
+            <div class="name">get_ad_groups</div>
+            <div class="human">Ad group performance</div>
+            <div class="desc">Roll up keyword, target, and product performance by ad group within any campaign.</div>
+          </div>
+          <span class="tool-tier free">Free</span>
+        </div>
+        <div class="tool-card" data-tier="lite" data-rw="read" data-name="get_keywords bid">
+          <div>
+            <div class="name">get_keywords</div>
+            <div class="human">Keyword performance</div>
+            <div class="desc">Match type, bid, impressions, clicks, and conversion rate. Filter by ACoS thresholds.</div>
+          </div>
+          <span class="tool-tier lite">Lite</span>
+        </div>
+        <div class="tool-card" data-tier="lite" data-rw="read" data-name="get_search_terms wasted spend">
+          <div>
+            <div class="name">get_search_terms</div>
+            <div class="human">Search term report</div>
+            <div class="desc">What customers actually searched for — including wasted spend and negative-keyword candidates.</div>
+          </div>
+          <span class="tool-tier lite">Lite</span>
+        </div>
+        <div class="tool-card" data-tier="lite" data-rw="read" data-name="get_targeting product asin">
+          <div>
+            <div class="name">get_targeting</div>
+            <div class="human">Product &amp; ASIN targets</div>
+            <div class="desc">Performance of product, category, and audience targets in SP and SD campaigns.</div>
+          </div>
+          <span class="tool-tier lite">Lite</span>
+        </div>
+        <div class="tool-card" data-tier="lite" data-rw="read" data-name="get_placements">
+          <div>
+            <div class="name">get_placements</div>
+            <div class="human">Placement breakdown</div>
+            <div class="desc">Top of search, product page, and rest-of-search performance by campaign.</div>
+          </div>
+          <span class="tool-tier lite">Lite</span>
+        </div>
+        <div class="tool-card" data-tier="lite" data-rw="read" data-name="get_dsp display">
+          <div>
+            <div class="name">get_dsp</div>
+            <div class="human">DSP performance</div>
+            <div class="desc">Display campaign metrics, audience reach, and frequency for off-Amazon retargeting.</div>
+          </div>
+          <span class="tool-tier lite">Lite</span>
+        </div>
+        <div class="tool-card" data-tier="lite" data-rw="read" data-name="get_budget pacing">
+          <div>
+            <div class="name">get_budget_pacing</div>
+            <div class="human">Budget pacing</div>
+            <div class="desc">How fast each campaign is spending, projected end-of-day spend, and out-of-budget alerts.</div>
+          </div>
+          <span class="tool-tier lite">Lite</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Premium Data -->
+    <div class="tool-section">
+      <h2>Premium Data</h2>
+      <div class="section-meta">4 tools · Plus tier only</div>
+      <div class="tools-grid">
+        <div class="tool-card" data-tier="plus" data-rw="read" data-name="get_amc audiences attribution">
+          <div>
+            <div class="name">get_amc_audiences</div>
+            <div class="human">AMC audiences</div>
+            <div class="desc">Cross-channel attribution and audience overlap from Amazon Marketing Cloud, beyond the standard 90-day window.</div>
+          </div>
+          <span class="tool-tier plus">Plus</span>
+        </div>
+        <div class="tool-card" data-tier="plus" data-rw="read" data-name="get_buybox history">
+          <div>
+            <div class="name">get_buybox_history</div>
+            <div class="human">Buy Box history</div>
+            <div class="desc">Win rate, suppression events, and competitor pricing for any ASIN going back 24 months.</div>
+          </div>
+          <span class="tool-tier plus">Plus</span>
+        </div>
+        <div class="tool-card" data-tier="plus" data-rw="read" data-name="get_brand_analytics market share">
+          <div>
+            <div class="name">get_brand_analytics</div>
+            <div class="human">Brand analytics</div>
+            <div class="desc">Top search terms, click-share, and conversion-share by category. Identify gaps where competitors dominate.</div>
+          </div>
+          <span class="tool-tier plus">Plus</span>
+        </div>
+        <div class="tool-card" data-tier="plus" data-rw="read" data-name="get_market_share category">
+          <div>
+            <div class="name">get_market_share</div>
+            <div class="human">Category market share</div>
+            <div class="desc">Estimated category-level share over time — your brand vs. the top 10 ASINs in any category.</div>
+          </div>
+          <span class="tool-tier plus">Plus</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Write Actions -->
+    <div class="tool-section">
+      <h2>Write Actions</h2>
+      <div class="section-meta">4 tools · Plus tier only · always require explicit confirmation</div>
+      <div class="tools-grid">
+        <div class="tool-card" data-tier="plus" data-rw="write" data-name="set_bid keyword bidding">
+          <div>
+            <div class="name">set_bid <span class="write-tag">WRITE</span></div>
+            <div class="human">Update keyword bids</div>
+            <div class="desc">Raise, lower, or set keyword bids in bulk. Each call is sent to your AI assistant for confirmation before execution.</div>
+          </div>
+          <span class="tool-tier plus">Plus</span>
+        </div>
+        <div class="tool-card" data-tier="plus" data-rw="write" data-name="add_negative keyword">
+          <div>
+            <div class="name">add_negative_keyword <span class="write-tag">WRITE</span></div>
+            <div class="human">Add negative keywords</div>
+            <div class="desc">Add exact, phrase, or campaign-level negatives. Audit log maintained for 24 months.</div>
+          </div>
+          <span class="tool-tier plus">Plus</span>
+        </div>
+        <div class="tool-card" data-tier="plus" data-rw="write" data-name="set_budget pacing">
+          <div>
+            <div class="name">set_budget <span class="write-tag">WRITE</span></div>
+            <div class="human">Adjust campaign budgets</div>
+            <div class="desc">Daily and lifetime budget changes. Includes guardrails to prevent runaway spend.</div>
+          </div>
+          <span class="tool-tier plus">Plus</span>
+        </div>
+        <div class="tool-card" data-tier="plus" data-rw="write" data-name="pause_campaign">
+          <div>
+            <div class="name">pause_campaign <span class="write-tag">WRITE</span></div>
+            <div class="human">Pause or resume</div>
+            <div class="desc">Pause campaigns, ad groups, or specific keywords; resume at will. Reversible from the same conversation.</div>
+          </div>
+          <span class="tool-tier plus">Plus</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="empty" id="emptyState">No tools match your filter.</div>
+
+  </div>
+</section>
+
+<!-- Final CTA -->
+<section style="text-align: center; padding: 60px 0;">
+  <div class="container">
+    <p style="font-family: var(--font-serif); font-size: 24px; font-style: italic; color: var(--ink); margin-bottom: 24px;">
+      Need a tool we don't have yet?
+    </p>
+    <a href="#" class="btn btn-ghost btn-arrow">Request a tool</a>
+    <span style="margin: 0 12px; color: var(--hair-strong);">·</span>
+    <a href="mcp-install.html" class="btn btn-teal btn-arrow">Install free</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="logo">{ <b>TRACKIQ</b> }</div>
+        <p>The AI Business Analyst for Amazon sellers &amp; agencies. Built in California, powered by your data.</p>
+        <div class="footer-badges"><span>AMAZON ADS</span><span>AMZ VERIFIED</span><span>SOC 2</span></div>
+      </div>
+      <div class="footer-col"><h5>Platform</h5><ul>
+        <li><a href="meet-your-ai-agent.html">Meet Your AI Agent</a></li>
+        <li><a href="how-it-works.html">How it Works</a></li>
+        <li><a href="plans-and-pricing.html">Plans &amp; Pricing</a></li>
+        <li><a href="contact.html">Contact Us</a></li>
+      </ul></div>
+      <div class="footer-col"><h5>MCP <span style="font-family:var(--font-mono); font-size:9px; letter-spacing:.1em; background:var(--teal); color:#fff; padding:1px 5px; border-radius:3px; margin-left:6px; vertical-align:1px;">NEW</span></h5><ul>
+        <li><a href="mcp.html">MCP Overview</a></li>
+        <li><a href="mcp-pricing.html">MCP Pricing</a></li>
+        <li><a href="mcp-tools.html">MCP Tools</a></li>
+        <li><a href="mcp-install.html">Install Guide</a></li>
+        <li><a href="#">Documentation</a></li>
+      </ul></div>
+      <div class="footer-col"><h5>Resources</h5><ul>
+        <li><a href="#">Roadmap</a></li><li><a href="#">Help Desk</a></li><li><a href="#">Changelog</a></li><li><a href="#">Status</a></li>
+      </ul></div>
+      <div class="footer-col"><h5>Social</h5><ul>
+        <li><a href="#">LinkedIn</a></li><li><a href="#">Twitter (X)</a></li><li><a href="#">YouTube</a></li><li><a href="#">Substack</a></li>
+      </ul></div>
+      <div class="footer-col"><h5>Legal</h5><ul>
+        <li><a href="#">Privacy</a></li><li><a href="#">Terms</a></li><li><a href="#">Security</a></li>
+      </ul></div>
+    </div>
+    <div class="footer-bottom">
+      <div>© 2026 TrackIQ. All rights reserved.</div>
+      <div>Made for Amazon sellers &amp; agencies.</div>
+    </div>
+  </div>
+</footer>
+
+<script>
+const pills = document.querySelectorAll('.filter-pill');
+const cards = document.querySelectorAll('.tool-card');
+const search = document.getElementById('toolSearch');
+const empty = document.getElementById('emptyState');
+let activeFilter = 'all';
+
+function applyFilter() {
+  const q = (search.value || '').trim().toLowerCase();
+  let visible = 0;
+  cards.forEach(card => {
+    const tier = card.dataset.tier;
+    const rw = card.dataset.rw;
+    const name = card.dataset.name || '';
+
+    let show = true;
+    if (activeFilter === 'free') show = (tier === 'free');
+    else if (activeFilter === 'lite') show = (tier === 'free' || tier === 'lite');
+    else if (activeFilter === 'plus') show = true;
+    else if (activeFilter === 'read') show = (rw === 'read');
+    else if (activeFilter === 'write') show = (rw === 'write');
+
+    if (show && q) {
+      show = name.includes(q) || card.textContent.toLowerCase().includes(q);
+    }
+
+    card.classList.toggle('hidden', !show);
+    if (show) visible++;
+  });
+
+  // Show/hide empty sections
+  document.querySelectorAll('.tool-section').forEach(sec => {
+    const visibleInSection = sec.querySelectorAll('.tool-card:not(.hidden)').length;
+    sec.style.display = visibleInSection ? '' : 'none';
+  });
+
+  empty.classList.toggle('show', visible === 0);
+}
+
+pills.forEach(pill => {
+  pill.addEventListener('click', () => {
+    pills.forEach(p => p.classList.remove('active'));
+    pill.classList.add('active');
+    activeFilter = pill.dataset.filter;
+    applyFilter();
+  });
+});
+
+search.addEventListener('input', applyFilter);
+</script>
+
+</body>
+</html>

@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en" data-palette="warm" data-accent="blue" data-grain="on">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Contact · TrackIQ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@300;400;500;600;700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#FBF9F4;--bg-alt:#F3EFE6;--surface:#fff;--ink:#0E1116;--ink-2:#2A2F38;--muted:#6E7582;--hair:#E9E4D8;--hair-strong:#D9D2BF;--accent:#2563EB;--accent-ink:#1E3A8A;--accent-pale:#F2F6FF;--radius:14px;--radius-lg:22px;--font-sans:"Geist",system-ui,sans-serif;--font-serif:"Instrument Serif",serif;--font-mono:"Geist Mono",monospace}
+*{box-sizing:border-box}html,body{margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font-family:var(--font-sans);font-size:17px;line-height:1.55}
+a{color:inherit;text-decoration:none}
+.container{max-width:1240px;margin:0 auto;padding:0 28px}
+.grain{position:fixed;inset:0;pointer-events:none;z-index:999;opacity:.35;mix-blend-mode:multiply;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.08 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>")}
+.eyebrow{font-family:var(--font-mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);display:inline-flex;align-items:center;gap:10px}
+.eyebrow::before{content:"";width:22px;height:1px;background:var(--ink);opacity:.7}
+h1,h2,h3{margin:0;letter-spacing:-.02em;font-weight:500}
+h1{font-family:var(--font-serif);font-weight:400;font-size:clamp(46px,6vw,72px);line-height:1.02}h1 em{font-style:italic;color:var(--accent-ink)}
+.lede{font-size:19px;color:var(--ink-2);max-width:52ch}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:12px 18px;border-radius:999px;font-weight:500;font-size:15px;border:1px solid transparent}
+.btn-primary{background:var(--ink);color:#fff}.btn-accent{background:var(--accent);color:#fff}
+.btn-ghost{border-color:var(--hair-strong)}
+.nav{position:sticky;top:0;z-index:50;background:color-mix(in srgb,var(--bg) 82%,transparent);backdrop-filter:blur(14px);border-bottom:1px solid var(--hair)}
+.nav-inner{display:flex;align-items:center;justify-content:space-between;padding:18px 0}
+.logo{font-family:var(--font-mono);font-size:16px;font-weight:500}.logo b{color:var(--accent)}
+.nav-links{display:flex;gap:28px}.nav-links a{font-size:14.5px;color:var(--ink-2)}.nav-links a[aria-current]{color:var(--ink);font-weight:500}
+.nav-cta{display:flex;gap:10px}
+.page{display:grid;grid-template-columns:1fr 1fr;gap:60px;padding:80px 0;align-items:start}
+.form{background:var(--surface);border:1px solid var(--hair);border-radius:var(--radius-lg);padding:36px}
+.form label{display:block;font-size:12px;font-family:var(--font-mono);text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:6px;margin-top:18px}
+.form input,.form textarea,.form select{width:100%;padding:12px 14px;border:1px solid var(--hair-strong);border-radius:10px;font-family:var(--font-sans);font-size:15px;background:var(--bg);color:var(--ink)}
+.form textarea{min-height:120px;resize:vertical}
+.form button{margin-top:24px;width:100%;justify-content:center}
+.info h3{font-family:var(--font-serif);font-weight:400;font-size:26px;margin:28px 0 6px}
+.info p{color:var(--ink-2);margin:0 0 8px}.info a{border-bottom:1px solid currentColor}
+footer{border-top:1px solid var(--hair);padding:60px 0 40px;margin-top:60px;color:var(--muted);font-size:14px}
+.footer-grid{display:flex;justify-content:space-between;flex-wrap:wrap;gap:20px}
+@media (max-width:900px){.page{grid-template-columns:1fr}.nav-links{display:none}}
+</style>
+</head>
+<body>
+<div class="grain"></div>
+<nav class="nav"><div class="container nav-inner">
+  <a href="index.html" class="logo">{ <b>TRACKIQ</b> }</a>
+  <div class="nav-links">
+    <a href="meet-your-ai-agent.html">Meet Your AI Agent</a>
+    <a href="how-it-works.html">How it Works</a>
+    <a href="mcp.html" style="display:inline-flex;align-items:center;gap:6px">MCP <span style="font-family:var(--font-mono);font-size:9px;letter-spacing:.12em;background:#0D9488;color:#fff;padding:2px 6px;border-radius:3px">NEW</span></a>
+    <a href="plans-and-pricing.html">Plans &amp; Pricing</a>
+    <a href="contact.html" aria-current="page">Contact</a>
+  </div>
+  <div class="nav-cta">
+    <a href="#" class="btn btn-ghost">Sign in</a>
+    <a href="plans-and-pricing.html" class="btn btn-primary">Get started</a>
+  </div>
+</div></nav>
+
+<main class="container page">
+  <div>
+    <div class="eyebrow" style="margin-bottom:22px">Talk to us</div>
+    <h1>Let's get <em>Aria</em> on your team.</h1>
+    <p class="lede" style="margin-top:22px">Tell us a bit about your setup — we'll route you to the right person, usually within one business day.</p>
+    <div class="info">
+      <h3>Sellers</h3><p>$1M+ Amazon brands. 30-min onboarding. <a href="plans-and-pricing.html">See pricing →</a></p>
+      <h3>Agencies</h3><p>Managing 5+ brands. Multi-brand console + white-label. <a href="plans-and-pricing.html">See agency tier →</a></p>
+      <h3>Support</h3><p>Existing customer? Email <a href="mailto:support@trackiq.com">support@trackiq.com</a> or ping Aria in Slack.</p>
+      <h3>Press &amp; partnerships</h3><p><a href="mailto:hello@trackiq.com">hello@trackiq.com</a></p>
+    </div>
+  </div>
+  <form class="form" onsubmit="event.preventDefault(); this.innerHTML='<div style=&quot;text-align:center;padding:40px 20px&quot;><h3 style=&quot;font-family:var(--font-serif);font-size:28px;font-weight:400;margin-bottom:10px&quot;>Got it — talk soon.</h3><p style=&quot;color:var(--muted);margin:0&quot;>We&rsquo;ll be in touch within one business day.</p></div>'">
+    <label>I'm a…</label>
+    <select>
+      <option>Amazon seller / brand</option>
+      <option>Agency managing multiple brands</option>
+      <option>Brand manager / media buyer</option>
+      <option>Press / partner</option>
+      <option>Other</option>
+    </select>
+    <label>Name</label><input required placeholder="Jane Doe"/>
+    <label>Work email</label><input required type="email" placeholder="jane@kettleco.com"/>
+    <label>Company</label><input placeholder="KettleCo."/>
+    <label>Monthly Amazon revenue</label>
+    <select>
+      <option>$1M – $5M</option>
+      <option>$5M – $20M</option>
+      <option>$20M – $100M</option>
+      <option>$100M+</option>
+      <option>Agency (multi-brand)</option>
+    </select>
+    <label>Anything Aria should know?</label>
+    <textarea placeholder="Tell us about your current reporting stack, pain points, or goals."></textarea>
+    <button class="btn btn-accent">Send message</button>
+  </form>
+</main>
+
+<footer><div class="container footer-grid">
+  <div>© 2026 TrackIQ. AI-Powered eCommerce Intelligence.</div>
+  <div><a href="index.html">Home</a> · <a href="meet-your-ai-agent.html">Meet Aria</a> · <a href="how-it-works.html">How it Works</a> · <a href="plans-and-pricing.html">Pricing</a> · <a href="mcp.html" style="color:#0B6F65">MCP</a></div>
+</div></footer>
+</body>
+</html>
