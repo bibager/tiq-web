@@ -223,6 +223,111 @@
 }
 .final-cta h2 em { color: var(--teal-ink); font-style: italic; }
 .final-cta .btn { padding: 14px 24px; font-size: 16px; }
+
+/* Add-on calculator */
+.addon-calc {
+  max-width: 720px;
+  margin: 0 auto;
+  background: var(--surface);
+  border: 1px solid var(--hair);
+  border-radius: var(--radius-lg);
+  padding: 40px 44px;
+  box-shadow: var(--shadow-md);
+}
+.addon-calc-display {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+  padding-bottom: 28px;
+  border-bottom: 1px solid var(--hair);
+  margin-bottom: 32px;
+  flex-wrap: wrap;
+}
+.addon-calc-amount {
+  font-family: var(--font-serif);
+  font-size: clamp(40px, 5.4vw, 60px);
+  line-height: 1;
+  color: var(--ink);
+  letter-spacing: -0.02em;
+}
+.addon-calc-plus { color: var(--teal-ink); margin-right: 2px; }
+.addon-calc-unit {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-top: 10px;
+}
+.addon-calc-cost {
+  font-family: var(--font-serif);
+  font-size: clamp(48px, 6.4vw, 76px);
+  line-height: 1;
+  color: var(--teal-ink);
+  letter-spacing: -0.02em;
+  text-align: right;
+}
+.addon-calc-currency { font-size: 0.55em; vertical-align: 0.4em; margin-right: 2px; }
+.addon-calc-period {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  letter-spacing: .04em;
+  color: var(--muted);
+  margin-left: 4px;
+}
+.addon-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 6px;
+  background: var(--bg-alt);
+  border-radius: 999px;
+  outline: none;
+  cursor: pointer;
+}
+.addon-slider:focus-visible { box-shadow: 0 0 0 3px var(--teal-pale); }
+.addon-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 26px; height: 26px;
+  border-radius: 50%;
+  background: var(--teal);
+  border: 4px solid var(--surface);
+  box-shadow: 0 2px 10px rgba(13, 148, 136, .35), 0 0 0 1px var(--hair);
+  cursor: grab;
+  transition: transform .12s;
+}
+.addon-slider::-webkit-slider-thumb:active { cursor: grabbing; transform: scale(1.08); }
+.addon-slider::-moz-range-thumb {
+  width: 26px; height: 26px; border-radius: 50%;
+  background: var(--teal);
+  border: 4px solid var(--surface);
+  box-shadow: 0 2px 10px rgba(13, 148, 136, .35), 0 0 0 1px var(--hair);
+  cursor: grab;
+}
+.addon-calc-ticks {
+  display: flex; justify-content: space-between;
+  margin-top: 14px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: .08em;
+  color: var(--muted);
+}
+.addon-calc-foot {
+  text-align: center;
+  margin: 28px 0 0;
+  font-size: 12.5px;
+  color: var(--muted);
+  font-family: var(--font-mono);
+  letter-spacing: .04em;
+}
+@media (max-width: 640px) {
+  .addon-calc { padding: 28px 22px; }
+  .addon-calc-display { flex-direction: column; align-items: flex-start; }
+  .addon-calc-cost { text-align: left; }
+}
 </style>
 </head>
 <body>
@@ -324,6 +429,41 @@
     <p style="text-align:center; color: var(--muted); font-size: 13px; margin-top: 36px; font-family: var(--font-mono); letter-spacing: .04em;">
       ALL TIERS · BRING YOUR OWN AI ASSISTANT · BRING YOUR OWN AMAZON CREDENTIALS · CANCEL ANYTIME
     </p>
+  </div>
+</section>
+
+<!-- ADD-ON CALCULATOR -->
+<section style="padding-top: 60px; padding-bottom: 40px;" data-screen-label="MCP Pricing / Add-on Calculator">
+  <div class="container">
+    <div class="section-head-single" style="margin-bottom: 40px;">
+      <div class="eyebrow no-rule" style="justify-content:center; color:var(--teal-ink)">Pay as you grow</div>
+      <h2 class="display" style="margin-top:14px">Add tool calls <em>a la carte.</em></h2>
+      <p class="lede" style="margin: 18px auto 0; text-align: center;">Need more headroom in a given month? Top up at <strong>$0.02 per tool call</strong>. Drag the slider to estimate your add-on cost.</p>
+    </div>
+
+    <div class="addon-calc">
+      <div class="addon-calc-display">
+        <div class="addon-calc-amount">
+          <span class="addon-calc-plus">+</span><span id="addon-calls">1,000</span>
+          <span class="addon-calc-unit">tool calls / month</span>
+        </div>
+        <div class="addon-calc-cost">
+          <span class="addon-calc-currency">$</span><span id="addon-cost">20</span><span class="addon-calc-period">/mo</span>
+        </div>
+      </div>
+
+      <input type="range" id="addon-slider" min="100" max="5000" step="100" value="1000" class="addon-slider" aria-label="Additional tool calls per month">
+
+      <div class="addon-calc-ticks">
+        <span>100</span>
+        <span>1,250</span>
+        <span>2,500</span>
+        <span>3,750</span>
+        <span>5,000</span>
+      </div>
+
+      <p class="addon-calc-foot">Stacks on top of your tier · Billed monthly · Cancel anytime</p>
+    </div>
   </div>
 </section>
 
@@ -505,6 +645,25 @@
     </div>
   </div>
 </footer>
+
+<script>
+(function () {
+  var slider = document.getElementById('addon-slider');
+  var callsEl = document.getElementById('addon-calls');
+  var costEl = document.getElementById('addon-cost');
+  if (!slider || !callsEl || !costEl) return;
+  var fmt = new Intl.NumberFormat('en-US');
+  function update() {
+    var n = parseInt(slider.value, 10);
+    callsEl.textContent = fmt.format(n);
+    costEl.textContent = fmt.format(n * 0.02);
+    var pct = ((n - slider.min) / (slider.max - slider.min)) * 100;
+    slider.style.background = 'linear-gradient(to right, var(--teal) 0%, var(--teal) ' + pct + '%, var(--bg-alt) ' + pct + '%, var(--bg-alt) 100%)';
+  }
+  slider.addEventListener('input', update);
+  update();
+})();
+</script>
 
 </body>
 </html>
