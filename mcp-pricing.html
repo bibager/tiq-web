@@ -226,7 +226,7 @@
 
 /* Add-on calculator */
 .addon-calc {
-  max-width: 720px;
+  max-width: none;
   margin: 0 auto;
   background: var(--surface);
   border: 1px solid var(--hair);
@@ -388,28 +388,12 @@
           <li>30-day data lookback</li>
           <li>1 marketplace</li>
           <li class="muted">No write actions</li>
-          <li class="muted">Community support</li>
+          <li>Chat + Email support</li>
         </ul>
         <a href="mcp-install.html" class="btn btn-ghost btn-arrow">Install free</a>
       </div>
 
       <div class="price-card recommended">
-        <div class="price-tier">Plus</div>
-        <div class="price-amount">$49<small>/month</small></div>
-        <p class="price-tagline">For sellers who run their business through their AI assistant.</p>
-        <ul class="price-features">
-          <li>All 16 tools, including write actions</li>
-          <li>750 tool calls per day</li>
-          <li>~150 conversations per day</li>
-          <li>12-month data lookback</li>
-          <li>3 marketplaces</li>
-          <li>Premium data: AMC, Brand Analytics</li>
-          <li>Priority email + Slack support</li>
-        </ul>
-        <a href="#" class="btn btn-teal btn-arrow">Start Plus</a>
-      </div>
-
-      <div class="price-card">
         <div class="price-tier">Lite</div>
         <div class="price-amount">$19<small>/month</small></div>
         <p class="price-tagline">For active sellers and agencies onboarding their first brands.</p>
@@ -422,7 +406,23 @@
           <li class="muted">No write actions</li>
           <li>Email support</li>
         </ul>
-        <a href="#" class="btn btn-ghost btn-arrow">Start Lite</a>
+        <a href="#" class="btn btn-teal btn-arrow">Start Lite</a>
+      </div>
+
+      <div class="price-card">
+        <div class="price-tier">Plus</div>
+        <div class="price-amount">$49<small>/month</small></div>
+        <p class="price-tagline">For sellers who run their business through their AI assistant.</p>
+        <ul class="price-features">
+          <li>All 16 tools, including write actions</li>
+          <li>750 tool calls per day</li>
+          <li>~150 conversations per day</li>
+          <li>12-month data lookback</li>
+          <li>3 marketplaces</li>
+          <li>Premium data: AMC, Brand Analytics</li>
+          <li>Chat + Email support</li>
+        </ul>
+        <a href="#" class="btn btn-ghost btn-arrow">Start Plus</a>
       </div>
     </div>
 
@@ -481,8 +481,8 @@
           <tr>
             <th>&nbsp;</th>
             <th class="tier">Free<span class="price">$0/forever</span></th>
-            <th class="tier">Lite<span class="price">$19/month</span></th>
-            <th class="tier plus">Plus<span class="price">$49/month</span></th>
+            <th class="tier plus">Lite<span class="price">$19/month</span></th>
+            <th class="tier">Plus<span class="price">$49/month</span></th>
           </tr>
         </thead>
         <tbody>
@@ -511,7 +511,7 @@
           </tr>
           <tr>
             <td class="label">Advertising — Read<span class="desc">8 read tools across SP/SB/SD/DSP</span></td>
-            <td>2 of 8</td><td class="check">✓</td><td class="check">✓</td>
+            <td>2 of 8</td><td class="dash">—</td><td class="check">✓</td>
           </tr>
           <tr>
             <td class="label">Premium Data<span class="desc">AMC, Brand Analytics, Buy Box history</span></td>
@@ -525,7 +525,7 @@
           <tr><td colspan="4" class="row-group">Support</td></tr>
           <tr>
             <td class="label">Channel</td>
-            <td>Community Slack</td><td>Email</td><td class="value-strong">Priority email + Slack</td>
+            <td>Chat + Email</td><td>Email</td><td class="value-strong">Chat + Email</td>
           </tr>
           <tr>
             <td class="label">Response time</td>
