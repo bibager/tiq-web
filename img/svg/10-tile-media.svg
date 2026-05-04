@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 250" preserveAspectRatio="xMidYMid slice" width="100%" height="100%">
+            <rect width="400" height="250" fill="#F7FAFF"/>
+            <g transform="translate(40 40)">
+              <rect width="320" height="170" rx="10" fill="#fff" stroke="#E2E8F4"/>
+              <text x="20" y="34" font-family="Geist" font-size="12" fill="#6E7582">Weekly Business Review</text>
+              <text x="20" y="64" font-family="Instrument Serif" font-size="28" fill="#0E1116">Done for you</text>
+              <g transform="translate(20 90)">
+                <rect x="0" y="40" width="20" height="40" fill="#2563EB"/>
+                <rect x="28" y="25" width="20" height="55" fill="#2563EB"/>
+                <rect x="56" y="10" width="20" height="70" fill="#2563EB"/>
+                <rect x="84" y="30" width="20" height="50" fill="#2563EB"/>
+                <rect x="112" y="20" width="20" height="60" fill="#2563EB"/>
+                <rect x="140" y="5" width="20" height="75" fill="#2563EB"/>
+                <rect x="168" y="35" width="20" height="45" fill="#2563EB"/>
+                <rect x="196" y="15" width="20" height="65" fill="#2563EB"/>
+                <rect x="224" y="0" width="20" height="80" fill="#2563EB"/>
+                <rect x="252" y="25" width="20" height="55" fill="#2563EB"/>
+                <rect x="280" y="10" width="20" height="70" fill="#2563EB"/>
+              </g>
+            </g>
+          </svg>

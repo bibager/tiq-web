@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 250" preserveAspectRatio="xMidYMid slice" width="100%" height="100%">
+            <rect width="400" height="250" fill="#EEF8FF"/>
+            <g transform="translate(40 70)">
+              <!-- Amazon cloud side -->
+              <ellipse cx="70" cy="60" rx="55" ry="28" fill="#fff" stroke="#B9D0EC"/>
+              <text x="70" y="66" font-family="Geist" font-size="12" fill="#0E1116" text-anchor="middle">Amazon Cloud</text>
+              <!-- TrackIQ side -->
+              <rect x="200" y="32" width="120" height="56" rx="10" fill="#0E1116"/>
+              <text x="260" y="66" font-family="Geist Mono" font-size="13" fill="#fff" text-anchor="middle">{ TRACKIQ }</text>
+              <!-- connection -->
+              <path d="M125 60 C 160 60, 160 60, 200 60" stroke="#2563EB" stroke-width="2" fill="none"/>
+              <circle cx="162" cy="60" r="4" fill="#2563EB"/>
+            </g>
+          </svg>

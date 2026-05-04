@@ -1,0 +1,21 @@
+0	00-unknown.svg	unknown	310
+1	01-dot.svg	dot	2317
+2	02-feature-media-paint-dash.svg	feature-media paint-dash	3321
+3	03-feature-media-paint-slack.svg	feature-media paint-slack	1673
+4	04-feature-media-paint-rose.svg	feature-media paint-rose	1699
+5	05-feature-media-paint-warehouse.svg	feature-media paint-warehouse	2055
+6	06-feature-media-paint-ink.svg	feature-media paint-ink	4437
+7	07-pricing-feat-icon.svg	pricing-feat-icon	216
+8	08-pricing-feat-icon.svg	pricing-feat-icon	217
+9	09-pricing-feat-icon.svg	pricing-feat-icon	192
+10	10-tile-media.svg	tile-media	1484
+11	11-tile-media.svg	tile-media	1121
+12	12-tile-media.svg	tile-media	824
+13	13-tile-media.svg	tile-media	1008
+14	14-tile-media.svg	tile-media	1009
+15	15-tile-media.svg	tile-media	965
+16	16-tile-media.svg	tile-media	1671
+17	17-audience-cell.svg	audience-cell	207
+18	18-audience-cell.svg	audience-cell	269
+19	19-audience-cell.svg	audience-cell	191
+20	20-kpi-val.svg	kpi-val	1541

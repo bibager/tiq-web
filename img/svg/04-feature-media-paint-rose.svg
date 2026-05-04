@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 250" width="100%" height="100%" preserveAspectRatio="xMidYMid slice">
+            <rect width="400" height="250" fill="url(#rs1)"/>
+            <defs>
+              <linearGradient id="rs1" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#F8E9E1"/><stop offset="1" stop-color="#E7CBB8"/></linearGradient>
+            </defs>
+            <!-- alert cards -->
+            <g transform="translate(40 40)">
+              <rect width="320" height="60" rx="10" fill="#fff" stroke="#EDD4C3"/>
+              <circle cx="28" cy="30" r="6" fill="#B8542A"/>
+              <text x="46" y="26" font-family="Geist" font-size="12" font-weight="600" fill="#0E1116">ROAS dropped 18%</text>
+              <text x="46" y="42" font-family="Geist" font-size="11" fill="#6E7582">SB campaign · B09XYZ · 5m ago</text>
+            </g>
+            <g transform="translate(40 110)">
+              <rect width="320" height="60" rx="10" fill="#fff" stroke="#EDD4C3"/>
+              <circle cx="28" cy="30" r="6" fill="#D4A017"/>
+              <text x="46" y="26" font-family="Geist" font-size="12" font-weight="600" fill="#0E1116">Inventory low · 3 FCs</text>
+              <text x="46" y="42" font-family="Geist" font-size="11" fill="#6E7582">Top SKU at 6 days of cover</text>
+            </g>
+            <g transform="translate(40 180)">
+              <rect width="320" height="40" rx="10" fill="#fff" stroke="#EDD4C3" opacity=".6"/>
+              <circle cx="28" cy="20" r="6" fill="#8A4C63" opacity=".6"/>
+              <text x="46" y="24" font-family="Geist" font-size="11" fill="#6E7582">Buy box share slipped 12%</text>
+            </g>
+          </svg>

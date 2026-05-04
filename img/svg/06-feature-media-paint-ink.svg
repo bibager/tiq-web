@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400" width="100%" height="100%" preserveAspectRatio="xMidYMid slice" class="orbit-svg">
+            <rect width="800" height="400" fill="#0E1116"/>
+            <!-- dotted grid -->
+            <g fill="#242833" class="orbit-grid">
+              <circle cx="40" cy="40" r="1.2"/><circle cx="80" cy="40" r="1.2"/><circle cx="120" cy="40" r="1.2"/><circle cx="160" cy="40" r="1.2"/><circle cx="200" cy="40" r="1.2"/><circle cx="240" cy="40" r="1.2"/><circle cx="280" cy="40" r="1.2"/><circle cx="320" cy="40" r="1.2"/><circle cx="360" cy="40" r="1.2"/><circle cx="400" cy="40" r="1.2"/><circle cx="440" cy="40" r="1.2"/><circle cx="480" cy="40" r="1.2"/><circle cx="520" cy="40" r="1.2"/><circle cx="560" cy="40" r="1.2"/><circle cx="600" cy="40" r="1.2"/><circle cx="640" cy="40" r="1.2"/><circle cx="680" cy="40" r="1.2"/><circle cx="720" cy="40" r="1.2"/><circle cx="760" cy="40" r="1.2"/>
+              <circle cx="40" cy="80" r="1.2"/><circle cx="120" cy="80" r="1.2"/><circle cx="200" cy="80" r="1.2"/><circle cx="280" cy="80" r="1.2"/><circle cx="360" cy="80" r="1.2"/><circle cx="440" cy="80" r="1.2"/><circle cx="520" cy="80" r="1.2"/><circle cx="600" cy="80" r="1.2"/><circle cx="680" cy="80" r="1.2"/><circle cx="760" cy="80" r="1.2"/>
+            </g>
+            <!-- center big text -->
+            <text x="400" y="180" text-anchor="middle" font-family="Instrument Serif" font-style="italic" font-size="56" fill="#F1EEE5">24 / 7</text>
+            <text x="400" y="220" text-anchor="middle" font-family="Geist" font-size="14" fill="#9BA3B4" letter-spacing="1">YOUR AI OPS TEAM, ON AUTOPILOT</text>
+
+            <!-- Orbit 1 (outer) -->
+            <g transform="translate(400 200)">
+              <ellipse cx="0" cy="0" rx="280" ry="90" stroke="#2563EB" stroke-width="1" fill="none" opacity=".35" class="orbit-ring orbit-ring-1"/>
+              <g class="orbit-spin orbit-spin-1">
+                <circle cx="280" cy="0" r="5" fill="#2563EB" class="orbit-dot">
+                  <animate attributeName="r" values="4;6;4" dur="2.4s" repeatCount="indefinite"/>
+                </circle>
+                <circle cx="280" cy="0" r="10" fill="#2563EB" opacity=".25">
+                  <animate attributeName="r" values="8;16;8" dur="2.4s" repeatCount="indefinite"/>
+                  <animate attributeName="opacity" values=".35;0;.35" dur="2.4s" repeatCount="indefinite"/>
+                </circle>
+              </g>
+            </g>
+
+            <!-- Orbit 2 (inner) -->
+            <g transform="translate(400 200)">
+              <ellipse cx="0" cy="0" rx="220" ry="70" stroke="#2563EB" stroke-width="1" fill="none" opacity=".25" class="orbit-ring orbit-ring-2"/>
+              <g class="orbit-spin orbit-spin-2">
+                <circle cx="-220" cy="0" r="4.5" fill="#A78BFA" class="orbit-dot">
+                  <animate attributeName="r" values="3.5;5.5;3.5" dur="2.8s" repeatCount="indefinite"/>
+                </circle>
+                <circle cx="-220" cy="0" r="9" fill="#A78BFA" opacity=".25">
+                  <animate attributeName="r" values="7;14;7" dur="2.8s" repeatCount="indefinite"/>
+                  <animate attributeName="opacity" values=".3;0;.3" dur="2.8s" repeatCount="indefinite"/>
+                </circle>
+              </g>
+            </g>
+
+            <!-- Orbit 3 (innermost, counter-rotating) -->
+            <g transform="translate(400 200)">
+              <ellipse cx="0" cy="0" rx="160" ry="50" stroke="#22C55E" stroke-width="1" fill="none" opacity=".22" class="orbit-ring orbit-ring-3"/>
+              <g class="orbit-spin orbit-spin-3">
+                <circle cx="0" cy="50" r="4" fill="#22C55E" class="orbit-dot">
+                  <animate attributeName="r" values="3;5;3" dur="2.2s" repeatCount="indefinite"/>
+                </circle>
+                <circle cx="0" cy="50" r="8" fill="#22C55E" opacity=".25">
+                  <animate attributeName="r" values="6;12;6" dur="2.2s" repeatCount="indefinite"/>
+                  <animate attributeName="opacity" values=".3;0;.3" dur="2.2s" repeatCount="indefinite"/>
+                </circle>
+              </g>
+            </g>
+
+            <!-- Center pulse -->
+            <circle cx="400" cy="200" r="3" fill="#F1EEE5" opacity=".85">
+              <animate attributeName="opacity" values=".4;1;.4" dur="2s" repeatCount="indefinite"/>
+            </circle>
+          </svg>
